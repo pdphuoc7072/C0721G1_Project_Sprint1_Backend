@@ -26,10 +26,6 @@ public class Employee {
     @JoinColumn(name = "position_id", referencedColumnName = "id")
     private Position position;
 
-    @ManyToOne(targetEntity = Salary.class)
-    @JoinColumn(name = "salary_id", referencedColumnName = "id")
-    private Salary salary;
-
     @OneToOne()
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
@@ -107,14 +103,6 @@ public class Employee {
 
     public void setPosition(Position position) {
         this.position = position;
-    }
-
-    public Salary getSalary() {
-        return salary;
-    }
-
-    public void setSalary(Salary salary) {
-        this.salary = salary;
     }
 
     public User getUser() {
