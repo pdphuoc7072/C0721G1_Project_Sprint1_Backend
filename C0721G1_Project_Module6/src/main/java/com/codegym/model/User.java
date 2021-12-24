@@ -1,5 +1,6 @@
 package com.codegym.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
@@ -16,10 +17,12 @@ public class User {
 
     private String password;
 
+    @JsonBackReference(value = "")
     @OneToOne(mappedBy = "user")
     @JsonIgnore
     private Employee employee;
 
+    @JsonBackReference(value = "")
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;

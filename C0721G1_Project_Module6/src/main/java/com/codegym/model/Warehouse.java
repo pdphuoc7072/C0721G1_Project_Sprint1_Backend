@@ -22,6 +22,13 @@ public class Warehouse {
 
     private String unit;
 
+    private Integer cancelledSupplies;
+
+    private Integer refundSupplies;
+
+    private Integer importQuantity;
+
+
     @ManyToOne(targetEntity = Supplies.class)
     @JoinColumn(name = "supplies_id", referencedColumnName = "id")
     private Supplies supplies;
@@ -91,6 +98,30 @@ public class Warehouse {
 
     public void setUnit(String unit) {
         this.unit = unit;
+    }
+
+    public Integer getCancelledSupplies() {
+        return cancelledSupplies;
+    }
+
+    public void setCancelledSupplies(Integer cancelledSupplies) {
+        this.cancelledSupplies = cancelledSupplies;
+    }
+
+    public Integer getRefundSupplies() {
+        return refundSupplies;
+    }
+
+    public void setRefundSupplies(Integer refundSupplies) {
+        this.refundSupplies = refundSupplies;
+    }
+
+    public Integer getImportQuantity() {
+        return importQuantity;
+    }
+
+    public void setImportQuantity(Integer importQuantity) {
+        this.importQuantity = importQuantity;
     }
 
     public Supplies getSupplies() {
