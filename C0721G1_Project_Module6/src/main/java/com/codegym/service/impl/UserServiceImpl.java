@@ -32,4 +32,14 @@ public class UserServiceImpl implements IUserService {
     public void remove(Long id) {
         iUserRepository.deleteById(id);
     }
+
+    @Override
+    public Optional<User> findByUsername(String username) {
+        return iUserRepository.findByUsername(username);
+    }
+
+    @Override
+    public Boolean existsByUsername(String username) {
+        return iUserRepository.existsByUsername(username);
+    }
 }
