@@ -1,20 +1,23 @@
 package com.codegym.controllerEmployee;
 
+import com.codegym.dto.EmployeeDto;
 import com.codegym.model.Employee;
 import com.codegym.model.Position;
 import com.codegym.service.IEmployeeService;
 import com.codegym.service.IPositionService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
 @RequestMapping("api")
 @CrossOrigin
-public class ContronllerEmployee {
+public class ControllerEmployee {
     @Autowired
     IEmployeeService employeeService;
 
@@ -26,14 +29,19 @@ public class ContronllerEmployee {
         return null;
     }
 
+//    duc
     @PostMapping("/admin/employee/create")
-    public ResponseEntity<?> createEmployee(@RequestBody Employee employee){
+    public ResponseEntity<?> createEmployee(@Valid @RequestBody EmployeeDto employeeDto){
+        Employee employee = new Employee();
+        BeanUtils.copyProperties(employeeDto,employee);
         employeeService.save(employee);
         return new ResponseEntity<>(HttpStatus.OK);
     }
-
+//    duc
     @PatchMapping("/employee/update")
-    public ResponseEntity<?> updateEmployee(@RequestBody Employee employee){
+    public ResponseEntity<?> updateEmployee(@Valid @RequestBody EmployeeDto employeeDto){
+        Employee employee = new Employee();
+        BeanUtils.copyProperties(employeeDto,employee);
         employeeService.save(employee);
         return new ResponseEntity<>(HttpStatus.OK);
     }
