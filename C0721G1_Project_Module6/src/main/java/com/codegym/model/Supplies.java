@@ -1,5 +1,7 @@
 package com.codegym.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 import java.util.Set;
 
@@ -35,9 +37,11 @@ public class Supplies {
     @JoinColumn(name = "producer_id", referencedColumnName = "id")
     private Producer producer;
 
+    @JsonBackReference(value = "")
     @OneToMany(mappedBy = "supplies")
     private Set<OrderDetail> orderDetails;
 
+    @JsonBackReference(value = "")
     @OneToMany(mappedBy = "supplies")
     private Set<Warehouse> warehouses;
 

@@ -1,5 +1,7 @@
 package com.codegym.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 
 @Entity
@@ -26,6 +28,7 @@ public class Employee {
     @JoinColumn(name = "position_id", referencedColumnName = "id")
     private Position position;
 
+    @JsonBackReference(value = "")
     @OneToOne()
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
