@@ -1,6 +1,7 @@
 package com.codegym.service.impl;
 
 import com.codegym.model.Employee;
+import com.codegym.model.User;
 import com.codegym.repository.IEmployeeRepository;
 import com.codegym.service.IEmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,5 +37,10 @@ public class EmployeeServiceImpl implements IEmployeeService {
     @Override
     public Optional<Employee> findByUserId(Long id) {
         return iEmployeeRepository.findByUserId(id);
+    }
+
+    @Override
+    public Optional<Employee> findByCode(String code) {
+        return iEmployeeRepository.findByCode(code);
     }
 }

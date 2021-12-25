@@ -6,6 +6,7 @@ import com.codegym.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -42,4 +43,14 @@ public class UserServiceImpl implements IUserService {
     public Boolean existsByUsername(String username) {
         return iUserRepository.existsByUsername(username);
     }
+
+    @Override
+    public List<Long> findRoleByUserId(Long id) {
+        return iUserRepository.findRoleByUserId(id);
+    }
+
+//    @Override
+//    public void updatePassword(Long id, String password) {
+//        iUserRepository.updatePassword(id, password);
+//    }
 }

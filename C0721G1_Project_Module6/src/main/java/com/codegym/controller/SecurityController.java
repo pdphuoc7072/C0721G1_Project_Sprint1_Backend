@@ -8,11 +8,12 @@ import com.codegym.payload.request.LoginRequest;
 import com.codegym.payload.request.RegisterRequest;
 import com.codegym.payload.response.JwtResponse;
 import com.codegym.payload.response.MessageResponse;
-import com.codegym.service.IEmployeeService;
-import com.codegym.service.IRoleService;
-import com.codegym.service.IUserService;
+import com.codegym.service.impl.EmployeeServiceImpl;
+import com.codegym.service.impl.RoleServiceImpl;
 import com.codegym.service.impl.UserDetailsImpl;
+import com.codegym.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -20,14 +21,13 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.validation.annotation.Validated;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
@@ -39,13 +39,13 @@ public class SecurityController {
     @Autowired
     private AuthenticationManager authenticationManager;
     @Autowired
-    private IUserService iUserService;
+    private UserServiceImpl userServiceImpl;
     @Autowired
-    private IRoleService iRoleService;
+    private RoleServiceImpl roleServiceImpl;
     @Autowired
     private PasswordEncoder passwordEncoder;
     @Autowired
-    private IEmployeeService iEmployeeService;
+    private EmployeeServiceImpl employeeServiceImpl;
 
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
@@ -57,42 +57,92 @@ public class SecurityController {
         List<String> roles = userDetails.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toList());
-        Optional<User> user = iUserService.findByUsername(loginRequest.getUsername());
-        Optional<Employee> employee = iEmployeeService.findByUserId(user.get().getId());
+        Optional<User> user = userServiceImpl.findByUsername(loginRequest.getUsername());
+        Optional<Employee> employee = employeeServiceImpl.findByUserId(user.get().getId());
         return ResponseEntity.ok(new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(), roles, employee.get()));
     }
 
+    @GetMapping("/register")
+    public ResponseEntity<?> getRegisterUser(@Valid @RequestBody RegisterRequest registerRequest) {
+        Optional<Employee> employeeCurrent = employeeServiceImpl.findByCode(registerRequest.getCode());
+        if (!employeeCurrent.isPresent()) {
+            return ResponseEntity.ok(new MessageResponse("Mã nhân viên này không tồn tại"));
+        }
+
+        if (employeeCurrent.get().getUser() != null) {
+            List<Long> roleIdList = userServiceImpl.findRoleByUserId(employeeCurrent.get().getUser().getId());
+            String role = null;
+            if (roleIdList.size() == 2) {
+                role = "admin";
+            } else {
+                role = "user";
+            }
+            return ResponseEntity.ok(new RegisterRequest(registerRequest.getCode(), employeeCurrent.get().getUser().getUsername(), employeeCurrent.get().getUser().getPassword(), role));
+        } else {
+            return ResponseEntity.ok(new MessageResponse("Mã nhân viên này chưa có tài khoản. Vui lòng tạo tài khoản mới."));
+        }
+    }
+
     @PostMapping("/register")
-    public ResponseEntity<?> registerUser(@Validated @RequestBody RegisterRequest registerRequest) {
-        if (iUserService.existsByUsername(registerRequest.getUsername())) {
-            return ResponseEntity.badRequest().body(new MessageResponse("Error: Username is already taken!!!"));
+    public ResponseEntity<?> registerUser(@Valid @RequestBody RegisterRequest registerRequest, BindingResult bindingResult) {
+        if (userServiceImpl.existsByUsername(registerRequest.getUsername())) {
+            return ResponseEntity.badRequest().body(new MessageResponse("Tên tài khoản này đã tồn tại"));
+        }
+        if (bindingResult.hasFieldErrors()) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         User user = new User(registerRequest.getUsername(), passwordEncoder.encode(registerRequest.getPassword()));
         String stringRoles = registerRequest.getRole();
         Set<Role> roles = new HashSet<>();
         if (stringRoles == null) {
-            Role userRole = iRoleService.findByName("ROLE_USER")
+            Role userRole = roleServiceImpl.findByName("ROLE_USER")
                     .orElseThrow(() -> new RuntimeException("Error: Role is not found"));
             roles.add(userRole);
         } else {
             switch (stringRoles) {
                 case "admin":
-                    Role adminRole = iRoleService.findByName("ROLE_ADMIN")
+                    Role adminRole = roleServiceImpl.findByName("ROLE_ADMIN")
                             .orElseThrow(() -> new RuntimeException("Error: Role is not found"));
-                    Role userRole = iRoleService.findByName("ROLE_USER")
+                    Role userRole = roleServiceImpl.findByName("ROLE_USER")
                             .orElseThrow(() -> new RuntimeException("Error: Role is not found"));
                     roles.add(adminRole);
                     roles.add(userRole);
                     break;
                 case "user":
-                    Role userRole1 = iRoleService.findByName("ROLE_USER")
+                    Role userRole1 = roleServiceImpl.findByName("ROLE_USER")
                             .orElseThrow(() -> new RuntimeException("Error: Role is not found"));
                     roles.add(userRole1);
                     break;
             }
         }
         user.setRoles(roles);
-        iUserService.save(user);
-        return ResponseEntity.ok(new MessageResponse("User registered successfully"));
+        userServiceImpl.save(user);
+        Optional<User> user1 = userServiceImpl.findByUsername(user.getUsername());
+        Optional<Employee> employeeCurrent = employeeServiceImpl.findByCode(registerRequest.getCode());
+        employeeCurrent.get().setUser(user1.get());
+        employeeServiceImpl.save(employeeCurrent.get());
+        return ResponseEntity.ok(new MessageResponse("Đăng ký tài khoản thành công"));
+    }
+
+    @PostMapping("/register-edit-password")
+    public ResponseEntity<?> registerEditPassword(@Valid @RequestBody RegisterRequest registerRequest) {
+        String password = passwordEncoder.encode(registerRequest.getPassword());
+        Optional<Employee> employeeCurrent = employeeServiceImpl.findByCode(registerRequest.getCode());
+        employeeCurrent.get().getUser().setPassword(password);
+        userServiceImpl.save(employeeCurrent.get().getUser());
+        return ResponseEntity.ok(new MessageResponse("Cập nhật mật khẩu thành công"));
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public Map<String, String> handleValidationExceptions(
+            MethodArgumentNotValidException ex) {
+        Map<String, String> errors = new HashMap<>();
+        ex.getBindingResult().getAllErrors().forEach((error) -> {
+            String fieldName = ((FieldError) error).getField();
+            String errorMessage = error.getDefaultMessage();
+            errors.put(fieldName, errorMessage);
+        });
+        return errors;
     }
 }
