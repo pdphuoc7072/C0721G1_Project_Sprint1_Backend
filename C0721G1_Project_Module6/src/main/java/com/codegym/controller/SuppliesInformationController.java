@@ -2,9 +2,15 @@ package com.codegym.controller;
 
 import com.codegym.dto.CustomerDTO;
 import com.codegym.model.Customer;
+import com.codegym.model.Supplies;
 import com.codegym.service.ICustomerService;
+import com.codegym.service.ISuppliesService;
+import com.codegym.service.ISuppliesTypeService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
@@ -31,6 +37,10 @@ public class SuppliesInformationController {
     ICustomerService iCustomerService;
     @Autowired
     public JavaMailSender emailSender;
+    @Autowired
+    ISuppliesService iSuppliesService;
+    @Autowired
+    ISuppliesTypeService iSuppliesTypeService;
 
     @GetMapping("/payment")
     public ResponseEntity<?> createCustomer(@RequestBody @Valid CustomerDTO customerDTO, BindingResult bindingResult) {
@@ -68,4 +78,24 @@ public class SuppliesInformationController {
         // Send Message!
         this.emailSender.send(message);
     }
+    @GetMapping("list")
+    public ResponseEntity<?> findAll(@PageableDefault(value = 5) Pageable pageable) {
+        Page<Supplies> suppliesList = iSuppliesService.findAll(pageable);
+        if (suppliesList != null) {
+            return new ResponseEntity<>(suppliesList, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping("list/detail/{id}")
+    public ResponseEntity<?> findById(@PathVariable Long id) {
+        Supplies supplies = iSuppliesService.findById(id).get();
+        if (supplies != null) {
+            return new ResponseEntity<>(supplies, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
 }
