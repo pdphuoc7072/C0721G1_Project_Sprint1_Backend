@@ -1,0 +1,27 @@
+package com.codegym.controller;
+
+import com.codegym.model.Producer;
+import com.codegym.model.SuppliesType;
+import com.codegym.service.IProducerService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/admin/producer")
+@CrossOrigin
+public class ProducerController {
+    @Autowired
+    private IProducerService producerService;
+    @GetMapping("/list")
+    public ResponseEntity<?> getSuppliesList() {
+        List<Producer> producers = (List<Producer>) producerService.findAll();
+        return new ResponseEntity<>(producers, HttpStatus.OK);
+    }
+}
