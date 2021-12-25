@@ -1,12 +1,19 @@
 package com.codegym.controllerEmployee;
 
+import com.codegym.dto.PageEmployeeDTO;
 import com.codegym.model.Employee;
 import com.codegym.model.Position;
 import com.codegym.service.IEmployeeService;
 import com.codegym.service.IPositionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,7 +21,7 @@ import java.util.List;
 @RestController
 @RequestMapping("api")
 @CrossOrigin
-public class ContronllerEmployee {
+public class ControllerEmployee {
     @Autowired
     IEmployeeService employeeService;
 
@@ -22,8 +29,14 @@ public class ContronllerEmployee {
     IPositionService positionService;
 
     @GetMapping("/admin/employee")
-    public ResponseEntity<?> findAllEmployee(@RequestParam int page) {
-        return null;
+    public ResponseEntity<?> findAllEmployee(@RequestBody PageEmployeeDTO pageEmployeeDTO) {
+        String code = pageEmployeeDTO.getCode();
+        String name = pageEmployeeDTO.getName();
+        String positionId = pageEmployeeDTO.getPositionId();
+        Pageable pageable = PageRequest.of(pageEmployeeDTO.getPage(), pageEmployeeDTO.getSize(), Sort.Direction.ASC,"name");
+
+        Page<Employee> employeePage = employeeService.findAllEmployee(code, name , positionId, pageable);
+        return new ResponseEntity<>(employeePage, HttpStatus.OK);
     }
 
     @PostMapping("/admin/employee/create")
