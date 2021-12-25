@@ -1,34 +1,29 @@
-package com.codegym.model;
+package com.codegym.dto;
 
+import com.codegym.model.Address;
+import com.codegym.model.Customer;
+import com.codegym.model.OrderDetail;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import org.springframework.validation.Errors;
+import org.springframework.validation.Validator;
 
-import javax.persistence.*;
-import java.util.Set;
+import javax.validation.constraints.NotBlank;
 
-@Entity
-public class Customer {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
+// Tân Code  24/12/2021//
+public class CustomerDTO  implements Validator {
     private Long id;
-
+    @NotBlank
     private String code;
-
+    @NotBlank
     private String name;
-
+    @NotBlank
     private String phone;
-
+    @NotBlank
     private String email;
-
-    @ManyToOne(targetEntity = Address.class)
-    @JoinColumn(name = "address_id", referencedColumnName = "id")
     private Address address;
-
-    @JsonBackReference(value = "")
-    @OneToMany(mappedBy = "orderDetail")
-    private Set<Supplies> supplies;
-
-
-    public Customer() {
+    private Iterable<Customer> customers;
+    public CustomerDTO() {
     }
 
     public Long getId() {
@@ -79,12 +74,22 @@ public class Customer {
         this.address = address;
     }
 
-    public Set<Supplies> getSupplies() {
-        return supplies;
+
+    public Iterable<Customer> getCustomers() {
+        return customers;
     }
 
-    public void setSupplies(Set<Supplies> supplies) {
-        this.supplies = supplies;
+    public void setCustomers(Iterable<Customer> customers) {
+        this.customers = customers;
     }
 
+    @Override
+    public boolean supports(Class<?> clazz) {
+        return false;
+    }
+
+    @Override
+    public void validate(Object target, Errors errors) {
+
+    }
 }
