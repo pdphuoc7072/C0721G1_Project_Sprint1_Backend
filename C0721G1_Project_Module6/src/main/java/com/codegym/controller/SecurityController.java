@@ -62,11 +62,11 @@ public class SecurityController {
         return ResponseEntity.ok(new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(), roles, employee.get()));
     }
 
-    @GetMapping("/register")
-    public ResponseEntity<?> getRegisterUser(@Valid @RequestBody RegisterRequest registerRequest) {
-        Optional<Employee> employeeCurrent = employeeServiceImpl.findByCode(registerRequest.getCode());
+    @GetMapping("/register/{code}")
+    public ResponseEntity<?> getRegisterUser(@PathVariable String code) {
+        Optional<Employee> employeeCurrent = employeeServiceImpl.findByCode(code);
         if (!employeeCurrent.isPresent()) {
-            return ResponseEntity.ok(new MessageResponse("Mã nhân viên này không tồn tại"));
+            return ResponseEntity.ok(1);
         }
 
         if (employeeCurrent.get().getUser() != null) {
@@ -77,16 +77,16 @@ public class SecurityController {
             } else {
                 role = "user";
             }
-            return ResponseEntity.ok(new RegisterRequest(registerRequest.getCode(), employeeCurrent.get().getUser().getUsername(), employeeCurrent.get().getUser().getPassword(), role));
+            return ResponseEntity.ok(new RegisterRequest(employeeCurrent.get().getUser().getUsername(), employeeCurrent.get().getUser().getPassword(), role));
         } else {
-            return ResponseEntity.ok(new MessageResponse("Mã nhân viên này chưa có tài khoản. Vui lòng tạo tài khoản mới."));
+            return ResponseEntity.ok(2);
         }
     }
 
-    @PostMapping("/register")
-    public ResponseEntity<?> registerUser(@Valid @RequestBody RegisterRequest registerRequest, BindingResult bindingResult) {
+    @PostMapping("/register/{code}")
+    public ResponseEntity<?> registerUser(@Valid @RequestBody RegisterRequest registerRequest, @PathVariable String code, BindingResult bindingResult) {
         if (userServiceImpl.existsByUsername(registerRequest.getUsername())) {
-            return ResponseEntity.badRequest().body(new MessageResponse("Tên tài khoản này đã tồn tại"));
+            return new ResponseEntity<>("Tên đăng nhập này đã tồn tại",HttpStatus.BAD_REQUEST);
         }
         if (bindingResult.hasFieldErrors()) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -96,15 +96,15 @@ public class SecurityController {
         Set<Role> roles = new HashSet<>();
         if (stringRoles == null) {
             Role userRole = roleServiceImpl.findByName("ROLE_USER")
-                    .orElseThrow(() -> new RuntimeException("Error: Role is not found"));
+                    .orElseThrow(() -> new RuntimeException("Không tìm thấy quyền này"));
             roles.add(userRole);
         } else {
             switch (stringRoles) {
                 case "admin":
                     Role adminRole = roleServiceImpl.findByName("ROLE_ADMIN")
-                            .orElseThrow(() -> new RuntimeException("Error: Role is not found"));
+                            .orElseThrow(() -> new RuntimeException("Không tìm thấy quyền này"));
                     Role userRole = roleServiceImpl.findByName("ROLE_USER")
-                            .orElseThrow(() -> new RuntimeException("Error: Role is not found"));
+                            .orElseThrow(() -> new RuntimeException("Không tìm thấy quyền này"));
                     roles.add(adminRole);
                     roles.add(userRole);
                     break;
@@ -118,16 +118,19 @@ public class SecurityController {
         user.setRoles(roles);
         userServiceImpl.save(user);
         Optional<User> user1 = userServiceImpl.findByUsername(user.getUsername());
-        Optional<Employee> employeeCurrent = employeeServiceImpl.findByCode(registerRequest.getCode());
+        Optional<Employee> employeeCurrent = employeeServiceImpl.findByCode(code);
         employeeCurrent.get().setUser(user1.get());
         employeeServiceImpl.save(employeeCurrent.get());
         return ResponseEntity.ok(new MessageResponse("Đăng ký tài khoản thành công"));
     }
 
-    @PostMapping("/register-edit-password")
-    public ResponseEntity<?> registerEditPassword(@Valid @RequestBody RegisterRequest registerRequest) {
+    @PostMapping("/register-edit-password/{code}")
+    public ResponseEntity<?> registerEditPassword(@Valid @RequestBody RegisterRequest registerRequest, @PathVariable String code, BindingResult bindingResult) {
+        if (bindingResult.hasFieldErrors()) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
         String password = passwordEncoder.encode(registerRequest.getPassword());
-        Optional<Employee> employeeCurrent = employeeServiceImpl.findByCode(registerRequest.getCode());
+        Optional<Employee> employeeCurrent = employeeServiceImpl.findByCode(code);
         employeeCurrent.get().getUser().setPassword(password);
         userServiceImpl.save(employeeCurrent.get().getUser());
         return ResponseEntity.ok(new MessageResponse("Cập nhật mật khẩu thành công"));
@@ -144,5 +147,14 @@ public class SecurityController {
             errors.put(fieldName, errorMessage);
         });
         return errors;
+    }
+
+    @GetMapping("/role")
+    public ResponseEntity<Iterable<Role>> getAllRole() {
+        Iterable<Role> roleList = roleServiceImpl.findAll();
+        if (roleList == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(roleList, HttpStatus.OK);
     }
 }

@@ -3,9 +3,7 @@ package com.codegym.payload.request;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
-public class RegisterRequest {
-    private String code;
-
+public class RegisterRequest{
     @NotBlank(message = "Vui lòng nhập Tên đăng nhập")
     @Pattern(regexp = "^[a-zA-Z0-9]([._-](?![._-])|[a-zA-Z0-9]){2,8}[a-zA-Z0-9]$",
             message = "Vui lòng nhập đúng định dạng của Tên đăng nhập")
@@ -20,23 +18,15 @@ public class RegisterRequest {
     public RegisterRequest() {
     }
 
-    public RegisterRequest(String code) {
-        this.code = code;
-    }
-
-    public RegisterRequest(String code, String username, String password, String role) {
-        this.code = code;
+    public RegisterRequest(String username, String password, String role) {
         this.username = username;
         this.password = password;
         this.role = role;
     }
 
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
+    public RegisterRequest(String username, String password) {
+        this.username = username;
+        this.password = password;
     }
 
     public String getUsername() {
