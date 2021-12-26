@@ -9,10 +9,17 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
+import org.apache.commons.lang3.text.WordUtils;
 
 import javax.validation.Valid;
+import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("api")
@@ -29,19 +36,45 @@ public class ControllerEmployee {
         return null;
     }
 
-//    duc
+    //    duc
     @PostMapping("/admin/employee/create")
-    public ResponseEntity<?> createEmployee(@Valid @RequestBody EmployeeDto employeeDto){
+    public ResponseEntity<?> createEmployee(@Valid @RequestBody EmployeeDto employeeDto, BindingResult bindingResult) {
+        if (bindingResult.hasFieldErrors()) {
+            return new ResponseEntity<>(bindingResult.getAllErrors(), HttpStatus.BAD_REQUEST);
+        }
+        List<Employee> employees = employeeService.getAll();
+        for (Employee e : employees) {
+            if (employeeDto.getPhone().equals(e.getPhone())) {
+                return new ResponseEntity<>("trùng số điện thoại", HttpStatus.BAD_REQUEST);
+            }
+        }
+        String name = WordUtils.capitalizeFully(employeeDto.getName()).replaceAll("\\s+", " ");
+        long count = employees.get(employees.size() - 1).getId() + 1;
+        String code = "Emp-" + count;
+        employeeDto.setCode(code);
+        employeeDto.setName(name);
         Employee employee = new Employee();
-        BeanUtils.copyProperties(employeeDto,employee);
+        BeanUtils.copyProperties(employeeDto, employee);
         employeeService.save(employee);
         return new ResponseEntity<>(HttpStatus.OK);
     }
-//    duc
+
+    //    duc
     @PatchMapping("/employee/update")
-    public ResponseEntity<?> updateEmployee(@Valid @RequestBody EmployeeDto employeeDto){
+    public ResponseEntity<?> updateEmployee(@Valid @RequestBody EmployeeDto employeeDto, BindingResult bindingResult) {
+        if (bindingResult.hasFieldErrors()) {
+            return new ResponseEntity<>(bindingResult.getAllErrors(), HttpStatus.BAD_REQUEST);
+        }
+        List<Employee> employees = employeeService.getAll();
+        for (Employee e : employees) {
+            if (employeeDto.getPhone().equals(e.getPhone())) {
+                return new ResponseEntity<>("trùng số điện thoại", HttpStatus.BAD_REQUEST);
+            }
+        }
+        String name = WordUtils.capitalizeFully(employeeDto.getName()).replaceAll("\\s+", " ");
+        employeeDto.setName(name);
         Employee employee = new Employee();
-        BeanUtils.copyProperties(employeeDto,employee);
+        BeanUtils.copyProperties(employeeDto, employee);
         employeeService.save(employee);
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -62,5 +95,19 @@ public class ControllerEmployee {
     public ResponseEntity<?> findAllPosition() {
         List<Position> positionList = positionService.findAll();
         return new ResponseEntity<>(positionList, HttpStatus.OK);
+    }
+
+    //bat err >>duc
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public Map<String, String> handleValidationExceptions(
+            MethodArgumentNotValidException ex) {
+        Map<String, String> errors = new HashMap<>();
+        ex.getBindingResult().getAllErrors().forEach((error) -> {
+            String fieldName = ((FieldError) error).getField();
+            String errorMessage = error.getDefaultMessage();
+            errors.put(fieldName, errorMessage);
+        });
+        return errors;
     }
 }

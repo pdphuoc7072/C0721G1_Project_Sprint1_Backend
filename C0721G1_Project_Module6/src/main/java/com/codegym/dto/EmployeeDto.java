@@ -1,22 +1,30 @@
 package com.codegym.dto;
 
+import com.codegym.dto.customValidate.BirthDay;
 import com.codegym.model.Position;
 import com.codegym.model.User;
 import javax.validation.constraints.*;
-import java.sql.Date;
+
+
 
 //duc
 public class EmployeeDto {
 
+    //    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String code;
 
     @NotEmpty
     @NotBlank
+    @Size(max = 60, min=3)
+    @Pattern(regexp = "(\\p{L}+[\\p{L}\\s]*)", message = "Tên có chứa kí tự số")
     private String name;
 
     @NotEmpty
     @NotBlank
+    @Pattern(regexp = "^([\\d]{4})[-]([\\d]{2})[-]([\\d]{2})$", message = "nhập đúng định dang ngày là dd-mm-yyyy")
+    @BirthDay(message = "Tuổi phải lớn hơn 18")
     private String birthday;
 
     private String image;
@@ -118,4 +126,5 @@ public class EmployeeDto {
     public void setUser(User user) {
         this.user = user;
     }
+
 }
