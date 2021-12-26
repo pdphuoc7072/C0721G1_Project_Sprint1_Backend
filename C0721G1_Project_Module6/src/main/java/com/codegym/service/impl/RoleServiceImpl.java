@@ -32,4 +32,5 @@ public class RoleServiceImpl implements IRoleService {
     public void remove(Long id) {
         iRoleRepository.deleteById(id);
     }
+
 }
