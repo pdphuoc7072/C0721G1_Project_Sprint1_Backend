@@ -17,7 +17,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class SuppliesController_EditSupplies {
+public class SuppliesController_editSupplies {
     @Autowired
     private MockMvc mockMvc;
 
@@ -25,7 +25,7 @@ public class SuppliesController_EditSupplies {
     private ObjectMapper objectMapper;
     //    All [item] đều hợp lệ
     @Test
-    public void createSupplies_name_all() throws Exception {
+    public void editSupplies_name_24() throws Exception {
         SuppliesDTO suppliesDTO = new SuppliesDTO();
         suppliesDTO.setId((long) 1);
         suppliesDTO.setCode("MVT-0001");
@@ -53,7 +53,7 @@ public class SuppliesController_EditSupplies {
     }
     //[item] = null
     @Test
-    public void createStudent_name_null() throws Exception {
+    public void editStudent_name_19() throws Exception {
 
         SuppliesDTO suppliesDTO = new SuppliesDTO();
         suppliesDTO.setId((long) 1);
@@ -82,7 +82,7 @@ public class SuppliesController_EditSupplies {
     }
     //[item] =  rỗng ("")
     @Test
-    public void createStudent_name_code() throws Exception {
+    public void editStudent_name_20() throws Exception {
 
         SuppliesDTO suppliesDTO = new SuppliesDTO();
         suppliesDTO.setId((long) 1);
@@ -110,7 +110,7 @@ public class SuppliesController_EditSupplies {
     }
     //[item] sai format (phụ thuộc vào từng item cụ thể: chỉ chứa chữ, chỉ chứa số, định dạng email…)
     @Test
-    public void createStudent_code() throws Exception {
+    public void editStudent_name_21() throws Exception {
 
         SuppliesDTO suppliesDTO = new SuppliesDTO();
         suppliesDTO.setId((long) 1);
@@ -139,7 +139,7 @@ public class SuppliesController_EditSupplies {
     }
     //[item] không >= minlength
     @Test
-    public void createStudent_name_minlength() throws Exception {
+    public void editStudent_name_22() throws Exception {
 
         SuppliesDTO suppliesDTO = new SuppliesDTO();
         suppliesDTO.setId((long) 1);
@@ -168,7 +168,7 @@ public class SuppliesController_EditSupplies {
     }
     // [item] không <= maxlength
     @Test
-    public void createStudent_name() throws Exception {
+    public void editStudent_name_23() throws Exception {
 
         SuppliesDTO suppliesDTO = new SuppliesDTO();
         suppliesDTO.setId((long) 1);

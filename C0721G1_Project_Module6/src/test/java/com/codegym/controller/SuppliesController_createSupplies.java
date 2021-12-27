@@ -17,7 +17,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class SuppliesController_Create {
+public class SuppliesController_createSupplies {
     @Autowired
     private MockMvc mockMvc;
 
@@ -26,7 +26,7 @@ public class SuppliesController_Create {
 //    Thanh code 27-12
 //    All [item] đều hợp lệ
     @Test
-    public void createSupplies_name_all() throws Exception {
+    public void createSupplies_name_18() throws Exception {
 
         SuppliesDTO suppliesDTO = new SuppliesDTO();
         suppliesDTO.setCode("MVT-0005");
@@ -54,7 +54,7 @@ public class SuppliesController_Create {
     }
     //[item] = null
     @Test
-    public void createStudent_name_2() throws Exception {
+    public void createStudent_name_13() throws Exception {
 
         SuppliesDTO suppliesDTO = new SuppliesDTO();
         suppliesDTO.setCode("MVT-0001");
@@ -82,7 +82,7 @@ public class SuppliesController_Create {
     }
     //[item] =  rỗng ("")
     @Test
-    public void createStudent_name_code() throws Exception {
+    public void createStudent_name_14() throws Exception {
 
         SuppliesDTO suppliesDTO = new SuppliesDTO();
         suppliesDTO.setPrice((long) 50000);
@@ -108,7 +108,7 @@ public class SuppliesController_Create {
     }
     //[item] sai format (phụ thuộc vào từng item cụ thể: chỉ chứa chữ, chỉ chứa số, định dạng email…)
     @Test
-    public void createStudent_code() throws Exception {
+    public void createStudent_name_15() throws Exception {
 
         SuppliesDTO suppliesDTO = new SuppliesDTO();
         suppliesDTO.setCode("MTv-001");
@@ -136,7 +136,7 @@ public class SuppliesController_Create {
     }
     //[item] không >= minlength
     @Test
-    public void createStudent_price() throws Exception {
+    public void createStudent_name_16() throws Exception {
 
         SuppliesDTO suppliesDTO = new SuppliesDTO();
         suppliesDTO.setCode("MTv-001");
@@ -164,7 +164,7 @@ public class SuppliesController_Create {
     }
    // [item] không <= maxlength
    @Test
-   public void createStudent_name() throws Exception {
+   public void createStudent_name_17() throws Exception {
 
        SuppliesDTO suppliesDTO = new SuppliesDTO();
        suppliesDTO.setCode("MTV-0001");
