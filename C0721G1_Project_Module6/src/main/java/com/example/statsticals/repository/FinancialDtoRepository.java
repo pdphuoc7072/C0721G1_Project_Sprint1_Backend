@@ -34,4 +34,17 @@ public interface FinancialDtoRepository extends JpaRepository<Warehouse,Long> {
     @Query(nativeQuery = true, value = "select SUM(refund_supplies*price) as refunded\n" +
             "from warehouse;")
     Integer getRefund();
+
+    @Query(nativeQuery = true, value = "select o.quantity*s.price as month_sales\n" +
+            "from order_detail o join supplies s on o.supplies_id = s.id \n" +
+            "where order_date like :date")
+    Integer getMonthSales(String date);
+
+
+
+    @Query(nativeQuery = true, value = "select SUM(quantity*price) as month_import\n" +
+            "from warehouse\n" +
+            "where import_date like :date")
+    Integer getMonthImport(String date);
+
 }

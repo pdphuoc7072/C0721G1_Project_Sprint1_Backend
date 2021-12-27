@@ -10,4 +10,7 @@ public interface IFinancialService {
     Integer getImport();
     Integer getCancelled();
     Integer getRefund();
+    Integer getMonthSales(String date);
+    Integer getMonthImport(String date);
+
 }

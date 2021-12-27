@@ -14,6 +14,8 @@ public class FinancialService implements IFinancialService {
     private FinancialDtoRepository financialDtoRepository;
 
 
+
+
     @Override
     public Integer getIncome() {
         return financialDtoRepository.getIncome();
@@ -38,4 +40,15 @@ public class FinancialService implements IFinancialService {
     public Integer getRefund() {
         return financialDtoRepository.getRefund();
     }
+
+    @Override
+    public Integer getMonthSales(String date) {
+        return financialDtoRepository.getMonthSales(date + "%");
+    }
+
+    @Override
+    public Integer getMonthImport(String date) {
+        return financialDtoRepository.getMonthImport(date + "%");
+    }
+
 }

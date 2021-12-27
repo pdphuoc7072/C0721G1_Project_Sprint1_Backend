@@ -9,6 +9,7 @@ public class FinancialStatsDto {
     private Integer cancelled;
     private Integer importMoney;
 
+
     public FinancialStatsDto() {
     }
 

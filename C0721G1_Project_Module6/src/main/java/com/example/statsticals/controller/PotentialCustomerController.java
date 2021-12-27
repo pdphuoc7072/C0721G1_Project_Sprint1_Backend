@@ -24,6 +24,9 @@ public class PotentialCustomerController {
     @GetMapping("")
     public ResponseEntity<?> getPotentialCustomerStats() {
         List<PotentialCustomerDto> potencialDtoList = iPotentialCustomerService.getAll();
-        return new ResponseEntity<>(potencialDtoList, HttpStatus.OK);
+        if(!potencialDtoList.isEmpty()){
+            return new ResponseEntity<>(potencialDtoList, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 }
