@@ -3,6 +3,7 @@ package com.codegym.controller;
 import com.codegym.model.Producer;
 import com.codegym.model.SuppliesType;
 import com.codegym.service.IProducerService;
+import com.codegym.service.ISuppliesTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,14 +15,15 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/admin/producer")
+@RequestMapping("/api")
 @CrossOrigin
 public class ProducerController {
     @Autowired
     private IProducerService producerService;
-    @GetMapping("/list")
-    public ResponseEntity<?> getSuppliesList() {
+    @GetMapping("/admin/producer/list")
+    public ResponseEntity<?> getProducerList() {
         List<Producer> producers = (List<Producer>) producerService.findAll();
         return new ResponseEntity<>(producers, HttpStatus.OK);
     }
+
 }

@@ -14,14 +14,14 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/admin/suppliesType")
-@CrossOrigin
+@RequestMapping("/api")
+@CrossOrigin()
 public class SuppliesTypeController {
     @Autowired
     private ISuppliesTypeService suppliesTypeService;
 
 
-    @GetMapping("/list")
+    @GetMapping("/admin/suppliesType/list")
     public ResponseEntity<?> getSuppliesList() {
         List<SuppliesType> suppliesTypes = (List<SuppliesType>) suppliesTypeService.findAll();
         return new ResponseEntity<>(suppliesTypes, HttpStatus.OK);

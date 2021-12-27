@@ -1,9 +1,8 @@
 package com.codegym.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+
 
 import javax.persistence.*;
-import java.util.Set;
 
 @Entity
 public class Supplies {
@@ -46,6 +45,20 @@ public class Supplies {
     private Warehouse warehouse;
 
     public Supplies() {
+    }
+
+    public Supplies(Long id, String code, String name, Long price, String productionDate, String expiryDate, String introduce, String technicalInformation, String image, SuppliesType suppliesType, Producer producer) {
+        this.id = id;
+        this.code = code;
+        this.name = name;
+        this.price = price;
+        this.productionDate = productionDate;
+        this.expiryDate = expiryDate;
+        this.introduce = introduce;
+        this.technicalInformation = technicalInformation;
+        this.image = image;
+        this.suppliesType = suppliesType;
+        this.producer = producer;
     }
 
     public Long getId() {

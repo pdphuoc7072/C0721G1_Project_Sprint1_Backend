@@ -7,7 +7,9 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
 import javax.validation.constraints.*;
-import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -20,12 +22,11 @@ public class SuppliesDTO implements Validator {
     private String code;
 
     @NotBlank(message = "Không được để trống")
-
+    @Size(min = 5,max = 50)
     private String name;
 
     @NotNull(message = "Không được để trống")
     @Min(1000)
-//    @Pattern(regexp = "\\d*(\\.\\d+)?",message = "Chỉ nhập số")
     private Long price;
 
     @NotBlank(message = "Không được để trống")
@@ -44,11 +45,35 @@ public class SuppliesDTO implements Validator {
     @NotBlank(message = "Không được để trống")
     private String technicalInformation;
 
-    //    @NotBlank(message = "Không được để trống")
+    @NotBlank(message = "Không được để trống")
     private String image;
 
     private SuppliesType suppliesType;
     private Producer producer;
+
+
+    public SuppliesDTO() {
+    }
+
+    public void setPrice(Long price) {
+        this.price = price;
+    }
+
+    public SuppliesType getSuppliesType() {
+        return suppliesType;
+    }
+
+    public void setSuppliesType() {
+        this.suppliesType = suppliesType;
+    }
+
+    public Producer getProducer() {
+        return producer;
+    }
+
+    public void setProducer(Producer producer) {
+        this.producer = this.producer;
+    }
 
     public Long getId() {
         return id;
@@ -78,7 +103,7 @@ public class SuppliesDTO implements Validator {
         return price;
     }
 
-    public void setPrice(Long price) {
+    public void setPrice() {
         this.price = price;
     }
 
@@ -133,8 +158,6 @@ public class SuppliesDTO implements Validator {
     }
 
     private boolean checkCode;
-    private boolean checkProductionDate;
-    private boolean checkExpiryDate;
 
 
     public boolean isCheckCode() {
@@ -145,22 +168,6 @@ public class SuppliesDTO implements Validator {
         this.checkCode = checkCode;
     }
 
-
-    public boolean isCheckProductionDate() {
-        return checkProductionDate;
-    }
-
-    public void setCheckProductionDate(boolean checkProductionDate) {
-        this.checkProductionDate = checkProductionDate;
-    }
-
-    public boolean isCheckExpiryDate() {
-        return checkExpiryDate;
-    }
-
-    public void setCheckExpiryDate(boolean checkExpiryDate) {
-        this.checkExpiryDate = checkExpiryDate;
-    }
 
 
     @Override
@@ -178,6 +185,27 @@ public class SuppliesDTO implements Validator {
                 }
             }
 
+        };
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+        try {
+            Date start= sdf.parse(suppliesDTO.productionDate);
+            Date end = sdf.parse(suppliesDTO.expiryDate);
+            Date now = sdf.parse(String.valueOf(LocalDate.now()));
+            if(start.compareTo(now)<=0){
+                errors.rejectValue("productionDate", "SDF", "Ngày sản xuất phải nhỏ hơn hoặc bàng ngày bây giờ");
+            }
+            if(end.compareTo(now)<=0){
+                errors.rejectValue("expiryDate", "EDF", "Hạn sử dụng phải lớn hơn ngày bây giờ!");
+            }
+            if(end.compareTo(start)<=0){
+                errors.rejectValue("productionDate", "SDM", "Ngày sản xuất phải trước ngày hết hạn !");
+                errors.rejectValue("expiryDate", "EDM", "Ngày hết hạn phải sau ngày sản xuất !");
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
     }
+
+
+
 }

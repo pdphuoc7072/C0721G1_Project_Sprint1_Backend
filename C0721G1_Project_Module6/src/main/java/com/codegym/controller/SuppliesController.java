@@ -20,8 +20,8 @@ import java.util.Map;
 
 
 @RestController
-@RequestMapping("/api/admin/supplies")
-@CrossOrigin
+@RequestMapping("/api")
+@CrossOrigin(origins = "*",allowedHeaders = "*")
 public class SuppliesController {
     //    ThanhCode 24-12
     @Autowired
@@ -29,14 +29,14 @@ public class SuppliesController {
 
 
 
-    @GetMapping("/list")
+    @GetMapping("/admin/supplies/list")
     public ResponseEntity<?> getProductList() {
         List<Supplies> productList = (List<Supplies>) suppliesService.findAll();
         return new ResponseEntity<>(productList, HttpStatus.OK);
     }
 
 
-    @PostMapping(value = "/create", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/admin/supplies/create", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Supplies> createSupplies(@Valid @RequestBody SuppliesDTO suppliesDTO, BindingResult bindingResult) {
         boolean checkCode=true;
         suppliesDTO.setSuppliesList((List<Supplies>) suppliesService.findAll());
@@ -48,17 +48,19 @@ public class SuppliesController {
             Supplies supplies = new Supplies();
             BeanUtils.copyProperties(suppliesDTO, supplies);
             suppliesService.save(supplies);
+            System.out.println(supplies);
             return new ResponseEntity<>(HttpStatus.OK);
         }
     }
 
-    @PatchMapping("/edit")
+    @PatchMapping("/admin/supplies/edit")
     public ResponseEntity<?> editSupplies(@Valid @RequestBody SuppliesDTO suppliesDTO, BindingResult bindingResult1) {
         if (bindingResult1.hasFieldErrors()) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         } else {
             Supplies supplies = new Supplies();
             BeanUtils.copyProperties(suppliesDTO, supplies);
+            supplies.setId(suppliesDTO.getId());
             suppliesService.save(supplies);
             return new ResponseEntity<>(HttpStatus.OK);
         }
