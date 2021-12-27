@@ -10,17 +10,17 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@EnableWebMvc
+@RequestMapping("api")
 @CrossOrigin()
 public class SuppliesTypeController {
     @Autowired
     private ISuppliesTypeService suppliesTypeService;
-
-
     @GetMapping("/admin/suppliesType/list")
     public ResponseEntity<?> getSuppliesList() {
         List<SuppliesType> suppliesTypes = (List<SuppliesType>) suppliesTypeService.findAll();

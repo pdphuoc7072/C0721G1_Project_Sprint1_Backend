@@ -52,9 +52,37 @@ public class SuppliesController_createSupplies {
                 .andDo(print())
                 .andExpect(status().is2xxSuccessful());
     }
+    //    Mã nhân viên trùng
+    @Test
+    public void createSupplies_name_18_1() throws Exception {
+
+        SuppliesDTO suppliesDTO = new SuppliesDTO();
+        suppliesDTO.setCode("MVT-0005");
+        suppliesDTO.setName("Khẩu trang 3D");
+        suppliesDTO.setPrice((long) 50000);
+        Producer producer =new Producer();
+        producer.setId((long) 1);
+        producer.setName("Cty CP DƯợc Sài Gòn");
+        suppliesDTO.setProducer(producer);
+        SuppliesType type =new SuppliesType();
+        type.setId((long) 1);
+        type.setName("Khẩu trang");
+        suppliesDTO.setProductionDate("2020-10-10");
+        suppliesDTO.setExpiryDate("2021-10-10");
+        suppliesDTO.setIntroduce("Khẩu trang chống khuẩn 3 lớp nhập khẩu từ Nhật");
+        suppliesDTO.setTechnicalInformation("Đạt chuẩn IOS 2000");
+        suppliesDTO.setImage("img.jpg");
+        this.mockMvc
+                .perform(MockMvcRequestBuilders
+                        .post("/api/admin/supplies/create")
+                        .content(this.objectMapper.writeValueAsString(suppliesDTO))
+                        .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andDo(print())
+                .andExpect(status().is4xxClientError());
+    }
     //[item] = null
     @Test
-    public void createStudent_name_13() throws Exception {
+    public void createStudent_name_14() throws Exception {
 
         SuppliesDTO suppliesDTO = new SuppliesDTO();
         suppliesDTO.setCode("MVT-0001");
@@ -82,7 +110,7 @@ public class SuppliesController_createSupplies {
     }
     //[item] =  rỗng ("")
     @Test
-    public void createStudent_name_14() throws Exception {
+    public void createStudent_name_13() throws Exception {
 
         SuppliesDTO suppliesDTO = new SuppliesDTO();
         suppliesDTO.setPrice((long) 50000);

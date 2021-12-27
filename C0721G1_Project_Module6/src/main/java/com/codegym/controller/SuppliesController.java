@@ -12,6 +12,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import javax.validation.Valid;
 import java.util.HashMap;
@@ -20,7 +21,8 @@ import java.util.Map;
 
 
 @RestController
-@RequestMapping("/api")
+@EnableWebMvc
+@RequestMapping("api")
 @CrossOrigin(origins = "*",allowedHeaders = "*")
 public class SuppliesController {
     //    ThanhCode 24-12
@@ -29,18 +31,15 @@ public class SuppliesController {
 
 
 
-    @GetMapping("/admin/supplies/list")
+    @GetMapping("admin/supplies/list")
     public ResponseEntity<?> getProductList() {
         List<Supplies> productList = (List<Supplies>) suppliesService.findAll();
         return new ResponseEntity<>(productList, HttpStatus.OK);
     }
 
-
-    @PostMapping(value = "/admin/supplies/create", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "admin/supplies/create")
     public ResponseEntity<Supplies> createSupplies(@Valid @RequestBody SuppliesDTO suppliesDTO, BindingResult bindingResult) {
-        boolean checkCode=true;
         suppliesDTO.setSuppliesList((List<Supplies>) suppliesService.findAll());
-        suppliesDTO.setCheckCode(checkCode);
         suppliesDTO.validate(suppliesDTO,bindingResult);
         if (bindingResult.hasFieldErrors()) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -55,6 +54,8 @@ public class SuppliesController {
 
     @PatchMapping("/admin/supplies/edit")
     public ResponseEntity<?> editSupplies(@Valid @RequestBody SuppliesDTO suppliesDTO, BindingResult bindingResult1) {
+        suppliesDTO.setSuppliesList((List<Supplies>) suppliesService.findAll());
+        suppliesDTO.validate(suppliesDTO,bindingResult1);
         if (bindingResult1.hasFieldErrors()) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         } else {

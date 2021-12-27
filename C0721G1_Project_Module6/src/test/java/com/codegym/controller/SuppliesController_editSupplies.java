@@ -51,9 +51,93 @@ public class SuppliesController_editSupplies {
                 .andDo(print())
                 .andExpect(status().is2xxSuccessful());
     }
+    //Mã vật tư trùng
+    @Test
+    public void editSupplies_name_24_1() throws Exception {
+        SuppliesDTO suppliesDTO = new SuppliesDTO();
+        suppliesDTO.setId((long) 1);
+        suppliesDTO.setCode("MVT-0001");
+        suppliesDTO.setName("Khẩu trang 3D");
+        suppliesDTO.setPrice((long) 50000);
+        Producer producer =new Producer();
+        producer.setId((long) 1);
+        producer.setName("Cty CP DƯợc Sài Gòn");
+        suppliesDTO.setProducer(producer);
+        SuppliesType type =new SuppliesType();
+        type.setId((long) 1);
+        type.setName("Khẩu trang");
+        suppliesDTO.setProductionDate("2021-10-10");
+        suppliesDTO.setExpiryDate("2022-05-20");
+        suppliesDTO.setIntroduce("Khẩu trang chống khuẩn 3 lớp nhập khẩu từ Nhật");
+        suppliesDTO.setTechnicalInformation("Đạt chuẩn IOS 2000");
+        suppliesDTO.setImage("img/jpg");
+        this.mockMvc
+                .perform(MockMvcRequestBuilders
+                        .patch("/api/admin/supplies/edit")
+                        .content(this.objectMapper.writeValueAsString(suppliesDTO))
+                        .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andDo(print())
+                .andExpect(status().is4xxClientError());
+    }
+    //ngày sản xuất trùng ngày hoặc sau hiện tại
+    @Test
+    public void editSupplies_name_date() throws Exception {
+        SuppliesDTO suppliesDTO = new SuppliesDTO();
+        suppliesDTO.setId((long) 1);
+        suppliesDTO.setCode("MVT-0001");
+        suppliesDTO.setName("Khẩu trang 3D");
+        suppliesDTO.setPrice((long) 50000);
+        Producer producer =new Producer();
+        producer.setId((long) 1);
+        producer.setName("Cty CP DƯợc Sài Gòn");
+        suppliesDTO.setProducer(producer);
+        SuppliesType type =new SuppliesType();
+        type.setId((long) 1);
+        type.setName("Khẩu trang");
+        suppliesDTO.setProductionDate("2021-12-28");
+        suppliesDTO.setExpiryDate("2022-05-20");
+        suppliesDTO.setIntroduce("Khẩu trang chống khuẩn 3 lớp nhập khẩu từ Nhật");
+        suppliesDTO.setTechnicalInformation("Đạt chuẩn IOS 2000");
+        suppliesDTO.setImage("img/jpg");
+        this.mockMvc
+                .perform(MockMvcRequestBuilders
+                        .patch("/api/admin/supplies/edit")
+                        .content(this.objectMapper.writeValueAsString(suppliesDTO))
+                        .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andDo(print())
+                .andExpect(status().is4xxClientError());
+    }
+    //hạn setIntroduce quá ngắn
+    @Test
+    public void editSupplies_name_ingtroduce() throws Exception {
+        SuppliesDTO suppliesDTO = new SuppliesDTO();
+        suppliesDTO.setId((long) 1);
+        suppliesDTO.setCode("MVT-0001");
+        suppliesDTO.setName("Khẩu trang 3D");
+        suppliesDTO.setPrice((long) 50000);
+        Producer producer =new Producer();
+        producer.setId((long) 1);
+        producer.setName("Cty CP DƯợc Sài Gòn");
+        suppliesDTO.setProducer(producer);
+        SuppliesType type =new SuppliesType();
+        type.setId((long) 1);
+        type.setName("Khẩu trang");
+        suppliesDTO.setProductionDate("2021-10-10");
+        suppliesDTO.setExpiryDate("2022-05-20");
+        suppliesDTO.setIntroduce("a");
+        suppliesDTO.setTechnicalInformation("Đạt chuẩn IOS 2000");
+        suppliesDTO.setImage("img/jpg");
+        this.mockMvc
+                .perform(MockMvcRequestBuilders
+                        .patch("/api/admin/supplies/edit")
+                        .content(this.objectMapper.writeValueAsString(suppliesDTO))
+                        .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andDo(print())
+                .andExpect(status().is4xxClientError());
+    }
     //[item] = null
     @Test
-    public void editStudent_name_19() throws Exception {
+    public void editStudent_name_20() throws Exception {
 
         SuppliesDTO suppliesDTO = new SuppliesDTO();
         suppliesDTO.setId((long) 1);
@@ -82,7 +166,7 @@ public class SuppliesController_editSupplies {
     }
     //[item] =  rỗng ("")
     @Test
-    public void editStudent_name_20() throws Exception {
+    public void editStudent_name_19() throws Exception {
 
         SuppliesDTO suppliesDTO = new SuppliesDTO();
         suppliesDTO.setId((long) 1);
@@ -111,6 +195,62 @@ public class SuppliesController_editSupplies {
     //[item] sai format (phụ thuộc vào từng item cụ thể: chỉ chứa chữ, chỉ chứa số, định dạng email…)
     @Test
     public void editStudent_name_21() throws Exception {
+
+        SuppliesDTO suppliesDTO = new SuppliesDTO();
+        suppliesDTO.setId((long) 1);
+        suppliesDTO.setCode("MTv-001");
+        suppliesDTO.setName("Khẩu trang");
+        suppliesDTO.setPrice((long) 50000);
+        Producer producer =new Producer();
+        producer.setId((long) 1);
+        producer.setName("Cty CP DƯợc Sài Gòn");
+        suppliesDTO.setProducer(producer);
+        SuppliesType type =new SuppliesType();
+        type.setId((long) 1);
+        type.setName("Khẩu trang");
+        suppliesDTO.setProductionDate("2020-10-10");
+        suppliesDTO.setExpiryDate("2022-10-10");
+        suppliesDTO.setIntroduce("Khẩu trang chống khuẩn 3 lớp nhập khẩu từ Nhật");
+        suppliesDTO.setTechnicalInformation("Đạt chuẩn IOS 2000");
+        suppliesDTO.setImage("img/jpg");
+        this.mockMvc
+                .perform(MockMvcRequestBuilders
+                        .patch("/api/admin/supplies/edit")
+                        .content(this.objectMapper.writeValueAsString(suppliesDTO))
+                        .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andDo(print())
+                .andExpect(status().is4xxClientError());
+    }
+    @Test
+    public void editStudent_name_21_1() throws Exception {
+
+        SuppliesDTO suppliesDTO = new SuppliesDTO();
+        suppliesDTO.setId((long) 1);
+        suppliesDTO.setCode("MTv-001");
+        suppliesDTO.setName("Khẩu trang");
+        suppliesDTO.setPrice((long) 50);
+        Producer producer =new Producer();
+        producer.setId((long) 1);
+        producer.setName("Cty CP DƯợc Sài Gòn");
+        suppliesDTO.setProducer(producer);
+        SuppliesType type =new SuppliesType();
+        type.setId((long) 1);
+        type.setName("Khẩu trang");
+        suppliesDTO.setProductionDate("2021-10-10");
+        suppliesDTO.setExpiryDate("2022-10-10");
+        suppliesDTO.setIntroduce("Khẩu trang chống khuẩn 3 lớp nhập khẩu từ Nhật");
+        suppliesDTO.setTechnicalInformation("Đạt chuẩn IOS 2000");
+        suppliesDTO.setImage("img/jpg");
+        this.mockMvc
+                .perform(MockMvcRequestBuilders
+                        .patch("/api/admin/supplies/edit")
+                        .content(this.objectMapper.writeValueAsString(suppliesDTO))
+                        .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andDo(print())
+                .andExpect(status().is4xxClientError());
+    }
+    @Test
+    public void editStudent_name_2_2() throws Exception {
 
         SuppliesDTO suppliesDTO = new SuppliesDTO();
         suppliesDTO.setId((long) 1);
