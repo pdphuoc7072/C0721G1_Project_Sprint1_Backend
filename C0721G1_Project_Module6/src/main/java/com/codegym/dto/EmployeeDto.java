@@ -4,12 +4,11 @@ import com.codegym.model.*;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
+
+import javax.validation.constraints.*;
 import java.util.ArrayList;
 import java.util.List;
+
 
 public class EmployeeDto implements Validator {
 
@@ -24,13 +23,14 @@ public class EmployeeDto implements Validator {
 
     @NotBlank(message = "Birthday cannot be blank")
     @Pattern(regexp = "^(?:19\\d{2}|20\\d{2})[-/.](?:0[1-9]|1[012])[-/.](?:0[1-9]|[12][0-9]|3[01])$",
-            message = "Birthday must be in the correct format: DD/MM/YYYY")
-    private String birthday;
+            message = "Birthday must be in the correct format: YYYY-MM-DD")
+    private String dateOfBirth;
 
+    //    @NotBlank(message = "Trường này bắt buộc phải nhập")
     private String image;
 
-    @NotBlank(message = "Gender cannot be blank")
-    private String gender;
+//    @NotBlank(message = "Gender cannot be blank")
+    private Integer gender;
 
 
     @NotBlank(message = "Phone cannot be blank")
@@ -76,12 +76,12 @@ public class EmployeeDto implements Validator {
         this.name = name;
     }
 
-    public String getBirthday() {
-        return birthday;
+    public String getDateOfBirth() {
+        return dateOfBirth;
     }
 
-    public void setBirthday(String birthday) {
-        this.birthday = birthday;
+    public void setDateOfBirth(String dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
     }
 
     public String getImage() {
@@ -92,11 +92,11 @@ public class EmployeeDto implements Validator {
         this.image = image;
     }
 
-    public String getGender() {
+    public Integer getGender() {
         return gender;
     }
 
-    public void setGender(String gender) {
+    public void setGender(Integer gender) {
         this.gender = gender;
     }
 
@@ -150,4 +150,6 @@ public class EmployeeDto implements Validator {
     public void validate(Object target, Errors errors) {
 
     }
+
+
 }

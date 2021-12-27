@@ -14,7 +14,7 @@ public class Employee {
 
     private String name;
 
-    private String birthday;
+    private String dateOfBirth;
 
     private String image;
 
@@ -60,12 +60,12 @@ public class Employee {
         this.name = name;
     }
 
-    public String getBirthday() {
-        return birthday;
+    public String getDateOfBirth() {
+        return dateOfBirth;
     }
 
-    public void setBirthday(String birthday) {
-        this.birthday = birthday;
+    public void setDateOfBirth(String dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
     }
 
     public String getImage() {
