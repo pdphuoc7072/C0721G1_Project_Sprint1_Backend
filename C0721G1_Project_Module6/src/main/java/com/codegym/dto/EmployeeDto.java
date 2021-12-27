@@ -1,41 +1,51 @@
 package com.codegym.dto;
 
 import com.codegym.dto.customValidate.BirthDay;
+import com.codegym.model.Employee;
 import com.codegym.model.Position;
 import com.codegym.model.User;
-import javax.validation.constraints.*;
+import org.springframework.validation.Errors;
+import org.springframework.validation.Validator;
 
+
+import javax.validation.constraints.*;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.List;
 
 
 //duc
-public class EmployeeDto {
+public class EmployeeDto implements Validator {
 
     //    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String code;
 
-    @NotEmpty
+
     @NotBlank
-    @Size(max = 60, min=3)
-    @Pattern(regexp = "(\\p{L}+[\\p{L}\\s]*)", message = "Tên có chứa kí tự số")
+    @Size(max = 60, min = 3)
+    @Pattern(regexp = "(\\p{L}+[\\p{L}\\s]*)", message = "Tên có chứa kí tự số hoặc kí tự đặc biệt")
     private String name;
 
-    @NotEmpty
+
     @NotBlank
     @Pattern(regexp = "^([\\d]{4})[-]([\\d]{2})[-]([\\d]{2})$", message = "nhập đúng định dang ngày là dd-mm-yyyy")
-    @BirthDay(message = "Tuổi phải lớn hơn 18")
+    @BirthDay(message = "Tuổi phải lớn hơn 18 và bé hơn 60")
     private String birthday;
 
     private String image;
 
     private Integer gender;
-    @NotEmpty
+
     @NotBlank
     @Pattern(regexp = "^((090)|(091))[\\d]{7}$",
             message = "Số điện thoại phải bắt đầu bằng 090xxxxxxx or 091xxxxxxx")
     private String phone;
-    @NotEmpty
+
+
     @NotBlank
     private String address;
 
@@ -127,4 +137,34 @@ public class EmployeeDto {
         this.user = user;
     }
 
+    List<Employee> employeeList = new ArrayList<>();
+    public List<Employee> getEmployeeList() {
+        return employeeList;
+    }
+
+    public void setEmployeeList(List<Employee> employeeList) {
+        this.employeeList = employeeList;
+    }
+
+    @Override
+    public boolean supports(Class<?> clazz) {
+        return false;
+    }
+
+
+    @Override
+    public void validate(Object target, Errors errors) {
+        EmployeeDto employeeDto = (EmployeeDto) target;
+//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+//        LocalDate currentDate = LocalDate.now();
+//        LocalDate day = LocalDate.parse(employeeDto.getBirthday(), formatter);
+//        if(ChronoUnit.YEARS.between(day, currentDate) <= 18 || ChronoUnit.YEARS.between(day, currentDate) >= 60 ){
+//            errors.rejectValue("birthday", "birthday.equals", "Tuổi phải nằm trong khoảng 18 đến 60");
+//        }
+        for (Employee employee : employeeList) {
+            if (employeeDto.getPhone().equals(employee.getPhone())) {
+                errors.rejectValue("phone", "phone.equals", "Số điện thoại đã tồn tại");
+            }
+        }
+    }
 }

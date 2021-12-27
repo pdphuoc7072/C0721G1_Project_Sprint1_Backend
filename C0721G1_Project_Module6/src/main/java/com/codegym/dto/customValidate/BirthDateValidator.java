@@ -13,6 +13,6 @@ public class BirthDateValidator implements ConstraintValidator<BirthDay, String>
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate day = LocalDate.parse(valueToValidate, formatter);
         LocalDate currentDate = LocalDate.now();
-        return ChronoUnit.YEARS.between(day, currentDate) >= 18;
+        return ChronoUnit.YEARS.between(day, currentDate) >= 18 && ChronoUnit.YEARS.between(day, currentDate) <= 60;
     }
 }

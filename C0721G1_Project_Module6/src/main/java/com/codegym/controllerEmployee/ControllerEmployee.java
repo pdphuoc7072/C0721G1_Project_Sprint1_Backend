@@ -20,6 +20,7 @@ import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("api")
@@ -36,52 +37,58 @@ public class ControllerEmployee {
         return null;
     }
 
+
     //    duc
     @PostMapping("/admin/employee/create")
     public ResponseEntity<?> createEmployee(@Valid @RequestBody EmployeeDto employeeDto, BindingResult bindingResult) {
+        List<Employee> employees = employeeService.getAll();
+        employeeDto.setEmployeeList(employees);
+        employeeDto.validate(employeeDto, bindingResult);
         if (bindingResult.hasFieldErrors()) {
             return new ResponseEntity<>(bindingResult.getAllErrors(), HttpStatus.BAD_REQUEST);
         }
-        List<Employee> employees = employeeService.getAll();
-        for (Employee e : employees) {
-            if (employeeDto.getPhone().equals(e.getPhone())) {
-                return new ResponseEntity<>("trùng số điện thoại", HttpStatus.BAD_REQUEST);
-            }
+//        for (Employee e : employees) {
+//            if (employeeDto.getPhone().equals(e.getPhone())) {
+//                return new ResponseEntity<>("trùng số điện thoại", HttpStatus.BAD_REQUEST);
+//            }
+//        }
+        else {
+            String name = WordUtils.capitalizeFully(employeeDto.getName()).replaceAll("\\s+", " ");
+            long count = employees.get(employees.size() - 1).getId() + 1;
+            String code = "Emp-" + count;
+            employeeDto.setCode(code);
+            employeeDto.setName(name);
+            Employee employee = new Employee();
+            BeanUtils.copyProperties(employeeDto, employee);
+            employeeService.save(employee);
+            return new ResponseEntity<>(HttpStatus.OK);
         }
-        String name = WordUtils.capitalizeFully(employeeDto.getName()).replaceAll("\\s+", " ");
-        long count = employees.get(employees.size() - 1).getId() + 1;
-        String code = "Emp-" + count;
-        employeeDto.setCode(code);
-        employeeDto.setName(name);
-        Employee employee = new Employee();
-        BeanUtils.copyProperties(employeeDto, employee);
-        employeeService.save(employee);
-        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     //    duc
     @PatchMapping("/employee/update")
     public ResponseEntity<?> updateEmployee(@Valid @RequestBody EmployeeDto employeeDto, BindingResult bindingResult) {
+        List<Employee> employees = employeeService.getAll();
+        employeeDto.setEmployeeList(employees);
+        employeeDto.validate(employeeDto, bindingResult);
         if (bindingResult.hasFieldErrors()) {
             return new ResponseEntity<>(bindingResult.getAllErrors(), HttpStatus.BAD_REQUEST);
+        } else {
+            String name = WordUtils.capitalizeFully(employeeDto.getName()).replaceAll("\\s+", " ");
+            employeeDto.setName(name);
+            Employee employee = new Employee();
+            BeanUtils.copyProperties(employeeDto, employee);
+            employeeService.save(employee);
+            return new ResponseEntity<>(HttpStatus.OK);
         }
-        List<Employee> employees = employeeService.getAll();
-        for (Employee e : employees) {
-            if (employeeDto.getPhone().equals(e.getPhone())) {
-                return new ResponseEntity<>("trùng số điện thoại", HttpStatus.BAD_REQUEST);
-            }
-        }
-        String name = WordUtils.capitalizeFully(employeeDto.getName()).replaceAll("\\s+", " ");
-        employeeDto.setName(name);
-        Employee employee = new Employee();
-        BeanUtils.copyProperties(employeeDto, employee);
-        employeeService.save(employee);
-        return new ResponseEntity<>(HttpStatus.OK);
     }
-
+//duc
     @GetMapping("/employee/{id}")
     public ResponseEntity<?> findById(@PathVariable Long id) {
-        Employee employee = employeeService.findById(id).get();
+        Optional<Employee> employee = employeeService.findById(id);
+        if (!employee.isPresent()) {
+            return new ResponseEntity<>("Không tìm thấy dữ liệu", HttpStatus.BAD_REQUEST);
+        }
         return new ResponseEntity<>(employee, HttpStatus.OK);
     }
 
