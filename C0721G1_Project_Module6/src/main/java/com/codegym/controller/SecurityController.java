@@ -124,7 +124,7 @@ public class SecurityController {
         return ResponseEntity.ok(new MessageResponse("Đăng ký tài khoản thành công"));
     }
 
-    @PostMapping("/register-edit-password/{code}")
+    @PatchMapping("/register-edit-password/{code}")
     public ResponseEntity<?> registerEditPassword(@Valid @RequestBody RegisterRequest registerRequest, @PathVariable String code, BindingResult bindingResult) {
         if (bindingResult.hasFieldErrors()) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
