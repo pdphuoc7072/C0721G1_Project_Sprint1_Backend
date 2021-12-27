@@ -18,6 +18,7 @@ public class EmployeeDto implements Validator {
     @Pattern(regexp = "^(NV-)(\\d{4})$", message = "Employee Code must be in the correct format: NV-XXXX")
     private String code;
 
+    @Size(min = 5, max = 15)
     @NotBlank(message = "Name cannot be blank")
     private String name;
 
@@ -26,10 +27,10 @@ public class EmployeeDto implements Validator {
             message = "Birthday must be in the correct format: YYYY-MM-DD")
     private String dateOfBirth;
 
-    //    @NotBlank(message = "Trường này bắt buộc phải nhập")
+    @NotBlank(message = "Image cannot be blank")
     private String image;
 
-//    @NotBlank(message = "Gender cannot be blank")
+    @NotNull(message = "Gender cannot be blank")
     private Integer gender;
 
 

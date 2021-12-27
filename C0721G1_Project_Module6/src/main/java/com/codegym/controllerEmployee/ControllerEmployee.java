@@ -68,14 +68,13 @@ class ControllerEmployee {
 //    }
 
     @PatchMapping("/employee/detail/update")
-    public  ResponseEntity<?> updateDetailEmployee(@Valid @RequestBody EmployeeDto employeeDTO, BindingResult bindingResult1) {
+    public ResponseEntity<?> updateDetailEmployee(@Valid @RequestBody EmployeeDto employeeDTO, BindingResult bindingResult1) {
         if (bindingResult1.hasFieldErrors()) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         } else {
             Employee employee = new Employee();
             BeanUtils.copyProperties(employeeDTO, employee);
             employee.setId(employeeDTO.getId());
-            employee.setGender(employeeDTO.getGender());
             employeeService.save(employee);
             return new ResponseEntity<>(HttpStatus.OK);
         }
@@ -85,14 +84,11 @@ class ControllerEmployee {
     @GetMapping("/employee/detail/{id}")
     public ResponseEntity<?> findDetailEmployeeById(@PathVariable Long id) {
         Optional<Employee> employee = employeeService.findById(id);
-        if (employee.isPresent()){
+        if (employee.isPresent()) {
             return new ResponseEntity<>(employee.get(), HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-
-
-
 
 
 }

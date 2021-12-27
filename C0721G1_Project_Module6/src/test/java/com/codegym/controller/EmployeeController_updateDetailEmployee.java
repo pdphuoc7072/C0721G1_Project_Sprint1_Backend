@@ -28,27 +28,27 @@ public class EmployeeController_updateDetailEmployee {
     private ObjectMapper objectMapper;
 
 
-//    All [item] đều hợp lệ
-
+    //    All [item] đều hợp lệ
     @Test
     public void editDetail_Employee_24() throws Exception {
-
         EmployeeDto employeeDto = new EmployeeDto();
         employeeDto.setId((long) 1);
         employeeDto.setCode("NV-0001");
         employeeDto.setName("Nguyễn Văn Hai");
         employeeDto.setDateOfBirth("1990-10-10");
-        employeeDto.setImage("");
+        employeeDto.setImage("abc.png");
         employeeDto.setGender(1);
         employeeDto.setPhone("0904564564");
         employeeDto.setAddress("08 Thi Sách");
-//        Position position = new Position();
-//        position.setId((long) 1);
-//        position.setName("Manager");
-//        User user =new User();
-//        user.setId(1L);
-//        user.setUsername("hung");
-//        user.setPassword("65464");
+        Position position = new Position();
+        position.setId(1L);
+        position.setName("Manager");
+        employeeDto.setPosition(position);
+        User user = new User();
+        user.setId(1L);
+        user.setUsername("hung");
+        user.setPassword("545454");
+        employeeDto.setUser(user);
         this.mockMvc
                 .perform(MockMvcRequestBuilders
                         .patch("/api/employee/detail/update")
@@ -66,19 +66,21 @@ public class EmployeeController_updateDetailEmployee {
         EmployeeDto employeeDto = new EmployeeDto();
         employeeDto.setId((long) 1);
         employeeDto.setCode("");
-        employeeDto.setName("Nguyễn Văn Long");
+        employeeDto.setName("Nguyễn Văn Hai");
         employeeDto.setDateOfBirth("1990-10-10");
-        employeeDto.setImage("");
+        employeeDto.setImage("abc.png");
         employeeDto.setGender(1);
-        employeeDto.setPhone("0904564567");
+        employeeDto.setPhone("0904564564");
         employeeDto.setAddress("08 Thi Sách");
         Position position = new Position();
-        position.setId((long) 1);
+        position.setId(1L);
         position.setName("Manager");
+        employeeDto.setPosition(position);
         User user = new User();
         user.setId(1L);
         user.setUsername("hung");
-        user.setPassword("5435353");
+        user.setPassword("545454");
+        employeeDto.setUser(user);
 
 
         this.mockMvc
@@ -98,20 +100,22 @@ public class EmployeeController_updateDetailEmployee {
 
         EmployeeDto employeeDto = new EmployeeDto();
         employeeDto.setId((long) 1);
-        employeeDto.setCode("NV-0002");
-
+//        employeeDto.setCode("");
+        employeeDto.setName("Nguyễn Văn Hai");
         employeeDto.setDateOfBirth("1990-10-10");
-        employeeDto.setImage("");
+        employeeDto.setImage("abc.png");
         employeeDto.setGender(1);
-        employeeDto.setPhone("0904564567");
+        employeeDto.setPhone("0904564564");
         employeeDto.setAddress("08 Thi Sách");
         Position position = new Position();
-        position.setId((long) 1);
+        position.setId(1L);
         position.setName("Manager");
+        employeeDto.setPosition(position);
         User user = new User();
         user.setId(1L);
         user.setUsername("hung");
-        user.setPassword("5435353");
+        user.setPassword("545454");
+        employeeDto.setUser(user);
 
 
         this.mockMvc
@@ -130,20 +134,22 @@ public class EmployeeController_updateDetailEmployee {
 
         EmployeeDto employeeDto = new EmployeeDto();
         employeeDto.setId((long) 1);
-        employeeDto.setCode("NV-2");
-        employeeDto.setName("Nguyễn Văn Long");
+        employeeDto.setCode("NV-1");
+        employeeDto.setName("Nguyễn Văn Hai");
         employeeDto.setDateOfBirth("1990-10-10");
-        employeeDto.setImage("");
+        employeeDto.setImage("abc.png");
         employeeDto.setGender(1);
-        employeeDto.setPhone("0904564567");
+        employeeDto.setPhone("0904564564");
         employeeDto.setAddress("08 Thi Sách");
         Position position = new Position();
-        position.setId((long) 1);
+        position.setId(1L);
         position.setName("Manager");
+        employeeDto.setPosition(position);
         User user = new User();
         user.setId(1L);
         user.setUsername("hung");
-        user.setPassword("5435353");
+        user.setPassword("545454");
+        employeeDto.setUser(user);
 
 
         this.mockMvc
@@ -162,20 +168,22 @@ public class EmployeeController_updateDetailEmployee {
 
         EmployeeDto employeeDto = new EmployeeDto();
         employeeDto.setId((long) 1);
-        employeeDto.setCode("NV-0002");
+        employeeDto.setCode("NV-0001");
         employeeDto.setName("N");
         employeeDto.setDateOfBirth("1990-10-10");
-        employeeDto.setImage("");
+        employeeDto.setImage("abc.png");
         employeeDto.setGender(1);
-        employeeDto.setPhone("0904564567");
+        employeeDto.setPhone("0904564564");
         employeeDto.setAddress("08 Thi Sách");
         Position position = new Position();
-        position.setId((long) 1);
+        position.setId(1L);
         position.setName("Manager");
+        employeeDto.setPosition(position);
         User user = new User();
         user.setId(1L);
         user.setUsername("hung");
-        user.setPassword("5435353");
+        user.setPassword("545454");
+        employeeDto.setUser(user);
 
 
         this.mockMvc
@@ -194,20 +202,22 @@ public class EmployeeController_updateDetailEmployee {
 
         EmployeeDto employeeDto = new EmployeeDto();
         employeeDto.setId((long) 1);
-        employeeDto.setCode("NV-0002");
-        employeeDto.setName("Nguyễn Văn Longggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg");
+        employeeDto.setCode("NV-0001");
+        employeeDto.setName("Nguyễn Văn Haigdfgreeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
         employeeDto.setDateOfBirth("1990-10-10");
-        employeeDto.setImage("");
+        employeeDto.setImage("abc.png");
         employeeDto.setGender(1);
-        employeeDto.setPhone("0904564567");
+        employeeDto.setPhone("0904564564");
         employeeDto.setAddress("08 Thi Sách");
         Position position = new Position();
-        position.setId((long) 1);
+        position.setId(1L);
         position.setName("Manager");
+        employeeDto.setPosition(position);
         User user = new User();
         user.setId(1L);
         user.setUsername("hung");
-        user.setPassword("5435353");
+        user.setPassword("545454");
+        employeeDto.setUser(user);
 
 
         this.mockMvc
