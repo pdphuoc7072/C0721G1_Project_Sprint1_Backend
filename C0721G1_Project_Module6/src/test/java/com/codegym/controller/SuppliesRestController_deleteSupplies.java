@@ -43,10 +43,10 @@ public class SuppliesRestController_deleteSupplies {
                 .andExpect(status().is2xxSuccessful());
     }
     @Test
-    public void deleteSupplies_27() throws Exception {
+    public void deleteEmployee_27() throws Exception {
         this.mockMvc.perform(
-                        MockMvcRequestBuilders
-                                .delete("/api/admin/supplies/{id}", "2"))
+                        MockMvcRequestBuilders.delete("/api/admin/supplies/{id}", "6"))
+                .andDo(print())
                 .andExpect(status().is4xxClientError());
     }
 }

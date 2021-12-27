@@ -2,6 +2,7 @@ package com.codegym.controller;
 
 
 import com.codegym.dto.PageSuppliesDTO;
+import com.codegym.dto.SuppliesDTO;
 import com.codegym.model.Producer;
 import com.codegym.model.Supplies;
 import com.codegym.model.SuppliesType;
@@ -20,7 +21,11 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -43,6 +48,7 @@ public class SuppliesController {
         return new ResponseEntity<>(suppliesTypeList, HttpStatus.OK);
     }
 
+
     @GetMapping("/producer")
     public ResponseEntity<?> getProducerList() {
         List<Producer> producerList = iProducerService.getAll();
@@ -50,7 +56,7 @@ public class SuppliesController {
     }
 
 
-//    @GetMapping("/")
+    //    @GetMapping("/")
 //    public ResponseEntity<?> findAllSuppliesOld(@RequestBody PageSuppliesDTO pageSuppliesDTO) {
 //        String code = pageSuppliesDTO.getCode();
 //        String name = pageSuppliesDTO.getName();
@@ -70,28 +76,22 @@ public class SuppliesController {
 //        return new ResponseEntity<>(suppliesPage, HttpStatus.OK);
 //    }
 
-    @GetMapping("/old")
-    public ResponseEntity<?> findAllSuppliesOld(@RequestBody PageSuppliesDTO pageSuppliesDTO) {
-        String code = pageSuppliesDTO.getCode();
-        String name = pageSuppliesDTO.getName();
-        String suppliesTypeId = pageSuppliesDTO.getSuppliesTypeId();
-        Pageable pageable = PageRequest.of(pageSuppliesDTO.getPage(), pageSuppliesDTO.getSize(), Sort.Direction.ASC, "name");
+    @GetMapping("")
+    public ResponseEntity<?> findAllSupplies(@RequestParam String code,
+                                                @RequestParam String name,
+                                                @RequestParam String suppliesTypeId,
+                                                @RequestParam int page,
+                                                @RequestParam int size
+    ) throws ParseException {
 
-        Page<Supplies> suppliesPage = iSuppliesService.findAllSuppliesOld(pageable, name, code, suppliesTypeId);
+        Pageable pageable = PageRequest.of(page, size, Sort.Direction.ASC, "name");
+
+        Page<SuppliesDTO> suppliesPage = iSuppliesService.findAllSupplies(pageable, name, code, suppliesTypeId);
+        if(suppliesPage.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
         return new ResponseEntity<>(suppliesPage, HttpStatus.OK);
     }
-
-    @GetMapping("/new")
-    public ResponseEntity<?> findAllSuppliesNew(@RequestBody PageSuppliesDTO pageSuppliesDTO) {
-        String code = pageSuppliesDTO.getCode();
-        String name = pageSuppliesDTO.getName();
-        String suppliesTypeId = pageSuppliesDTO.getSuppliesTypeId();
-        Pageable pageable = PageRequest.of(pageSuppliesDTO.getPage(), pageSuppliesDTO.getSize(), Sort.Direction.ASC, "name");
-
-        Page<Supplies> suppliesPage = iSuppliesService.findAllSuppliesNew(pageable, name, code, suppliesTypeId);
-        return new ResponseEntity<>(suppliesPage, HttpStatus.OK);
-    }
-
 
     @GetMapping("/{id}")
     public ResponseEntity<?> findById(@PathVariable Long id) {
@@ -105,8 +105,12 @@ public class SuppliesController {
         if (id == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        iSuppliesService.remove(id);
-        return new ResponseEntity<>(HttpStatus.OK);
+        if (iSuppliesService.existsByIdSupplies(id)) {
+            iSuppliesService.remove(id);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
 }

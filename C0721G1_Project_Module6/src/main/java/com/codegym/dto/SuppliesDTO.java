@@ -18,9 +18,9 @@ public interface SuppliesDTO {
 
     String getProduction_date();
 
-    Producer getProducer_id();
+    Long getProducer_id();
 
-    SuppliesType getSupplies_type_id();
+    Long getSupplies_type_id();
 
     int getStatus();
 
