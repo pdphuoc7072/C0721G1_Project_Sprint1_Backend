@@ -39,9 +39,11 @@ public class SuppliesServiceImpl implements ISuppliesService {
 
 
     @Override
-    public Page<Supplies> findAllSupplies(Pageable pageable, String name, String code, String suppliesTypeId) {
-        return iSuppliesRepository.findAllSupplies(pageable, "%" + name + "%", "%" + code + "%", "%" + suppliesTypeId + "%");
-
-
+    public Page<Supplies> findAllSuppliesOld(Pageable pageable, String name, String code, String suppliesTypeId) {
+        return iSuppliesRepository.findAllSuppliesOld(pageable, "%" + name + "%", "%" + code + "%", "%" + suppliesTypeId + "%");
     }
+    @Override
+    public Page<Supplies> findAllSuppliesNew(Pageable pageable, String name, String code, String suppliesTypeId) {
+        return iSuppliesRepository.findAllSuppliesNew(pageable, "%" + name + "%", "%" + code + "%", "%" + suppliesTypeId + "%");
     }
+}

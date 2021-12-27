@@ -8,6 +8,15 @@ public class PageSuppliesDTO {
     private String suppliesTypeId;
     private int page;
     private int size;
+//    private String expiry_date;
+
+//    public String getExpiry_date() {
+//        return expiry_date;
+//    }
+//
+//    public void setExpiry_date(String expiry_date) {
+//        this.expiry_date = expiry_date;
+//    }
 
     public PageSuppliesDTO() {
     }

@@ -49,14 +49,25 @@ public class SuppliesController {
     }
 
 
-    @GetMapping("")
-    public ResponseEntity<?> findAllSupplies(@RequestBody PageSuppliesDTO pageSuppliesDTO) {
+    @GetMapping("/old")
+    public ResponseEntity<?> findAllSuppliesOld(@RequestBody PageSuppliesDTO pageSuppliesDTO) {
         String code = pageSuppliesDTO.getCode();
         String name = pageSuppliesDTO.getName();
         String suppliesTypeId = pageSuppliesDTO.getSuppliesTypeId();
         Pageable pageable = PageRequest.of(pageSuppliesDTO.getPage(), pageSuppliesDTO.getSize(), Sort.Direction.ASC, "name");
 
-        Page<Supplies> suppliesPage = iSuppliesService.findAllSupplies(pageable, name, code, suppliesTypeId);
+        Page<Supplies> suppliesPage = iSuppliesService.findAllSuppliesOld(pageable, name, code, suppliesTypeId);
+        return new ResponseEntity<>(suppliesPage, HttpStatus.OK);
+    }
+
+    @GetMapping("/new")
+    public ResponseEntity<?> findAllSuppliesNew(@RequestBody PageSuppliesDTO pageSuppliesDTO) {
+        String code = pageSuppliesDTO.getCode();
+        String name = pageSuppliesDTO.getName();
+        String suppliesTypeId = pageSuppliesDTO.getSuppliesTypeId();
+        Pageable pageable = PageRequest.of(pageSuppliesDTO.getPage(), pageSuppliesDTO.getSize(), Sort.Direction.ASC, "name");
+
+        Page<Supplies> suppliesPage = iSuppliesService.findAllSuppliesNew(pageable, name, code, suppliesTypeId);
         return new ResponseEntity<>(suppliesPage, HttpStatus.OK);
     }
 
