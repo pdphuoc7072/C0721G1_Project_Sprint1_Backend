@@ -1,4 +1,4 @@
-package com.codegym.controllerEmployee;
+package com.codegym.controller;
 
 import com.codegym.model.Employee;
 import com.codegym.model.Position;
@@ -10,11 +10,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("api")
 @CrossOrigin
-public class ContronllerEmployee {
+public class ControllerEmployee {
     @Autowired
     IEmployeeService employeeService;
 
@@ -54,5 +55,15 @@ public class ContronllerEmployee {
     public ResponseEntity<?> findAllPosition() {
         List<Position> positionList = positionService.findAll();
         return new ResponseEntity<>(positionList, HttpStatus.OK);
+    }
+
+    // TinhBt
+    @GetMapping("/employee/detail/{id}")
+    public ResponseEntity<?> findDetailEmployeeById(@PathVariable Long id) {
+        Optional<Employee> employee = employeeService.findById(id);
+        if (employee.isPresent()){
+            return new ResponseEntity<>(employee.get(), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
