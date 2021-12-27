@@ -45,7 +45,11 @@ public class FinancialListController_getListFinancial {
                 .andExpect(jsonPath("$.getCancelled()").value("160000"));
     }
 
+<<<<<<< HEAD
     @Test
+=======
+
+>>>>>>> 560e47ad99e674d8d51dae1ff2772c65e9d066c9
     public void getListFinancial_10() throws Exception {
         this.mockMvc.perform(
                 MockMvcRequestBuilders.get("http://localhost:8080/api/admin/stats/financial-stats/{date}","2021-12-21"))
@@ -54,7 +58,10 @@ public class FinancialListController_getListFinancial {
                 .andExpect(jsonPath("$.getMonthSales").value("75000000"))
                 .andExpect(jsonPath("$.getMonthImport").value("10375000"));
     }
+<<<<<<< HEAD
     @Test
+=======
+>>>>>>> 560e47ad99e674d8d51dae1ff2772c65e9d066c9
     public void getListFinancial_09() throws Exception {
         this.mockMvc.perform(
                 MockMvcRequestBuilders.get("http://localhost:8080/api/admin/stats/financial-stats/{date}", "null"))
@@ -62,11 +69,23 @@ public class FinancialListController_getListFinancial {
                 .andExpect(status().is4xxClientError());
 
     }
+<<<<<<< HEAD
     @Test
+=======
+>>>>>>> 560e47ad99e674d8d51dae1ff2772c65e9d066c9
     public void getListFinancial_08() throws Exception {
         this.mockMvc.perform(
                 MockMvcRequestBuilders.get("http://localhost:8080/api/admin/stats/financial-stats/{date}", ""))
                 .andDo(print())
                 .andExpect(status().is4xxClientError());
     }
+<<<<<<< HEAD
+=======
+    public void getListFinancial_07() throws Exception {
+        this.mockMvc.perform(
+                MockMvcRequestBuilders.get("http://localhost:8080/api/admin/stats/financial-stats/{date}", ""))
+                .andDo(print())
+                .andExpect(status().is4xxClientError());
+    }
+>>>>>>> 560e47ad99e674d8d51dae1ff2772c65e9d066c9
 }

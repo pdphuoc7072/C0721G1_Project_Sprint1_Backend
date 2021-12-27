@@ -33,6 +33,7 @@ public class SupplesListController_getListController {
                         .get("/api/admin/stats/supplies-stats"))
                 .andDo(print())
                 .andExpect(status().is2xxSuccessful())
+<<<<<<< HEAD
                 .andExpect(jsonPath("$.getCode()").value("Thuốc lào"))
                 .andExpect(jsonPath("$.getName()").value("MVT-001"))
                 .andExpect(jsonPath("$.import_quantity").value("5000"));
@@ -61,4 +62,10 @@ public class SupplesListController_getListController {
                 .andDo(print())
                 .andExpect(status().is4xxClientError());
     }
+=======
+                .andExpect(jsonPath("$.name").value("Thuốc lào"))
+                .andExpect(jsonPath("$.code").value("MVT-001"))
+                .andExpect(jsonPath("$.import_quantity").value("5000"));
+    }
+>>>>>>> 560e47ad99e674d8d51dae1ff2772c65e9d066c9
 }

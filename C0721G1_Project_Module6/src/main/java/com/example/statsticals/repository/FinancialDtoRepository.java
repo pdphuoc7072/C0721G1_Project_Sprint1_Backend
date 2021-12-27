@@ -35,8 +35,11 @@ public interface FinancialDtoRepository extends JpaRepository<Warehouse,Long> {
             "from warehouse;")
     Integer getRefund();
 
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> 560e47ad99e674d8d51dae1ff2772c65e9d066c9
     @Query(nativeQuery = true, value = "select o.quantity*s.price as month_sales\n" +
             "from order_detail o join supplies s on o.supplies_id = s.id \n" +
             "where order_date like :date")
