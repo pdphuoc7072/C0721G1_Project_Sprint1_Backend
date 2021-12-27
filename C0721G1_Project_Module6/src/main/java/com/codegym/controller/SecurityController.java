@@ -148,13 +148,4 @@ public class SecurityController {
         });
         return errors;
     }
-
-    @GetMapping("/role")
-    public ResponseEntity<Iterable<Role>> getAllRole() {
-        Iterable<Role> roleList = roleServiceImpl.findAll();
-        if (roleList == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<>(roleList, HttpStatus.OK);
-    }
 }
