@@ -4,6 +4,7 @@ import com.codegym.dto.customValidate.BirthDay;
 import com.codegym.model.Employee;
 import com.codegym.model.Position;
 import com.codegym.model.User;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
@@ -26,13 +27,14 @@ public class EmployeeDto implements Validator {
 
 
     @NotBlank
-    @Size(max = 60, min = 3)
+    @Size(max = 30, min = 2)
     @Pattern(regexp = "(\\p{L}+[\\p{L}\\s]*)", message = "Tên có chứa kí tự số hoặc kí tự đặc biệt")
     private String name;
 
 
     @NotBlank
-    @Pattern(regexp = "^([\\d]{4})[-]([\\d]{2})[-]([\\d]{2})$", message = "nhập đúng định dang ngày là dd-mm-yyyy")
+    @Pattern(regexp = "^[\\d]{4}[-][\\d]{2}[-][\\d]{2}$", message = "nhập đúng định dang ngày là dd-mm-yyyy")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @BirthDay(message = "Tuổi phải lớn hơn 18 và bé hơn 60")
     private String birthday;
 
@@ -138,6 +140,7 @@ public class EmployeeDto implements Validator {
     }
 
     List<Employee> employeeList = new ArrayList<>();
+
     public List<Employee> getEmployeeList() {
         return employeeList;
     }
@@ -154,16 +157,21 @@ public class EmployeeDto implements Validator {
 
     @Override
     public void validate(Object target, Errors errors) {
+
         EmployeeDto employeeDto = (EmployeeDto) target;
-//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-//        LocalDate currentDate = LocalDate.now();
-//        LocalDate day = LocalDate.parse(employeeDto.getBirthday(), formatter);
-//        if(ChronoUnit.YEARS.between(day, currentDate) <= 18 || ChronoUnit.YEARS.between(day, currentDate) >= 60 ){
-//            errors.rejectValue("birthday", "birthday.equals", "Tuổi phải nằm trong khoảng 18 đến 60");
-//        }
-        for (Employee employee : employeeList) {
-            if (employeeDto.getPhone().equals(employee.getPhone())) {
-                errors.rejectValue("phone", "phone.equals", "Số điện thoại đã tồn tại");
+        if (employeeDto.getId() != null && employeeDto.getPhone() != null) {
+            for (Employee employee : employeeList) {
+                if (!employeeDto.getId().equals(employee.getId())) {
+                    if (employeeDto.getPhone().equals(employee.getPhone())) {
+                        errors.rejectValue("phone", "phone.equals", "Số điện thoại đã tồn tại");
+                    }
+                }
+            }
+        } else if (employeeDto.getPhone() != null) {
+            for (Employee employee : employeeList) {
+                if (employeeDto.getPhone().equals(employee.getPhone())) {
+                    errors.rejectValue("phone", "phone.equals", "Số điện thoại đã tồn tại");
+                }
             }
         }
     }

@@ -3,6 +3,7 @@ package com.codegym.dto.customValidate;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
+import java.util.Objects;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
@@ -10,9 +11,16 @@ public class BirthDateValidator implements ConstraintValidator<BirthDay, String>
 
     @Override
     public boolean isValid(final String valueToValidate, final ConstraintValidatorContext context) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDate day = LocalDate.parse(valueToValidate, formatter);
-        LocalDate currentDate = LocalDate.now();
-        return ChronoUnit.YEARS.between(day, currentDate) >= 18 && ChronoUnit.YEARS.between(day, currentDate) <= 60;
+        try {
+            if(valueToValidate!= null ) {
+                int day = Integer.parseInt(valueToValidate.substring(0, 4));
+                int currentDate = LocalDate.now().getYear();
+                return (currentDate - day > 18 || currentDate - day < 60);
+            }else {
+                return false;
+            }
+        }catch (Exception e){
+            return false;
+        }
     }
 }

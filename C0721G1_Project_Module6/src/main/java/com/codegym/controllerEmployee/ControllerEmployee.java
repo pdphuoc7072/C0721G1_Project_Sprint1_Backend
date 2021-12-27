@@ -78,6 +78,7 @@ public class ControllerEmployee {
             employeeDto.setName(name);
             Employee employee = new Employee();
             BeanUtils.copyProperties(employeeDto, employee);
+
             employeeService.save(employee);
             return new ResponseEntity<>(HttpStatus.OK);
         }
@@ -116,5 +117,11 @@ public class ControllerEmployee {
             errors.put(fieldName, errorMessage);
         });
         return errors;
+    }
+//    list DucNV
+    @GetMapping("/admin/employee/list")
+    public ResponseEntity<?> findAllEmployeeList() {
+        List<Employee> employeeList = employeeService.getAll();
+        return new ResponseEntity<>(employeeList, HttpStatus.OK);
     }
 }
