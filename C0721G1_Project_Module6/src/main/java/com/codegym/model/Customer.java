@@ -24,8 +24,9 @@ public class Customer {
     private Address address;
 
     @JsonBackReference(value = "")
-    @OneToMany(mappedBy = "customer")
-    private Set<OrderDetail> orderDetails;
+    @OneToMany(mappedBy = "orderDetail")
+    private Set<Supplies> supplies;
+
 
     public Customer() {
     }
@@ -78,11 +79,12 @@ public class Customer {
         this.address = address;
     }
 
-    public Set<OrderDetail> getOrderDetails() {
-        return orderDetails;
+    public Set<Supplies> getSupplies() {
+        return supplies;
     }
 
-    public void setOrderDetails(Set<OrderDetail> orderDetails) {
-        this.orderDetails = orderDetails;
+    public void setSupplies(Set<Supplies> supplies) {
+        this.supplies = supplies;
     }
+
 }

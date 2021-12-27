@@ -4,6 +4,8 @@ import com.codegym.model.Supplies;
 import com.codegym.repository.ISuppliesRepository;
 import com.codegym.service.ISuppliesService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -31,5 +33,10 @@ public class SuppliesServiceImpl implements ISuppliesService {
     @Override
     public void remove(Long id) {
         iSuppliesRepository.deleteById(id);
+    }
+
+    @Override
+    public Page<Supplies> findAll(Pageable pageable) {
+        return iSuppliesRepository.findAll(pageable);
     }
 }
