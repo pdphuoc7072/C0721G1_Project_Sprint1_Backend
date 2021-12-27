@@ -9,6 +9,7 @@ import com.codegym.service.ISuppliesTypeService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
@@ -78,26 +79,26 @@ public class SuppliesInformationController {
         // Send Message!
         this.emailSender.send(message);
     }
-    @GetMapping("list")
-    public ResponseEntity<?> findAll(@PageableDefault(value = 5) Pageable pageable) {
+
+//    @GetMapping("list")
+//    public ResponseEntity<?> getSuppliesList(@RequestParam int page) {
+//        Pageable pageable = PageRequest.of(page, 3);
+//        List<Supplies> suppliesList = iSuppliesService.getSuppliesList(page);
+//        if (suppliesList != null) {
+//            return new ResponseEntity<>(suppliesList, HttpStatus.OK);
+//        } else {
+//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//        }
+//    }
+
+    @GetMapping("/list")
+    public ResponseEntity<Page<Supplies>> findAll (@PageableDefault(size = 3) Pageable pageable) {
         Page<Supplies> suppliesList = iSuppliesService.findAll(pageable);
-        if (suppliesList != null) {
+        if (!suppliesList.isEmpty()) {
             return new ResponseEntity<>(suppliesList, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
-
-    @GetMapping("list/detail/{id}")
-    public ResponseEntity<?> findById(@PathVariable Long id) {
-        Supplies supplies = iSuppliesService.findById(id).get();
-        if (supplies != null) {
-            return new ResponseEntity<>(supplies, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    }
-
 //    ABCXYZ
 
 }

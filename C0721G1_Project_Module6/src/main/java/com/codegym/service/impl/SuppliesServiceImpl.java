@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -34,6 +35,7 @@ public class SuppliesServiceImpl implements ISuppliesService {
     public void remove(Long id) {
         iSuppliesRepository.deleteById(id);
     }
+
 
     @Override
     public Page<Supplies> findAll(Pageable pageable) {
