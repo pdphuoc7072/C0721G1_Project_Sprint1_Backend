@@ -1,4 +1,4 @@
-package com.codegym.cotroller;
+package com.codegym.controllerEmployee;
 
 
 import com.codegym.dto.EmployeeDto;
@@ -17,7 +17,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class EmployeeRestController_editEmployee {
+public class EmployeeRestController_createEmployee {
 
     @Autowired
     private MockMvc mockMvc;
@@ -26,9 +26,8 @@ public class EmployeeRestController_editEmployee {
     private ObjectMapper objectMapper;
 
     @Test
-    public void editEmployee_name_13() throws Exception {
+    public void createEmployee_name_13() throws Exception {
         EmployeeDto employeeDto = new EmployeeDto();
-        employeeDto.setId((long) 1);
         employeeDto.setName(null);
         employeeDto.setPhone("0909999111");
         employeeDto.setBirthday("2000-10-16");
@@ -38,16 +37,15 @@ public class EmployeeRestController_editEmployee {
         Position position = new Position();
         position.setId((long) 1);
         employeeDto.setPosition(position);
-        this.mockMvc.perform(MockMvcRequestBuilders.patch("/api/employee/update")
+        this.mockMvc.perform(MockMvcRequestBuilders.post("/api/admin/employee/create")
                 .content(this.objectMapper.writeValueAsString(employeeDto))
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andDo(print())
                 .andExpect(status().is4xxClientError());
     }
     @Test
-    public void editEmployee_birthDay_13() throws Exception {
+    public void createEmployee_birthDay_13() throws Exception {
         EmployeeDto employeeDto = new EmployeeDto();
-        employeeDto.setId((long) 1);
         employeeDto.setName("Nguyễn văn a");
         employeeDto.setPhone("0909999111");
         employeeDto.setBirthday(null);
@@ -57,16 +55,15 @@ public class EmployeeRestController_editEmployee {
         Position position = new Position();
         position.setId((long) 1);
         employeeDto.setPosition(position);
-        this.mockMvc.perform(MockMvcRequestBuilders.patch("/api/employee/update")
+        this.mockMvc.perform(MockMvcRequestBuilders.post("/api/admin/employee/create")
                 .content(this.objectMapper.writeValueAsString(employeeDto))
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andDo(print())
                 .andExpect(status().is4xxClientError());
     }
     @Test
-    public void editEmployee_phone_13() throws Exception {
+    public void createEmployee_phone_13() throws Exception {
         EmployeeDto employeeDto = new EmployeeDto();
-        employeeDto.setId((long) 1);
         employeeDto.setName("Nguyễn văn a");
         employeeDto.setPhone(null);
         employeeDto.setBirthday("2000-01-01");
@@ -76,16 +73,15 @@ public class EmployeeRestController_editEmployee {
         Position position = new Position();
         position.setId((long) 1);
         employeeDto.setPosition(position);
-        this.mockMvc.perform(MockMvcRequestBuilders.patch("/api/employee/update")
+        this.mockMvc.perform(MockMvcRequestBuilders.post("/api/admin/employee/create")
                 .content(this.objectMapper.writeValueAsString(employeeDto))
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andDo(print())
                 .andExpect(status().is4xxClientError());
     }
     @Test
-    public void editEmployee_address_13() throws Exception {
+    public void createEmployee_address_13() throws Exception {
         EmployeeDto employeeDto = new EmployeeDto();
-        employeeDto.setId((long) 1);
         employeeDto.setName("Nguyễn văn a");
         employeeDto.setPhone("0909999111");
         employeeDto.setBirthday("2000-05-03");
@@ -95,7 +91,7 @@ public class EmployeeRestController_editEmployee {
         Position position = new Position();
         position.setId((long) 1);
         employeeDto.setPosition(position);
-        this.mockMvc.perform(MockMvcRequestBuilders.patch("/api/employee/update")
+        this.mockMvc.perform(MockMvcRequestBuilders.post("/api/admin/employee/create")
                 .content(this.objectMapper.writeValueAsString(employeeDto))
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andDo(print())
@@ -103,9 +99,8 @@ public class EmployeeRestController_editEmployee {
     }
 
     @Test
-    public void  editEmployee_name_14() throws Exception {
+    public void createEmployee_name_14() throws Exception {
         EmployeeDto employeeDto = new EmployeeDto();
-        employeeDto.setId((long) 1);
         employeeDto.setName("");
         employeeDto.setPhone("0909999111");
         employeeDto.setBirthday("2000-10-16");
@@ -115,35 +110,15 @@ public class EmployeeRestController_editEmployee {
         Position position = new Position();
         position.setId((long) 1);
         employeeDto.setPosition(position);
-        this.mockMvc.perform(MockMvcRequestBuilders.patch("/api/employee/update")
+        this.mockMvc.perform(MockMvcRequestBuilders.post("/api/admin/employee/create")
                 .content(this.objectMapper.writeValueAsString(employeeDto))
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andDo(print())
                 .andExpect(status().is4xxClientError());
     }
     @Test
-    public void editEmployee_birthDay_14() throws Exception {
+    public void createEmployee_phone_14() throws Exception {
         EmployeeDto employeeDto = new EmployeeDto();
-        employeeDto.setId((long) 1);
-        employeeDto.setName("Nguyễn văn a");
-        employeeDto.setPhone("0909999111");
-        employeeDto.setBirthday("");
-        employeeDto.setGender(0);
-        employeeDto.setAddress("Huế");
-        employeeDto.setImage("anh1.png");
-        Position position = new Position();
-        position.setId((long) 1);
-        employeeDto.setPosition(position);
-        this.mockMvc.perform(MockMvcRequestBuilders.patch("/api/employee/update")
-                .content(this.objectMapper.writeValueAsString(employeeDto))
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andDo(print())
-                .andExpect(status().is4xxClientError());
-    }
-    @Test
-    public void editEmployee_phone_14() throws Exception {
-        EmployeeDto employeeDto = new EmployeeDto();
-        employeeDto.setId((long) 1);
         employeeDto.setName("Nguyễn văn a");
         employeeDto.setPhone("");
         employeeDto.setBirthday("2000-01-01");
@@ -153,16 +128,15 @@ public class EmployeeRestController_editEmployee {
         Position position = new Position();
         position.setId((long) 1);
         employeeDto.setPosition(position);
-        this.mockMvc.perform(MockMvcRequestBuilders.patch("/api/employee/update")
+        this.mockMvc.perform(MockMvcRequestBuilders.post("/api/admin/employee/create")
                 .content(this.objectMapper.writeValueAsString(employeeDto))
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andDo(print())
                 .andExpect(status().is4xxClientError());
     }
     @Test
-    public void editEmployee_address_14() throws Exception {
+    public void createEmployee_address_14() throws Exception {
         EmployeeDto employeeDto = new EmployeeDto();
-        employeeDto.setId((long) 1);
         employeeDto.setName("Nguyễn văn a");
         employeeDto.setPhone("0909999111");
         employeeDto.setBirthday("2000-05-03");
@@ -172,16 +146,33 @@ public class EmployeeRestController_editEmployee {
         Position position = new Position();
         position.setId((long) 1);
         employeeDto.setPosition(position);
-        this.mockMvc.perform(MockMvcRequestBuilders.patch("/api/employee/update")
+        this.mockMvc.perform(MockMvcRequestBuilders.post("/api/admin/employee/create")
                 .content(this.objectMapper.writeValueAsString(employeeDto))
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andDo(print())
                 .andExpect(status().is4xxClientError());
     }
     @Test
-    public void  editEmployee_name_15() throws Exception {
+    public void createEmployee_birthDay_14() throws Exception {
         EmployeeDto employeeDto = new EmployeeDto();
-        employeeDto.setId((long) 1);
+        employeeDto.setName("Nguyễn văn a");
+        employeeDto.setPhone("0909999111");
+        employeeDto.setBirthday("");
+        employeeDto.setGender(0);
+        employeeDto.setAddress("Huế");
+        employeeDto.setImage("anh1.png");
+        Position position = new Position();
+        position.setId((long) 1);
+        employeeDto.setPosition(position);
+        this.mockMvc.perform(MockMvcRequestBuilders.post("/api/admin/employee/create")
+                .content(this.objectMapper.writeValueAsString(employeeDto))
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andDo(print())
+                .andExpect(status().is4xxClientError());
+    }
+    @Test
+    public void createEmployee_name_15() throws Exception {
+        EmployeeDto employeeDto = new EmployeeDto();
         employeeDto.setName("Nguyen van 123");
         employeeDto.setPhone("0909999111");
         employeeDto.setBirthday("2000-10-16");
@@ -191,16 +182,15 @@ public class EmployeeRestController_editEmployee {
         Position position = new Position();
         position.setId((long) 1);
         employeeDto.setPosition(position);
-        this.mockMvc.perform(MockMvcRequestBuilders.patch("/api/employee/update")
+        this.mockMvc.perform(MockMvcRequestBuilders.post("/api/admin/employee/create")
                 .content(this.objectMapper.writeValueAsString(employeeDto))
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andDo(print())
                 .andExpect(status().is4xxClientError());
     }
     @Test
-    public void editEmployee_birthDay_15() throws Exception {
+    public void createEmployee_birthDay_15() throws Exception {
         EmployeeDto employeeDto = new EmployeeDto();
-        employeeDto.setId((long) 1);
         employeeDto.setName("Nguyễn văn a");
         employeeDto.setPhone("0909999111");
         employeeDto.setBirthday("2000/01/01");
@@ -217,9 +207,8 @@ public class EmployeeRestController_editEmployee {
                 .andExpect(status().is4xxClientError());
     }
     @Test
-    public void editEmployee_phone_15() throws Exception {
+    public void createEmployee_phone_15() throws Exception {
         EmployeeDto employeeDto = new EmployeeDto();
-        employeeDto.setId((long) 1);
         employeeDto.setName("Nguyễn văn a");
         employeeDto.setPhone("0985666777");
         employeeDto.setBirthday("2000-01-01");
@@ -235,11 +224,9 @@ public class EmployeeRestController_editEmployee {
                 .andDo(print())
                 .andExpect(status().is4xxClientError());
     }
-
     @Test
-    public void  editEmployee_name_16() throws Exception {
+    public void createEmployee_name_16() throws Exception {
         EmployeeDto employeeDto = new EmployeeDto();
-        employeeDto.setId((long) 1);
         employeeDto.setName("a");
         employeeDto.setPhone("0909999111");
         employeeDto.setBirthday("2000-10-16");
@@ -249,16 +236,15 @@ public class EmployeeRestController_editEmployee {
         Position position = new Position();
         position.setId((long) 1);
         employeeDto.setPosition(position);
-        this.mockMvc.perform(MockMvcRequestBuilders.patch("/api/employee/update")
+        this.mockMvc.perform(MockMvcRequestBuilders.post("/api/admin/employee/create")
                 .content(this.objectMapper.writeValueAsString(employeeDto))
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andDo(print())
                 .andExpect(status().is4xxClientError());
     }
     @Test
-    public void  editEmployee_name_17() throws Exception {
+    public void createEmployee_name_17() throws Exception {
         EmployeeDto employeeDto = new EmployeeDto();
-        employeeDto.setId((long) 1);
         employeeDto.setName("Nguyen van aaaaaaaaaaaaaaaaaaaaaaaaa");
         employeeDto.setPhone("0909999111");
         employeeDto.setBirthday("2000-10-16");
@@ -268,27 +254,26 @@ public class EmployeeRestController_editEmployee {
         Position position = new Position();
         position.setId((long) 1);
         employeeDto.setPosition(position);
-        this.mockMvc.perform(MockMvcRequestBuilders.patch("/api/employee/update")
+        this.mockMvc.perform(MockMvcRequestBuilders.post("/api/admin/employee/create")
                 .content(this.objectMapper.writeValueAsString(employeeDto))
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andDo(print())
                 .andExpect(status().is4xxClientError());
     }
     @Test
-    public void  editEmployee_name_18() throws Exception {
+    public void createEmployee_name_18() throws Exception {
         EmployeeDto employeeDto = new EmployeeDto();
-        employeeDto.setId((long) 1);
-        employeeDto.setName("Nguyen van Ab");
-        employeeDto.setPhone("0909999999");
+        employeeDto.setName("Nguyen van a");
+        employeeDto.setPhone("0904445556");
         employeeDto.setBirthday("2000-10-16");
         employeeDto.setGender(0);
-        employeeDto.setAddress("Đà Nẵng");
+        employeeDto.setAddress("Huế");
         employeeDto.setImage("anh1.png");
         Position position = new Position();
         position.setId((long) 1);
         position.setName("Quản lý");
         employeeDto.setPosition(position);
-        this.mockMvc.perform(MockMvcRequestBuilders.patch("/api/employee/update")
+        this.mockMvc.perform(MockMvcRequestBuilders.post("/api/admin/employee/create")
                 .content(this.objectMapper.writeValueAsString(employeeDto))
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andDo(print())
