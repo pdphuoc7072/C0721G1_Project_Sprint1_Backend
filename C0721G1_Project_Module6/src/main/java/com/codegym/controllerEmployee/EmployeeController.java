@@ -21,7 +21,7 @@ import java.util.List;
 @RestController
 @RequestMapping("api")
 @CrossOrigin
-public class ControllerEmployee {
+public class EmployeeController {
     @Autowired
     IEmployeeService employeeService;
 
@@ -29,13 +29,18 @@ public class ControllerEmployee {
     IPositionService positionService;
 
     @GetMapping("/admin/employee")
-    public ResponseEntity<?> findAllEmployee(@RequestBody PageEmployeeDTO pageEmployeeDTO) {
-        String code = pageEmployeeDTO.getCode();
-        String name = pageEmployeeDTO.getName();
-        String positionId = pageEmployeeDTO.getPositionId();
-        Pageable pageable = PageRequest.of(pageEmployeeDTO.getPage(), pageEmployeeDTO.getSize(), Sort.Direction.ASC,"name");
+    public ResponseEntity<?> findAllEmployee(@RequestParam String code,
+                                             @RequestParam String name,
+                                             @RequestParam String positionId,
+                                             @RequestParam int page,
+                                             @RequestParam int size) {
+
+        Pageable pageable = PageRequest.of(page, size, Sort.Direction.ASC,"name");
 
         Page<Employee> employeePage = employeeService.findAllEmployee(code, name , positionId, pageable);
+        if(employeePage.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
         return new ResponseEntity<>(employeePage, HttpStatus.OK);
     }
 
@@ -59,8 +64,15 @@ public class ControllerEmployee {
 
     @DeleteMapping("/admin/employee/{id}")
     public ResponseEntity<?> deleteEmployee(@PathVariable Long id) {
-        employeeService.remove(id);
-        return new ResponseEntity<>(HttpStatus.OK);
+        if(id == null){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        if(employeeService.existsByIdEmployee(id)) {
+            employeeService.remove(id);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }else {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
     @GetMapping("/position")

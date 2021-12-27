@@ -41,4 +41,10 @@ public class EmployeeServiceImpl implements IEmployeeService {
     public Page<Employee> findAllEmployee(String code, String name, String positionId, Pageable pageable) {
         return iEmployeeRepository.findAllEmployee("%" + code + "%", "%" + name + "%","%" + positionId + "%",  pageable);
     }
+
+    @Override
+    public boolean existsByIdEmployee(Long id) {
+      return iEmployeeRepository.existsById(id);
+    }
+
 }

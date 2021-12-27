@@ -7,4 +7,5 @@ import org.springframework.data.domain.Pageable;
 
 public interface IEmployeeService extends IGenericService<Employee> {
     Page<Employee> findAllEmployee(String code, String name,String positionId, Pageable pageable);
+    boolean existsByIdEmployee(Long id);
 }
