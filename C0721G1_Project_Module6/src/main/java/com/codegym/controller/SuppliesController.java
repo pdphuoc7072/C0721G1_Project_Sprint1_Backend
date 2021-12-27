@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -48,6 +49,26 @@ public class SuppliesController {
         return new ResponseEntity<>(producerList, HttpStatus.OK);
     }
 
+
+//    @GetMapping("/")
+//    public ResponseEntity<?> findAllSuppliesOld(@RequestBody PageSuppliesDTO pageSuppliesDTO) {
+//        String code = pageSuppliesDTO.getCode();
+//        String name = pageSuppliesDTO.getName();
+//        String suppliesTypeId = pageSuppliesDTO.getSuppliesTypeId();
+//        Pageable pageable = PageRequest.of(pageSuppliesDTO.getPage(), pageSuppliesDTO.getSize(), Sort.Direction.ASC, "name");
+//
+//        Page<Supplies> suppliesPage = iSuppliesService.findAllSuppliesOld(pageable, name, code, suppliesTypeId);
+//        for (int i = 0; i < suppliesPage.getContent().size(); i++) {
+//
+//            String[] string = suppliesPage.getContent().get(i).getExpiryDate().split("-");
+//            LocalDateTime localDateTime = LocalDateTime.now();
+//            int year = localDateTime.getYear() - 1;
+//            if (Integer.parseInt(string[2]) < year) {
+//                suppliesPage.getContent().get(i).getStatus() = 0
+//            }
+//        }
+//        return new ResponseEntity<>(suppliesPage, HttpStatus.OK);
+//    }
 
     @GetMapping("/old")
     public ResponseEntity<?> findAllSuppliesOld(@RequestBody PageSuppliesDTO pageSuppliesDTO) {
@@ -81,6 +102,9 @@ public class SuppliesController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteSupplies(@PathVariable Long id) {
+        if (id == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
         iSuppliesService.remove(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
