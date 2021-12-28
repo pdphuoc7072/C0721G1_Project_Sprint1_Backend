@@ -1,6 +1,5 @@
 package com.example.statsticals.controller;
 
-import com.example.statsticals.dto.FinancialByMonthDto;
 import com.example.statsticals.dto.FinancialStatsDto;
 import com.example.statsticals.service.IFinancialService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,15 +33,22 @@ public class FinancialController {
 
     @GetMapping("/{date}")
     public ResponseEntity<?> getFinancialStatsByTime(@PathVariable String date) {
+
         String[] str = date.split("-");
         String newDate = str[0]+"-"+str[1];
-        FinancialByMonthDto financialByMonthDto = new FinancialByMonthDto(
-                financialService.getMonthSales(newDate),
-                financialService.getMonthImport(newDate));
-        if(!(financialByMonthDto.getGetMonthSales() == 0)){
-            return new ResponseEntity<>(financialByMonthDto, HttpStatus.OK);
+
+        FinancialStatsDto financialStatsDto = new FinancialStatsDto();
+        financialStatsDto.setIncome(financialService.getMonthSales(newDate));
+        financialStatsDto.setImportMoney(financialService.getMonthSales(newDate));
+        financialStatsDto.setRefund(financialService.getMonthRefund(newDate));
+        financialStatsDto.setCancelled(financialService.getMonthCancelled(newDate));
+        financialStatsDto.setReturnMoney(financialService.getMonthReturn(newDate));
+        if (financialStatsDto == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(financialStatsDto, HttpStatus.OK);
+
+
     }
 
 }

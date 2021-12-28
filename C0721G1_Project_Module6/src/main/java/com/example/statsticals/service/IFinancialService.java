@@ -12,5 +12,8 @@ public interface IFinancialService {
     Integer getRefund();
     Integer getMonthSales(String date);
     Integer getMonthImport(String date);
+    Integer getMonthReturn(String date);
+    Integer getMonthRefund(String date);
+    Integer getMonthCancelled(String date);
 
 }

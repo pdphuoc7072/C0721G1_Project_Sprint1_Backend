@@ -48,7 +48,23 @@ public class FinancialService implements IFinancialService {
 
     @Override
     public Integer getMonthImport(String date) {
+
         return financialDtoRepository.getMonthImport(date + "%");
+    }
+
+    @Override
+    public Integer getMonthReturn(String date) {
+        return financialDtoRepository.getMonthReturn(date + "%");
+    }
+
+    @Override
+    public Integer getMonthRefund(String date) {
+        return financialDtoRepository.getMonthRefund(date + "%");
+    }
+
+    @Override
+    public Integer getMonthCancelled(String date) {
+        return financialDtoRepository.getMonthCancelled(date + "%");
     }
 
 }

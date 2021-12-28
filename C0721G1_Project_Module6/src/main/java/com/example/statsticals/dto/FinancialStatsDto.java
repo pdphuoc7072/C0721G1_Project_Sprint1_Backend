@@ -1,5 +1,7 @@
 package com.example.statsticals.dto;
 
+import com.example.statsticals.service.IFinancialService;
+
 import java.util.List;
 
 public class FinancialStatsDto {
@@ -59,5 +61,8 @@ public class FinancialStatsDto {
 
     public void setImportMoney(Integer importMoney) {
         this.importMoney = importMoney;
+    }
+
+    public void setImportMoney(IFinancialService financialService) {
     }
 }
