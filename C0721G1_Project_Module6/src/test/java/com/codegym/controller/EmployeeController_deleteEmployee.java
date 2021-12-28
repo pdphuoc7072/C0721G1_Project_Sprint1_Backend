@@ -33,7 +33,7 @@ public class EmployeeController_deleteEmployee {
     }
 
     @Test
-    public void deleteEmployee_27() throws Exception {
+    public void deleteEmployee_26() throws Exception {
         this.mockMvc.perform(
                 MockMvcRequestBuilders.delete("/api/admin/employee/{id}", ""))
                 .andDo(print())
@@ -41,7 +41,7 @@ public class EmployeeController_deleteEmployee {
     }
 
     @Test
-    public void deleteEmployee_26() throws Exception {
+    public void deleteEmployee_27() throws Exception {
         this.mockMvc.perform(
                 MockMvcRequestBuilders.delete("/api/admin/employee/{id}", "1"))
                 .andDo(print())

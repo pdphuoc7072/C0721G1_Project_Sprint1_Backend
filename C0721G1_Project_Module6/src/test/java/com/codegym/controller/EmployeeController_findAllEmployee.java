@@ -32,8 +32,7 @@ public class EmployeeController_findAllEmployee {
         ResponseEntity<Page<Employee>> responseEntity
                 = (ResponseEntity<Page<Employee>>) this.employeeController.findAllEmployee("","","", 0,2);
         Assertions.assertEquals(200, responseEntity.getStatusCodeValue());
-        Assertions.assertEquals(1, responseEntity.getBody().getTotalPages());
-        Assertions.assertEquals(2, responseEntity.getBody().getTotalElements());
+        Assertions.assertEquals(2, responseEntity.getBody().getTotalPages());
         Assertions.assertEquals("Huy", responseEntity.getBody().getContent().get(1).getName());
     }
     @Test
