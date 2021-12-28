@@ -5,6 +5,8 @@ import com.codegym.model.User;
 import com.codegym.repository.IEmployeeRepository;
 import com.codegym.service.IEmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -42,5 +44,15 @@ public class EmployeeServiceImpl implements IEmployeeService {
     @Override
     public Optional<Employee> findByCode(String code) {
         return iEmployeeRepository.findByCode(code);
+    }
+
+    @Override
+    public Page<Employee> findAllEmployee(String code, String name, String positionId, Pageable pageable) {
+        return iEmployeeRepository.findAllEmployee("%" + code + "%", "%" + name + "%","%" + positionId + "%",  pageable);
+    }
+
+    @Override
+    public boolean existsByIdEmployee(Long id) {
+        return iEmployeeRepository.existsById(id);
     }
 }

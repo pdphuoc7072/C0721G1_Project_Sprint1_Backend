@@ -32,7 +32,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("api/public")
-@CrossOrigin(origins = "*", allowedHeaders = "*")
+@CrossOrigin(origins = "*",allowedHeaders = "*",allowCredentials = "false")
 public class SecurityController {
     @Autowired
     private JwtUtility jwtUtility;
@@ -49,6 +49,7 @@ public class SecurityController {
 
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
+        List<String> roles1 = new ArrayList<>();
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -59,6 +60,11 @@ public class SecurityController {
                 .collect(Collectors.toList());
         Optional<User> user = userServiceImpl.findByUsername(loginRequest.getUsername());
         Optional<Employee> employee = employeeServiceImpl.findByUserId(user.get().getId());
+        if (roles.get(0).equals("ROLE_ADMIN")) {
+            roles1.add("ROLE_USER");
+            roles1.add("ROLE_ADMIN");
+            return ResponseEntity.ok(new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(), roles1, employee.get()));
+        }
         return ResponseEntity.ok(new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(), roles, employee.get()));
     }
 
