@@ -26,16 +26,6 @@ public class UserController {
     private IUserService iUserService;
 
 
-
-
-    @GetMapping("/user/{id}")
-    public ResponseEntity<?> findById(@PathVariable Long id) {
-        User  user = iUserService.findById(id).get();
-        return new ResponseEntity<>(user, HttpStatus.OK);
-    }
-
-
-
     @PatchMapping("/editPass" )
     public ResponseEntity<?> editPassword (@RequestBody @Valid UserDto userDto , BindingResult bindingResult) {
 
@@ -60,8 +50,5 @@ public class UserController {
             });
             return errors;
         }
-
-
-
 
 }
