@@ -12,6 +12,8 @@ import java.util.List;
 
 public interface ISuppliesService extends IGenericService<Supplies> {
     Page<SuppliesDTO> findAllSupplies(Pageable pageable, String name, String code, String supplies_type_id) throws ParseException;
+
     List<Supplies> findAll();
+
     boolean existsByIdSupplies(Long id);
 }

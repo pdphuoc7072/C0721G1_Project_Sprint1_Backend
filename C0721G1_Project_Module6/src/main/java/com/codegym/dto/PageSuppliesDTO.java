@@ -5,7 +5,7 @@ import org.springframework.data.domain.Page;
 public class PageSuppliesDTO {
     private String name;
     private String code;
-    private String suppliesTypeId;
+    private String suppliesType;
     private int page;
     private int size;
 
@@ -28,12 +28,12 @@ public class PageSuppliesDTO {
         this.code = code;
     }
 
-    public String getSuppliesTypeId() {
-        return suppliesTypeId;
+    public String getSuppliesType() {
+        return suppliesType;
     }
 
-    public void setSuppliesTypeId(String suppliesTypeId) {
-        this.suppliesTypeId = suppliesTypeId;
+    public void setSuppliesType(String suppliesType) {
+        this.suppliesType = suppliesType;
     }
 
     public int getPage() {

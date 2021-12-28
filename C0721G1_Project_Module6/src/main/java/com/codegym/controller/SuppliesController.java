@@ -56,38 +56,18 @@ public class SuppliesController {
     }
 
 
-    //    @GetMapping("/")
-//    public ResponseEntity<?> findAllSuppliesOld(@RequestBody PageSuppliesDTO pageSuppliesDTO) {
-//        String code = pageSuppliesDTO.getCode();
-//        String name = pageSuppliesDTO.getName();
-//        String suppliesTypeId = pageSuppliesDTO.getSuppliesTypeId();
-//        Pageable pageable = PageRequest.of(pageSuppliesDTO.getPage(), pageSuppliesDTO.getSize(), Sort.Direction.ASC, "name");
-//
-//        Page<Supplies> suppliesPage = iSuppliesService.findAllSuppliesOld(pageable, name, code, suppliesTypeId);
-//        for (int i = 0; i < suppliesPage.getContent().size(); i++) {
-//
-//            String[] string = suppliesPage.getContent().get(i).getExpiryDate().split("-");
-//            LocalDateTime localDateTime = LocalDateTime.now();
-//            int year = localDateTime.getYear() - 1;
-//            if (Integer.parseInt(string[2]) < year) {
-//                suppliesPage.getContent().get(i).getStatus() = 0
-//            }
-//        }
-//        return new ResponseEntity<>(suppliesPage, HttpStatus.OK);
-//    }
-
     @GetMapping("")
     public ResponseEntity<?> findAllSupplies(@RequestParam String code,
-                                                @RequestParam String name,
-                                                @RequestParam String suppliesTypeId,
-                                                @RequestParam int page,
-                                                @RequestParam int size
+                                             @RequestParam String name,
+                                             @RequestParam String suppliesType,
+                                             @RequestParam int page,
+                                             @RequestParam int size
     ) throws ParseException {
 
-        Pageable pageable = PageRequest.of(page, size, Sort.Direction.ASC, "name");
+        Pageable pageable = PageRequest.of(page, size, Sort.Direction.ASC, "code");
 
-        Page<SuppliesDTO> suppliesPage = iSuppliesService.findAllSupplies(pageable, name, code, suppliesTypeId);
-        if(suppliesPage.isEmpty()){
+        Page<SuppliesDTO> suppliesPage = iSuppliesService.findAllSupplies(pageable, name, code, suppliesType);
+        if (suppliesPage.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(suppliesPage, HttpStatus.OK);
