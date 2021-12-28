@@ -46,7 +46,7 @@ public class FinancialListController_getListFinancial {
     }
 
 
-    public void getListFinancial_10() throws Exception {
+    public void getListFinancial_11() throws Exception {
         this.mockMvc.perform(
                 MockMvcRequestBuilders.get("http://localhost:8080/api/admin/stats/financial-stats/{date}","2021-12-21"))
                 .andDo(print())
@@ -57,7 +57,7 @@ public class FinancialListController_getListFinancial {
 
     public void getListFinancial_09() throws Exception {
         this.mockMvc.perform(
-                MockMvcRequestBuilders.get("http://localhost:8080/api/admin/stats/financial-stats/{date}", "null"))
+                MockMvcRequestBuilders.get("http://localhost:8080/api/admin/stats/financial-stats/{date}", "2008-12-21"))
                 .andDo(print())
                 .andExpect(status().is4xxClientError());
 
@@ -65,7 +65,7 @@ public class FinancialListController_getListFinancial {
 
     public void getListFinancial_08() throws Exception {
         this.mockMvc.perform(
-                MockMvcRequestBuilders.get("http://localhost:8080/api/admin/stats/financial-stats/{date}", ""))
+                MockMvcRequestBuilders.get("http://localhost:8080/api/admin/stats/financial-stats/{date}", "null"))
                 .andDo(print())
                 .andExpect(status().is4xxClientError());
     }

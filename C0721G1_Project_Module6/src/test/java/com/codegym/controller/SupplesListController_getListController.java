@@ -39,7 +39,7 @@ public class SupplesListController_getListController {
                 .andExpect(jsonPath("$.import_quantity").value("5000"));
     }
     @Test
-    public void getListFinancial_10() throws Exception {
+    public void getListFinancial_11() throws Exception {
         this.mockMvc.perform(
                 MockMvcRequestBuilders.get("http://localhost:8080//api/admin/stats/supplies-stats/fetch?","startDate=2021-11-11&endDate=2021-12-12"))
                 .andDo(print())
@@ -50,7 +50,7 @@ public class SupplesListController_getListController {
     @Test
     public void getListFinancial_09() throws Exception {
         this.mockMvc.perform(
-                MockMvcRequestBuilders.get("http://localhost:8080//api/admin/stats/supplies-stats/fetch?", "null"))
+                MockMvcRequestBuilders.get("http://localhost:8080//api/admin/stats/supplies-stats/fetch?", "startDate=2033-11-11&endDate=2035-12-12"))
                 .andDo(print())
                 .andExpect(status().is4xxClientError());
 
@@ -58,12 +58,18 @@ public class SupplesListController_getListController {
     @Test
     public void getListFinancial_08() throws Exception {
         this.mockMvc.perform(
+                MockMvcRequestBuilders.get("http://localhost:8080//api/admin/stats/supplies-stats/fetch?", "null"))
+                .andDo(print())
+                .andExpect(status().is4xxClientError());
+
+    }
+    @Test
+    public void getListFinancial_07() throws Exception {
+        this.mockMvc.perform(
                 MockMvcRequestBuilders.get("http://localhost:8080//api/admin/stats/supplies-stats/fetch?", ""))
                 .andDo(print())
-                .andExpect(status().is4xxClientError())
-                .andExpect(jsonPath("$.name").value("Thuốc lào"))
-                .andExpect(jsonPath("$.code").value("MVT-001"))
-                .andExpect(jsonPath("$.import_quantity").value("5000"));
+                .andExpect(status().is4xxClientError());
+
     }
 
 }

@@ -48,7 +48,7 @@ public class PotentialCustomerListController_getListCustomer {
     }
 
     @Test
-    public void getListFinancial_10() throws Exception {
+    public void getListFinancial_11() throws Exception {
         this.mockMvc.perform(
                 MockMvcRequestBuilders.get("http://localhost:8080/api/admin/stats/potential-customer/fetch?","startDate=2021-11-11&endDate=2021-12-12"))
                 .andDo(print())
@@ -57,15 +57,22 @@ public class PotentialCustomerListController_getListCustomer {
                 .andExpect(jsonPath("$.getName()").value("KH-001"));
     }
     @Test
-    public void getListFinancial_09() throws Exception {
+    public void getListFinancial_10() throws Exception {
         this.mockMvc.perform(
-                MockMvcRequestBuilders.get("http://localhost:8080/api/admin/stats/potential-customer/fetch?", "null"))
+                MockMvcRequestBuilders.get("http://localhost:8080/api/admin/stats/potential-customer/fetch?", "startDate=2018-11-11&endDate=2022-12-12"))
                 .andDo(print())
                 .andExpect(status().is4xxClientError());
 
     }
     @Test
     public void getListFinancial_08() throws Exception {
+        this.mockMvc.perform(
+                MockMvcRequestBuilders.get("http://localhost:8080/api/admin/stats/potential-customer/fetch?", "null"))
+                .andDo(print())
+                .andExpect(status().is4xxClientError());
+    }
+    @Test
+    public void getListFinancial_07() throws Exception {
         this.mockMvc.perform(
                 MockMvcRequestBuilders.get("http://localhost:8080/api/admin/stats/potential-customer/fetch?", ""))
                 .andDo(print())
