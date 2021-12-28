@@ -124,4 +124,11 @@ public class ControllerEmployee {
         List<Employee> employeeList = employeeService.getAll();
         return new ResponseEntity<>(employeeList, HttpStatus.OK);
     }
+    @GetMapping("/admin/employee/code")
+    public ResponseEntity<?> EmployeeCode() {
+        List<Employee> employeeList = employeeService.getAll();
+        long count = employeeList.get(employeeList.size() - 1).getId() + 1;
+        String code = "Emp-" + count;
+        return new ResponseEntity<>(code, HttpStatus.OK);
+    }
 }
