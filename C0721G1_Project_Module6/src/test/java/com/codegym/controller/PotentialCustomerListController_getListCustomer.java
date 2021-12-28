@@ -47,7 +47,6 @@ public class PotentialCustomerListController_getListCustomer {
                 .andExpect(jsonPath("$.total").value("15000000"));
     }
 
-<<<<<<< HEAD
     @Test
     public void getListFinancial_10() throws Exception {
         this.mockMvc.perform(
@@ -75,12 +74,4 @@ public class PotentialCustomerListController_getListCustomer {
 }
 
 
-=======
-//    public void getListFinancial_7() throws Exception {
-//        this.mockMvc.perform(
-//                MockMvcRequestBuilders.get()
-//        )
-//    }
-}
 
->>>>>>> 560e47ad99e674d8d51dae1ff2772c65e9d066c9

@@ -6,10 +6,9 @@ import com.example.statsticals.service.IPotentialCustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-<<<<<<< HEAD
 import java.time.LocalDate;
-=======
->>>>>>> 560e47ad99e674d8d51dae1ff2772c65e9d066c9
+
+
 import java.util.List;
 
 @Service
@@ -21,7 +20,7 @@ public class PotencialCustomer implements IPotentialCustomerService {
     public List<PotentialCustomerDto> getAll() {
         return potentialCustomerRepository.getAll();
     }
-<<<<<<< HEAD
+
 
     @Override
     public List<PotentialCustomerDto> getPotentialCustomerByTime(LocalDate startDate, LocalDate endDate) {
@@ -31,7 +30,3 @@ public class PotencialCustomer implements IPotentialCustomerService {
 
 }
 
-
-=======
-}
->>>>>>> 560e47ad99e674d8d51dae1ff2772c65e9d066c9
