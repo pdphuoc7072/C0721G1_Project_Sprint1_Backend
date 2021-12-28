@@ -128,6 +128,7 @@ public class ControllerEmployee {
     public ResponseEntity<?> EmployeeCode() {
         List<Employee> employeeList = employeeService.getAll();
         long count = employeeList.get(employeeList.size() - 1).getId() + 1;
+
         String code = "Emp-" + count;
         return new ResponseEntity<>(code, HttpStatus.OK);
     }
