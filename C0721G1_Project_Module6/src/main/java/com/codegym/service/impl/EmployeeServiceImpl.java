@@ -1,6 +1,6 @@
 package com.codegym.service.impl;
 
-import com.codegym.model.Customer;
+
 import com.codegym.model.Employee;
 import com.codegym.repository.IEmployeeRepository;
 import com.codegym.service.IEmployeeService;
@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -38,6 +39,12 @@ public class EmployeeServiceImpl implements IEmployeeService {
 
 
     @Override
+    public List<Employee> getAll() {
+        return iEmployeeRepository.findAll();
+    }
+
+
+    @Override
     public Page<Employee> findAllEmployee(String code, String name, String positionId, Pageable pageable) {
         return iEmployeeRepository.findAllEmployee("%" + code + "%", "%" + name + "%","%" + positionId + "%",  pageable);
     }
@@ -46,5 +53,6 @@ public class EmployeeServiceImpl implements IEmployeeService {
     public boolean existsByIdEmployee(Long id) {
       return iEmployeeRepository.existsById(id);
     }
+
 
 }
