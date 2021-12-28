@@ -1,54 +1,60 @@
 package com.codegym.dto;
 
+
 import com.codegym.model.*;
+import com.codegym.dto.customValidate.BirthDay;
+import com.codegym.model.Employee;
+import com.codegym.model.Position;
+import com.codegym.model.User;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
 
 import javax.validation.constraints.*;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
-
+//duc
 public class EmployeeDto implements Validator {
 
+    //    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "Code cannot be blank")
-    @Pattern(regexp = "^(NV-)(\\d{4})$", message = "Employee Code must be in the correct format: NV-XXXX")
     private String code;
 
-    @Size(min = 5, max = 15)
-    @NotBlank(message = "Name cannot be blank")
+
+    @NotBlank
+    @Size(max = 30, min = 2)
+    @Pattern(regexp = "(\\p{L}+[\\p{L}\\s]*)", message = "Tên có chứa kí tự số hoặc kí tự đặc biệt")
     private String name;
 
-    @NotBlank(message = "Birthday cannot be blank")
-    @Pattern(regexp = "^(?:19\\d{2}|20\\d{2})[-/.](?:0[1-9]|1[012])[-/.](?:0[1-9]|[12][0-9]|3[01])$",
-            message = "Birthday must be in the correct format: YYYY-MM-DD")
-    private String dateOfBirth;
 
-    @NotBlank(message = "Image cannot be blank")
+    @NotBlank
+    @Pattern(regexp = "^[\\d]{4}[-][\\d]{2}[-][\\d]{2}$", message = "nhập đúng định dang ngày là dd-mm-yyyy")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @BirthDay(message = "Tuổi phải lớn hơn 18 và bé hơn 60")
+    private String birthday;
+
     private String image;
 
-    @NotNull(message = "Gender cannot be blank")
     private Integer gender;
 
-
-    @NotBlank(message = "Phone cannot be blank")
-    @Pattern(regexp = "^(0|(\\(84\\)\\+))+([9][0-1][0-9]{7})$",
-            message = "Phone must be in the correct format: 090xxxxxxx or 091xxxxxxx or (84)+90xxxxxxx or (84)+91xxxxxxx")
+    @NotBlank
+    @Pattern(regexp = "^((090)|(091))[\\d]{7}$",
+            message = "Số điện thoại phải bắt đầu bằng 090xxxxxxx or 091xxxxxxx")
     private String phone;
 
-    @NotBlank(message = "Address cannot be blank")
+
+    @NotBlank
     private String address;
 
     private Position position;
 
     private User user;
-
-    List<Employee> employees = new ArrayList<>();
-
-//    private boolean checkPhone;
 
     public EmployeeDto() {
     }
@@ -77,12 +83,14 @@ public class EmployeeDto implements Validator {
         this.name = name;
     }
 
-    public String getDateOfBirth() {
-        return dateOfBirth;
+
+    public String getBirthday() {
+        return birthday;
     }
 
-    public void setDateOfBirth(String dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
+    public void setBirthday(String birthday) {
+        this.birthday = birthday;
+
     }
 
     public String getImage() {
@@ -133,12 +141,14 @@ public class EmployeeDto implements Validator {
         this.user = user;
     }
 
-    public List<Employee> getEmployees() {
-        return employees;
+    List<Employee> employeeList = new ArrayList<>();
+
+    public List<Employee> getEmployeeList() {
+        return employeeList;
     }
 
-    public void setEmployees(List<Employee> employees) {
-        this.employees = employees;
+    public void setEmployeeList(List<Employee> employeeList) {
+        this.employeeList = employeeList;
     }
 
 
@@ -147,10 +157,26 @@ public class EmployeeDto implements Validator {
         return false;
     }
 
+
     @Override
     public void validate(Object target, Errors errors) {
 
+        EmployeeDto employeeDto = (EmployeeDto) target;
+        if (employeeDto.getId() != null && employeeDto.getPhone() != null) {
+            for (Employee employee : employeeList) {
+                if (!employeeDto.getId().equals(employee.getId())) {
+                    if (employeeDto.getPhone().equals(employee.getPhone())) {
+                        errors.rejectValue("phone", "phone.equals", "Số điện thoại đã tồn tại");
+                    }
+                }
+            }
+        } else if (employeeDto.getPhone() != null) {
+            for (Employee employee : employeeList) {
+                if (employeeDto.getPhone().equals(employee.getPhone())) {
+                    errors.rejectValue("phone", "phone.equals", "Số điện thoại đã tồn tại");
+                }
+            }
+        }
     }
-
-
 }
+

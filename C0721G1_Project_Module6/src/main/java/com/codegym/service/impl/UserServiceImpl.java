@@ -4,6 +4,7 @@ import com.codegym.model.User;
 import com.codegym.repository.IUserRepository;
 import com.codegym.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -32,4 +33,10 @@ public class UserServiceImpl implements IUserService {
     public void remove(Long id) {
         iUserRepository.deleteById(id);
     }
+
+//
+//    @Override
+//    public void editPassword(Long id, String password) {
+//        iUserRepository.editPassword(id,password);
+//    }
 }
