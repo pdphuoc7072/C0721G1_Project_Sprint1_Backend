@@ -155,13 +155,13 @@ public class SuppliesDTO implements Validator {
     @Override
     public void validate(Object target, Errors errors) {
         SuppliesDTO suppliesDTO = (SuppliesDTO) target;
-        for (Supplies supplies : suppliesList) {
-            if (suppliesDTO.getCode().equals(supplies.getCode())) {
-                errors.rejectValue("code", "code.equals", "Mã đã tồn tại");
-            }
-
-        }
-        ;
+//        for (Supplies supplies : suppliesList) {
+//            if (suppliesDTO.getCode().equals(supplies.getCode())) {
+//                errors.rejectValue("code", "code.equals", "Mã đã tồn tại");
+//            }
+//
+//        }
+//        ;
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         try {

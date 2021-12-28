@@ -18,6 +18,7 @@ import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 
 @RestController
@@ -35,12 +36,23 @@ public class SuppliesController {
         List<Supplies> productList = (List<Supplies>) suppliesService.findAll();
         return new ResponseEntity<>(productList, HttpStatus.OK);
     }
+
     @GetMapping("admin/supplies/code")
     public ResponseEntity<?> EmployeeCode() {
         List<Supplies> suppliesList = (List<Supplies>) suppliesService.findAll();
         Supplies count = suppliesList.get(suppliesList.size() - 1);
         return new ResponseEntity<>(count, HttpStatus.OK);
     }
+
+    @GetMapping("/admin/supplies/findById/${id}")
+    public ResponseEntity<?> getProduct(@PathVariable Long id) {
+        Optional<Supplies> supplies = suppliesService.findById(id);
+        if (supplies.isPresent()){
+            return new ResponseEntity<>(supplies, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
     @PostMapping("admin/supplies/create")
     public ResponseEntity<?> createEmployee(@Valid @RequestBody SuppliesDTO suppliesDTO, BindingResult bindingResult) {
         List<Supplies> supplies = (List<Supplies>) suppliesService.findAll();
@@ -61,10 +73,11 @@ public class SuppliesController {
 
     @PatchMapping("admin/supplies/edit")
     public ResponseEntity<?> editSupplies(@Valid @RequestBody SuppliesDTO suppliesDTO, BindingResult bindingResult1) {
-        suppliesDTO.setSuppliesList((List<Supplies>) suppliesService.findAll());
+        List<Supplies> suppliesList = (List<Supplies>) suppliesService.findAll();
+        suppliesDTO.setSuppliesList(suppliesList);
         suppliesDTO.validate(suppliesDTO, bindingResult1);
         if (bindingResult1.hasFieldErrors()) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(bindingResult1.getAllErrors(),HttpStatus.BAD_REQUEST);
         } else {
             Supplies supplies = new Supplies();
             BeanUtils.copyProperties(suppliesDTO, supplies);
