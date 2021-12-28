@@ -1,12 +1,19 @@
 package com.codegym.controllerEmployee;
 
+import com.codegym.dto.PageEmployeeDTO;
 import com.codegym.model.Employee;
 import com.codegym.model.Position;
 import com.codegym.service.IEmployeeService;
 import com.codegym.service.IPositionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,7 +21,7 @@ import java.util.List;
 @RestController
 @RequestMapping("api")
 @CrossOrigin
-public class ContronllerEmployee {
+public class EmployeeController {
     @Autowired
     IEmployeeService employeeService;
 
@@ -22,8 +29,19 @@ public class ContronllerEmployee {
     IPositionService positionService;
 
     @GetMapping("/admin/employee")
-    public ResponseEntity<?> findAllEmployee(@RequestParam int page) {
-        return null;
+    public ResponseEntity<?> findAllEmployee(@RequestParam String code,
+                                             @RequestParam String name,
+                                             @RequestParam String positionId,
+                                             @RequestParam int page,
+                                             @RequestParam int size) {
+
+        Pageable pageable = PageRequest.of(page, size, Sort.Direction.ASC,"name");
+
+        Page<Employee> employeePage = employeeService.findAllEmployee(code, name , positionId, pageable);
+        if(employeePage.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(employeePage, HttpStatus.OK);
     }
 
     @PostMapping("/admin/employee/create")
@@ -46,8 +64,15 @@ public class ContronllerEmployee {
 
     @DeleteMapping("/admin/employee/{id}")
     public ResponseEntity<?> deleteEmployee(@PathVariable Long id) {
-        employeeService.remove(id);
-        return new ResponseEntity<>(HttpStatus.OK);
+        if(id == null){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        if(employeeService.existsByIdEmployee(id)) {
+            employeeService.remove(id);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }else {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
     @GetMapping("/position")
