@@ -23,12 +23,11 @@ import java.util.Map;
 @RestController
 @EnableWebMvc
 @RequestMapping("api")
-@CrossOrigin(origins = "*",allowedHeaders = "*")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class SuppliesController {
     //    ThanhCode 24-12
     @Autowired
     private ISuppliesService suppliesService;
-
 
 
     @GetMapping("admin/supplies/list")
@@ -36,26 +35,34 @@ public class SuppliesController {
         List<Supplies> productList = (List<Supplies>) suppliesService.findAll();
         return new ResponseEntity<>(productList, HttpStatus.OK);
     }
-
-    @PostMapping(value = "admin/supplies/create")
-    public ResponseEntity<Supplies> createSupplies(@Valid @RequestBody SuppliesDTO suppliesDTO, BindingResult bindingResult) {
-        suppliesDTO.setSuppliesList((List<Supplies>) suppliesService.findAll());
-        suppliesDTO.validate(suppliesDTO,bindingResult);
+    @GetMapping("admin/supplies/code")
+    public ResponseEntity<?> EmployeeCode() {
+        List<Supplies> suppliesList = (List<Supplies>) suppliesService.findAll();
+        Supplies count = suppliesList.get(suppliesList.size() - 1);
+        return new ResponseEntity<>(count, HttpStatus.OK);
+    }
+    @PostMapping("admin/supplies/create")
+    public ResponseEntity<?> createEmployee(@Valid @RequestBody SuppliesDTO suppliesDTO, BindingResult bindingResult) {
+        List<Supplies> supplies = (List<Supplies>) suppliesService.findAll();
+        suppliesDTO.setSuppliesList(supplies);
+        suppliesDTO.validate(suppliesDTO, bindingResult);
         if (bindingResult.hasFieldErrors()) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(bindingResult.getAllErrors(), HttpStatus.BAD_REQUEST);
         } else {
-            Supplies supplies = new Supplies();
-            BeanUtils.copyProperties(suppliesDTO, supplies);
-            suppliesService.save(supplies);
-            System.out.println(supplies);
+            long count = supplies.get(supplies.size() - 1).getId() + 1;
+            String code = "MVT-" + count;
+            suppliesDTO.setCode(code);
+            Supplies employee = new Supplies();
+            BeanUtils.copyProperties(suppliesDTO, employee);
+            suppliesService.save(employee);
             return new ResponseEntity<>(HttpStatus.OK);
         }
     }
 
-    @PatchMapping("/admin/supplies/edit")
+    @PatchMapping("admin/supplies/edit")
     public ResponseEntity<?> editSupplies(@Valid @RequestBody SuppliesDTO suppliesDTO, BindingResult bindingResult1) {
         suppliesDTO.setSuppliesList((List<Supplies>) suppliesService.findAll());
-        suppliesDTO.validate(suppliesDTO,bindingResult1);
+        suppliesDTO.validate(suppliesDTO, bindingResult1);
         if (bindingResult1.hasFieldErrors()) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         } else {

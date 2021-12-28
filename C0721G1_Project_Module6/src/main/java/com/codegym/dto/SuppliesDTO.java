@@ -10,79 +10,46 @@ import javax.validation.constraints.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 public class SuppliesDTO implements Validator {
 
     private Long id;
-    @NotBlank(message = "Không được để trống.")
-    @Pattern(regexp = "^(MVT-)(\\d{4})$", message = "Phải đúng định dạng MVT-xxxx")
+//    @NotBlank(message = "Không được để trống.")
+//    @Pattern(regexp = "^(MVT-)(\\d{4})$", message = "Phải đúng định dạng MVT-xxxx")
     private String code;
 
-    @NotBlank(message = "Không được để trống")
-    @Size(min = 5, max = 50)
+    @NotBlank(message = "Trường này không được để trống!")
     private String name;
 
-    @NotNull(message = "Không được để trống")
+//    @NotBlank(message = "Trường này không được để trống!")
     @Min(1000)
     private Long price;
 
-    @NotBlank(message = "Không được để trống")
+    @NotBlank(message = "Trường này không được để trống!")
     @Pattern(regexp = "^(?:19\\d{2}|20\\d{2})[-/.](?:0[1-9]|1[012])[-/.](?:0[1-9]|[12][0-9]|3[01])$",
             message = "Phải đúng định dạng: yyyy-MM-dd.")
     private String productionDate;
 
-    @NotBlank(message = "Không được để trống")
+    @NotBlank(message = "Trường này không được để trống!")
     @Pattern(regexp = "^(?:19\\d{2}|20\\d{2})[-/.](?:0[1-9]|1[012])[-/.](?:0[1-9]|[12][0-9]|3[01])$",
-            message = "Phải đúng định dạng: yyyy-MM-dd")
+            message = "Phải đúng định dạng: yyyy-MM-dd!")
     private String expiryDate;
 
-    @NotBlank(message = "Không được để trống")
+    @NotBlank(message = "Trường này không được để trống!")
     private String introduce;
 
-    @NotBlank(message = "Không được để trống")
+    @NotBlank(message = "Trường này không được để trống!")
     private String technicalInformation;
 
-    @NotBlank(message = "Không được để trống")
     private String image;
-    //    @NotBlank(message = "Không được để trống")
+
     private SuppliesType suppliesType;
-    //    @NotBlank(message = "Không được để trống")
+
     private Producer producer;
+
     private List<Supplies> suppliesList;
-
-    public List<Supplies> getSuppliesList() {
-        return suppliesList;
-    }
-
-    public void setSuppliesList(List<Supplies> suppliesList) {
-        this.suppliesList = suppliesList;
-    }
-
-    public SuppliesDTO() {
-    }
-
-    public void setPrice(Long price) {
-        this.price = price;
-    }
-
-    public SuppliesType getSuppliesType() {
-        return suppliesType;
-    }
-
-    public void setSuppliesType() {
-        this.suppliesType = suppliesType;
-    }
-
-    public Producer getProducer() {
-        return producer;
-    }
-
-    public void setProducer(Producer producer) {
-        this.producer = this.producer;
-    }
 
     public Long getId() {
         return id;
@@ -112,7 +79,7 @@ public class SuppliesDTO implements Validator {
         return price;
     }
 
-    public void setPrice() {
+    public void setPrice(Long price) {
         this.price = price;
     }
 
@@ -148,10 +115,6 @@ public class SuppliesDTO implements Validator {
         this.technicalInformation = technicalInformation;
     }
 
-    public void setSuppliesType(SuppliesType suppliesType) {
-        this.suppliesType = suppliesType;
-    }
-
     public String getImage() {
         return image;
     }
@@ -160,6 +123,29 @@ public class SuppliesDTO implements Validator {
         this.image = image;
     }
 
+    public SuppliesType getSuppliesType() {
+        return suppliesType;
+    }
+
+    public void setSuppliesType(SuppliesType suppliesType) {
+        this.suppliesType = suppliesType;
+    }
+
+    public Producer getProducer() {
+        return producer;
+    }
+
+    public void setProducer(Producer producer) {
+        this.producer = producer;
+    }
+
+    public List<Supplies> getSuppliesList() {
+        return suppliesList;
+    }
+
+    public void setSuppliesList(List<Supplies> suppliesList) {
+        this.suppliesList = suppliesList;
+    }
 
     @Override
     public boolean supports(Class<?> clazz) {
