@@ -27,7 +27,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/admin/")
+@RequestMapping("/api/")
 @CrossOrigin(origins = "http://localhost:4200",allowedHeaders = "*")
 public class SuppliesController {
     @Autowired
@@ -44,21 +44,21 @@ public class SuppliesController {
     IPotentialCustomerService iPotentialCustomerService;
 
     //Huy
-    @GetMapping("supplies/suppliestype")
+    @GetMapping("admin/supplies/suppliestype")
     public ResponseEntity<?> getSuppliesTypeList() {
         List<SuppliesType> suppliesTypeList = iSuppliesTypeService.getAll();
         return new ResponseEntity<>(suppliesTypeList, HttpStatus.OK);
     }
 
     //Huy
-    @GetMapping("supplies/producer")
+    @GetMapping("admin/supplies/producer")
     public ResponseEntity<?> getProducerList() {
         List<Producer> producerList = iProducerService.getAll();
         return new ResponseEntity<>(producerList, HttpStatus.OK);
     }
 
     //Huy
-    @GetMapping("supplies")
+    @GetMapping("admin/supplies")
     public ResponseEntity<?> findAllSupplies(@RequestParam String code,
                                              @RequestParam String name,
                                              @RequestParam String suppliesType,
@@ -77,7 +77,7 @@ public class SuppliesController {
 
 
     //Huy
-    @DeleteMapping("supplies/{id}")
+    @DeleteMapping("admin/supplies/{id}")
     public ResponseEntity<?> deleteSupplies(@PathVariable Long id) {
         if (id == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -91,7 +91,7 @@ public class SuppliesController {
     }
 
     //Thanh 29/12
-    @GetMapping("supplies/code")
+    @GetMapping("admin/supplies/code")
     public ResponseEntity<?> suppliesCode() {
         List<Supplies> suppliesList = (List<Supplies>) iSuppliesService.findAll();
         Supplies count = suppliesList.get(suppliesList.size() - 1);
@@ -99,7 +99,7 @@ public class SuppliesController {
     }
 
     //Thanh 29/12
-    @GetMapping("supplies/findById/{id}")
+    @GetMapping("admin/supplies/findById/{id}")
     public ResponseEntity<?> getSupplies(@PathVariable Long id) {
         Optional<Supplies> supplies = iSuppliesService.findById(id);
         if (supplies.isPresent()) {
@@ -109,7 +109,7 @@ public class SuppliesController {
     }
 
     //Thanh 29/12
-    @PostMapping("supplies/create")
+    @PostMapping("admin/supplies/create")
     public ResponseEntity<?> createSupplies(@Valid @RequestBody SuppliesDTO suppliesDTO, BindingResult bindingResult) {
         List<Supplies> supplies = (List<Supplies>) iSuppliesService.findAll();
         suppliesDTO.setSuppliesList(supplies);
@@ -128,7 +128,7 @@ public class SuppliesController {
     }
 
     //Thanh 29/12
-    @PatchMapping("supplies/edit")
+    @PatchMapping("admin/supplies/edit")
     public ResponseEntity<?> editSupplies(@Valid @RequestBody SuppliesDTO suppliesDTO, BindingResult bindingResult1) {
         List<Supplies> suppliesList = (List<Supplies>) iSuppliesService.findAll();
         suppliesDTO.setSuppliesList(suppliesList);
@@ -162,7 +162,7 @@ public class SuppliesController {
     /*
     Bình
      */
-    @GetMapping("stats/supplies-stats")
+    @GetMapping("user/stats/supplies-stats")
     public ResponseEntity<?> getSuppliesStats() {
         List<SuppliesDtoInterface> suppliesDtoInterfaceList = iSuppliesService.getAll();
         if (!suppliesDtoInterfaceList.isEmpty()) {
@@ -182,7 +182,7 @@ public class SuppliesController {
 //        }
 //        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 //    }
-    @GetMapping("stats/supplies-stats/trending-supplies")
+    @GetMapping("user/stats/supplies-stats/trending-supplies")
     public ResponseEntity<?> getTrendingSupplies(){
         List<TrendingSupplies> trendingSupplies = iSuppliesService.getTrendingSupplies();
         if(!trendingSupplies.isEmpty()){
@@ -191,7 +191,7 @@ public class SuppliesController {
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
-    @GetMapping("stats/financial-stats")
+    @GetMapping("user/stats/financial-stats")
     public ResponseEntity<?> getFinancialStats() {
         FinancialStatsDto financialStatsDto = new FinancialStatsDto();
         financialStatsDto.setIncome(financialService.getIncome());
@@ -205,7 +205,7 @@ public class SuppliesController {
         return new ResponseEntity<>(financialStatsDto, HttpStatus.OK);
     }
 
-    @GetMapping("stats/financial-stats/{date}")
+    @GetMapping("user/stats/financial-stats/{date}")
     public ResponseEntity<?> getFinancialStatsByTime(@PathVariable String date) {
 
         String[] str = date.split("-");
@@ -223,7 +223,7 @@ public class SuppliesController {
         return new ResponseEntity<>(financialStatsDto, HttpStatus.OK);
     }
 
-    @GetMapping("stats/potential-customer")
+    @GetMapping("user/stats/potential-customer")
     public ResponseEntity<?> getPotentialCustomerStats() {
 
         List<PotentialCustomerDto> potencialDtoList = iPotentialCustomerService.getAll();
@@ -234,7 +234,7 @@ public class SuppliesController {
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
-    @GetMapping("stats/potential-customer/fetch")
+    @GetMapping("user/stats/potential-customer/fetch")
     public ResponseEntity<?> getPotentialCustomerByTime(@RequestParam String startDate,
                                                         @RequestParam String endDate) {
         LocalDate ld = LocalDate.parse(startDate);
