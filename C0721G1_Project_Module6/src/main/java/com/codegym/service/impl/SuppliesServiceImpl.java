@@ -1,8 +1,7 @@
 package com.codegym.service.impl;
 
-import com.codegym.dto.SuppliesDTO;
+import com.codegym.dto.ISuppliesDTO;
 import com.codegym.model.Supplies;
-import com.codegym.model.SuppliesType;
 import com.codegym.repository.ISuppliesRepository;
 import com.codegym.service.ISuppliesService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,7 +47,7 @@ public class SuppliesServiceImpl implements ISuppliesService {
     }
 
     @Override
-    public Page<SuppliesDTO> findAllSupplies(Pageable pageable, String name, String code, String supplies_type_id) throws ParseException {
+    public Page<ISuppliesDTO> findAllSupplies(Pageable pageable, String name, String code, String supplies_type_id) throws ParseException {
         setStatus();
         return iSuppliesRepository.findAllSupplies(pageable, "%" + name + "%", "%" + code + "%", "%" + supplies_type_id + "%");
     }
