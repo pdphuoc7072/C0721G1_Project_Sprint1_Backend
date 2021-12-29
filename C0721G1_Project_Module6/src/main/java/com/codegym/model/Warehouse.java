@@ -32,7 +32,7 @@ public class Warehouse {
     private Integer importQuantity;
 
     @JsonBackReference(value = "")
-    @OneToMany(mappedBy = "warehouses")
+    @OneToMany(mappedBy = "warehouse")
     private Set<Supplies> supplies;
 
     public Warehouse() {

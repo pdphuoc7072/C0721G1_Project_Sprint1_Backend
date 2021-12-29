@@ -22,7 +22,6 @@ public class OrderDetail {
     @JoinColumn(name = "customer_id", referencedColumnName = "id")
     private Customer customer;
 
-
     @JsonBackReference(value = "")
     @OneToMany(mappedBy = "orderDetail")
     private Set<Supplies> supplies;
