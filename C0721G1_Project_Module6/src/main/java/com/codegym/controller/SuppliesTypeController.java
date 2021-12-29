@@ -21,8 +21,9 @@ import java.util.List;
 public class SuppliesTypeController {
     @Autowired
     private ISuppliesTypeService suppliesTypeService;
+    //Thanh 29/12
     @GetMapping("/admin/suppliesType/list")
-    public ResponseEntity<?> getSuppliesList() {
+    public ResponseEntity<?> getSuppliesTypeList() {
         List<SuppliesType> suppliesTypes = (List<SuppliesType>) suppliesTypeService.findAll();
         return new ResponseEntity<>(suppliesTypes, HttpStatus.OK);
     }

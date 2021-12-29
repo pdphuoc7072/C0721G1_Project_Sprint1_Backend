@@ -16,14 +16,12 @@ import java.util.List;
 public class SuppliesDTO implements Validator {
 
     private Long id;
-//    @NotBlank(message = "Không được để trống.")
-//    @Pattern(regexp = "^(MVT-)(\\d{4})$", message = "Phải đúng định dạng MVT-xxxx")
     private String code;
 
     @NotBlank(message = "Trường này không được để trống!")
     private String name;
 
-//    @NotBlank(message = "Trường này không được để trống!")
+
     @Min(1000)
     private Long price;
 
@@ -155,13 +153,6 @@ public class SuppliesDTO implements Validator {
     @Override
     public void validate(Object target, Errors errors) {
         SuppliesDTO suppliesDTO = (SuppliesDTO) target;
-//        for (Supplies supplies : suppliesList) {
-//            if (suppliesDTO.getCode().equals(supplies.getCode())) {
-//                errors.rejectValue("code", "code.equals", "Mã đã tồn tại");
-//            }
-//
-//        }
-//        ;
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         try {

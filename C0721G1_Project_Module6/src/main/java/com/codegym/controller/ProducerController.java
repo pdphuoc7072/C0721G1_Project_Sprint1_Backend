@@ -22,6 +22,7 @@ import java.util.List;
 public class ProducerController {
     @Autowired
     private IProducerService producerService;
+    //Thanh 29/12
     @GetMapping("admin/producer/list")
     public ResponseEntity<?> getProducerList() {
         List<Producer> producers = (List<Producer>) producerService.findAll();
