@@ -19,7 +19,6 @@ public class User {
 
     @JsonBackReference(value = "")
     @OneToOne(mappedBy = "user")
-    @JsonIgnore
     private Employee employee;
 
     @JsonBackReference(value = "")
@@ -28,6 +27,17 @@ public class User {
     private Set<Role> roles;
 
     public User() {
+    }
+
+    public User(Long id, String username, String password) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+    }
+
+    public User(String username, String password) {
+        this.username = username;
+        this.password = password;
     }
 
     public Long getId() {
