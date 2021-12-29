@@ -3,6 +3,9 @@ package com.codegym.payload.request;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
+/*
+Creator: PhuocPD
+ */
 public class RegisterRequest{
     @NotBlank(message = "Vui lòng nhập Tên đăng nhập")
     @Pattern(regexp = "^[a-zA-Z0-9]([._-](?![._-])|[a-zA-Z0-9]){2,8}[a-zA-Z0-9]$",

@@ -30,9 +30,12 @@ import javax.validation.Valid;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/*
+Creator: PhuocPD
+ */
 @RestController
 @RequestMapping("api/public")
-@CrossOrigin(origins = "*",allowedHeaders = "*",allowCredentials = "false")
+@CrossOrigin(origins = "http://localhost:4200",allowedHeaders = "*")
 public class SecurityController {
     @Autowired
     private JwtUtility jwtUtility;

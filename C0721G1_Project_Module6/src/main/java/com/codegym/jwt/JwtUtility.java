@@ -8,6 +8,9 @@ import org.springframework.stereotype.Component;
 import java.io.Serializable;
 import java.util.Date;
 
+/*
+Creator: PhuocPD
+ */
 @Component
 public class JwtUtility implements Serializable {
     private static final Logger logger = LoggerFactory.getLogger(JwtUtility.class);

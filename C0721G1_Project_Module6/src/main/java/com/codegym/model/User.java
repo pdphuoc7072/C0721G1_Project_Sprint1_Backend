@@ -19,7 +19,6 @@ public class User {
 
     @JsonBackReference(value = "")
     @OneToOne(mappedBy = "user")
-    @JsonIgnore
     private Employee employee;
 
     @JsonBackReference(value = "")

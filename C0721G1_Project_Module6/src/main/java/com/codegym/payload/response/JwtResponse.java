@@ -4,6 +4,9 @@ import com.codegym.model.Employee;
 
 import java.util.List;
 
+/*
+Creator: PhuocPD
+ */
 public class JwtResponse {
     private String token;
     private String type = "Bearer";

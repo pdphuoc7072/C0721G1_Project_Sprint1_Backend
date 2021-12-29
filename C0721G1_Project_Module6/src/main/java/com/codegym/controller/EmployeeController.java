@@ -18,7 +18,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api")
-@CrossOrigin(origins = "*",allowedHeaders = "*",allowCredentials = "false")
+@CrossOrigin(origins = "http://localhost:4200",allowedHeaders = "*")
 public class EmployeeController {
     @Autowired
     IEmployeeService employeeService;
@@ -26,6 +26,9 @@ public class EmployeeController {
     @Autowired
     IPositionService positionService;
 
+    /*
+    Creator: SangDN
+     */
     @GetMapping("/admin/employee")
     public ResponseEntity<?> findAllEmployee(@RequestParam String code,
                                              @RequestParam String name,
@@ -60,6 +63,9 @@ public class EmployeeController {
         return new ResponseEntity<>(employee, HttpStatus.OK);
     }
 
+    /*
+    Creator: SangDN
+     */
     @DeleteMapping("/admin/employee/{id}")
     public ResponseEntity<?> deleteEmployee(@PathVariable Long id) {
         if(id == null){
