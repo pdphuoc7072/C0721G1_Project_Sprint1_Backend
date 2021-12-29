@@ -1,5 +1,7 @@
 package com.codegym.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 import java.util.Set;
 
@@ -35,11 +37,23 @@ public class Supplies {
     @JoinColumn(name = "producer_id", referencedColumnName = "id")
     private Producer producer;
 
-    @OneToMany(mappedBy = "supplies")
-    private Set<OrderDetail> orderDetails;
+    @ManyToOne(targetEntity = OrderDetail.class)
+    @JoinColumn(name = "orderDetails_id", referencedColumnName = "id")
+    private OrderDetail orderDetail;
 
-    @OneToMany(mappedBy = "supplies")
-    private Set<Warehouse> warehouses;
+    @ManyToOne(targetEntity = Warehouse.class)
+    @JoinColumn(name = "warehouses_id", referencedColumnName = "id")
+    private Warehouse warehouses;
+
+    private int status;
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
 
     public Supplies() {
     }
@@ -130,21 +144,5 @@ public class Supplies {
 
     public void setProducer(Producer producer) {
         this.producer = producer;
-    }
-
-    public Set<OrderDetail> getOrderDetails() {
-        return orderDetails;
-    }
-
-    public void setOrderDetails(Set<OrderDetail> orderDetails) {
-        this.orderDetails = orderDetails;
-    }
-
-    public Set<Warehouse> getWarehouses() {
-        return warehouses;
-    }
-
-    public void setWarehouses(Set<Warehouse> warehouses) {
-        this.warehouses = warehouses;
     }
 }

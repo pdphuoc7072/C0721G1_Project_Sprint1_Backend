@@ -1,5 +1,7 @@
 package com.codegym.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 import java.util.Set;
 
@@ -11,6 +13,7 @@ public class Position {
 
     private String name;
 
+    @JsonBackReference(value = "")
     @OneToMany(mappedBy = "position")
     private Set<Employee> employees;
 
