@@ -50,10 +50,10 @@ public class EmployeeController {
                                              @RequestParam int page,
                                              @RequestParam int size) {
 
-        Pageable pageable = PageRequest.of(page, size, Sort.Direction.ASC,"name");
+        Pageable pageable = PageRequest.of(page, size, Sort.Direction.ASC, "name");
 
-        Page<Employee> employeePage = employeeService.findAllEmployee(code, name , positionId, pageable);
-        if(employeePage.isEmpty()){
+        Page<Employee> employeePage = employeeService.findAllEmployee(code, name, positionId, pageable);
+        if (employeePage.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(employeePage, HttpStatus.OK);
@@ -68,11 +68,16 @@ public class EmployeeController {
         employeeDto.validate(employeeDto, bindingResult);
         if (bindingResult.hasFieldErrors()) {
             return new ResponseEntity<>(bindingResult.getAllErrors(), HttpStatus.BAD_REQUEST);
-        }
-        else {
+        } else {
             String name = WordUtils.capitalizeFully(employeeDto.getName()).replaceAll("\\s+", " ");
-            long count = employees.get(employees.size() - 1).getId() + 1;
-            String code = "Emp-" + count;
+            long count;
+            String code;
+            if (employees.isEmpty()) {
+                 code = "Nhân Viên - " + 1;
+            } else {
+                 count = employees.get(employees.size() - 1).getId() + 1;
+                 code = "Nhân Viên - " + count;
+            }
             employeeDto.setCode(code);
             employeeDto.setName(name);
             Employee employee = new Employee();
@@ -151,8 +156,12 @@ public class EmployeeController {
     @GetMapping("/admin/employee/code")
     public ResponseEntity<?> EmployeeCode() {
         List<Employee> employeeList = employeeService.getAll();
-        Employee count = employeeList.get(employeeList.size()-1);
-        return new ResponseEntity<>(count, HttpStatus.OK);
+        if (employeeList.isEmpty()) {
+            return new ResponseEntity<>(null, HttpStatus.OK);
+        } else {
+            Employee employee = employeeList.get(employeeList.size() - 1);
+            return new ResponseEntity<>(employee, HttpStatus.OK);
+        }
     }
     // TinhBt
     @GetMapping("/employee/detail/{id}")
