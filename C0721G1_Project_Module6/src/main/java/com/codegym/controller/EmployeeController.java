@@ -1,4 +1,4 @@
-package com.codegym.controllerEmployee;
+package com.codegym.controller;
 
 
 import com.codegym.dto.EmployeeDto;
@@ -50,10 +50,10 @@ public class EmployeeController {
                                              @RequestParam int page,
                                              @RequestParam int size) {
 
-        Pageable pageable = PageRequest.of(page, size, Sort.Direction.ASC,"name");
+        Pageable pageable = PageRequest.of(page, size, Sort.Direction.ASC, "name");
 
-        Page<Employee> employeePage = employeeService.findAllEmployee(code, name , positionId, pageable);
-        if(employeePage.isEmpty()){
+        Page<Employee> employeePage = employeeService.findAllEmployee(code, name, positionId, pageable);
+        if (employeePage.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(employeePage, HttpStatus.OK);
@@ -68,18 +68,20 @@ public class EmployeeController {
         employeeDto.validate(employeeDto, bindingResult);
         if (bindingResult.hasFieldErrors()) {
             return new ResponseEntity<>(bindingResult.getAllErrors(), HttpStatus.BAD_REQUEST);
-        }
-//        for (Employee e : employees) {
-//            if (employeeDto.getPhone().equals(e.getPhone())) {
-//                return new ResponseEntity<>("trùng số điện thoại", HttpStatus.BAD_REQUEST);
-//            }
-//        }
-        else {
+        } else {
             String name = WordUtils.capitalizeFully(employeeDto.getName()).replaceAll("\\s+", " ");
-            long count = employees.get(employees.size() - 1).getId() + 1;
-            String code = "Emp-" + count;
+            String address = WordUtils.capitalizeFully(employeeDto.getAddress()).replaceAll("\\s+", " ");
+            long count;
+            String code;
+            if (employees.isEmpty()) {
+                 code = "Nhân Viên - " + 1;
+            } else {
+                 count = employees.get(employees.size() - 1).getId() + 1;
+                 code = "Nhân Viên - " + count;
+            }
             employeeDto.setCode(code);
             employeeDto.setName(name);
+            employeeDto.setName(address);
             Employee employee = new Employee();
             BeanUtils.copyProperties(employeeDto, employee);
             employeeService.save(employee);
@@ -97,10 +99,11 @@ public class EmployeeController {
             return new ResponseEntity<>(bindingResult.getAllErrors(), HttpStatus.BAD_REQUEST);
         } else {
             String name = WordUtils.capitalizeFully(employeeDto.getName()).replaceAll("\\s+", " ");
+            String address = WordUtils.capitalizeFully(employeeDto.getAddress()).replaceAll("\\s+", " ");
             employeeDto.setName(name);
+            employeeDto.setName(address);
             Employee employee = new Employee();
             BeanUtils.copyProperties(employeeDto, employee);
-
             employeeService.save(employee);
             return new ResponseEntity<>(HttpStatus.OK);
         }
@@ -153,13 +156,16 @@ public class EmployeeController {
         List<Employee> employeeList = employeeService.getAll();
         return new ResponseEntity<>(employeeList, HttpStatus.OK);
     }
+    //duc
     @GetMapping("/admin/employee/code")
     public ResponseEntity<?> EmployeeCode() {
         List<Employee> employeeList = employeeService.getAll();
-        long count = employeeList.get(employeeList.size() - 1).getId() + 1;
-
-        String code = "Emp-" + count;
-        return new ResponseEntity<>(code, HttpStatus.OK);
+        if (employeeList.isEmpty()) {
+            return new ResponseEntity<>(null, HttpStatus.OK);
+        } else {
+            Employee employee = employeeList.get(employeeList.size() - 1);
+            return new ResponseEntity<>(employee, HttpStatus.OK);
+        }
     }
     // TinhBt
     @GetMapping("/employee/detail/{id}")
