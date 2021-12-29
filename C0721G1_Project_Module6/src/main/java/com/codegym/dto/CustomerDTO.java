@@ -7,21 +7,25 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 
 
-// Tân Code  24/12/2021//
+// Tân Code//
 public class CustomerDTO  implements Validator {
     private Long id;
     @NotBlank
-    private String code;
-    @NotBlank
+    @Pattern(regexp = "([\\p{Lu}][\\p{Ll}]{1,8})(\\s([\\p{Lu}]|[\\p{Lu}][\\p{Ll}]{1,10})){0,5}$",message = "Wrong name format, please enter again ! ")
     private String name;
     @NotBlank
+    @Pattern(regexp = "\\d{10}",message ="Please enter again, number phone is 10-digit string !" )
+    @Min(value = 10,message = "Phone min length is 10-digit string !")
     private String phone;
     @NotBlank
+    @Pattern (regexp = "^[A-z]{1}((\\w)*[.]?(\\w)*|(\\w)*[-]?(\\w)*)@[a-z0-9]+([.][a-z]{2,3}){1,5}",message = "Wrong email format (xxx@xxxx.com), please enter again !")
     private String email;
-    private Address address;
+    private AddressDTO addressDTO;
     private Iterable<Customer> customers;
     public CustomerDTO() {
     }
@@ -32,14 +36,6 @@ public class CustomerDTO  implements Validator {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
     }
 
     public String getName() {
@@ -66,12 +62,12 @@ public class CustomerDTO  implements Validator {
         this.email = email;
     }
 
-    public Address getAddress() {
-        return address;
+    public AddressDTO getAddress() {
+        return addressDTO;
     }
 
-    public void setAddress(Address address) {
-        this.address = address;
+    public void setAddress(AddressDTO addressDTO) {
+        this.addressDTO = addressDTO;
     }
 
 
@@ -90,6 +86,14 @@ public class CustomerDTO  implements Validator {
 
     @Override
     public void validate(Object target, Errors errors) {
-
+        CustomerDTO customerDTO = (CustomerDTO) target;
+        for(Customer customer:customerDTO.customers){
+            if(customerDTO.getEmail().equals(customer.getEmail())){
+                errors.rejectValue("email","sameEmail","Email is exist, please enter another Email !");
+            }
+            if(customerDTO.getPhone().equals(customer.getPhone())){
+                errors.rejectValue("phone","samePhone","Number Phone is exist, please enter another Number Phone !");
+            }
+        }
     }
 }
