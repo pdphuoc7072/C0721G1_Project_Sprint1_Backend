@@ -154,4 +154,13 @@ public class EmployeeController {
         Employee count = employeeList.get(employeeList.size()-1);
         return new ResponseEntity<>(count, HttpStatus.OK);
     }
+    // TinhBt
+    @GetMapping("/employee/detail/{id}")
+    public ResponseEntity<?> findDetailEmployeeById(@PathVariable Long id) {
+        Optional<Employee> employee = employeeService.findById(id);
+        if (employee.isPresent()){
+            return new ResponseEntity<>(employee.get(), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }
