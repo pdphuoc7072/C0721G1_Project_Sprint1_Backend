@@ -70,6 +70,7 @@ public class EmployeeController {
             return new ResponseEntity<>(bindingResult.getAllErrors(), HttpStatus.BAD_REQUEST);
         } else {
             String name = WordUtils.capitalizeFully(employeeDto.getName()).replaceAll("\\s+", " ");
+            String address = WordUtils.capitalizeFully(employeeDto.getAddress()).replaceAll("\\s+", " ");
             long count;
             String code;
             if (employees.isEmpty()) {
@@ -80,6 +81,7 @@ public class EmployeeController {
             }
             employeeDto.setCode(code);
             employeeDto.setName(name);
+            employeeDto.setName(address);
             Employee employee = new Employee();
             BeanUtils.copyProperties(employeeDto, employee);
             employeeService.save(employee);
@@ -97,10 +99,11 @@ public class EmployeeController {
             return new ResponseEntity<>(bindingResult.getAllErrors(), HttpStatus.BAD_REQUEST);
         } else {
             String name = WordUtils.capitalizeFully(employeeDto.getName()).replaceAll("\\s+", " ");
+            String address = WordUtils.capitalizeFully(employeeDto.getAddress()).replaceAll("\\s+", " ");
             employeeDto.setName(name);
+            employeeDto.setName(address);
             Employee employee = new Employee();
             BeanUtils.copyProperties(employeeDto, employee);
-
             employeeService.save(employee);
             return new ResponseEntity<>(HttpStatus.OK);
         }
@@ -153,6 +156,7 @@ public class EmployeeController {
         List<Employee> employeeList = employeeService.getAll();
         return new ResponseEntity<>(employeeList, HttpStatus.OK);
     }
+    //duc
     @GetMapping("/admin/employee/code")
     public ResponseEntity<?> EmployeeCode() {
         List<Employee> employeeList = employeeService.getAll();
