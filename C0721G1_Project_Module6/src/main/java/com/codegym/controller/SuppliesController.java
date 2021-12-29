@@ -75,7 +75,7 @@ public class SuppliesController {
     }
 
     //Thanh 29/12
-    @PatchMapping("admin/supplies/edit")
+    @PatchMapping("admin/supplies/edit/{id}")
     public ResponseEntity<?> editSupplies(@Valid @RequestBody SuppliesDTO suppliesDTO, BindingResult bindingResult1) {
         List<Supplies> suppliesList = (List<Supplies>) suppliesService.findAll();
         suppliesDTO.setSuppliesList(suppliesList);
