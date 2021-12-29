@@ -41,21 +41,21 @@ public class SuppliesController {
     @Autowired
     IProducerService iProducerService;
 
-
+    //Huy
     @GetMapping("/suppliestype")
     public ResponseEntity<?> getSuppliesTypeList() {
         List<SuppliesType> suppliesTypeList = iSuppliesTypeService.getAll();
         return new ResponseEntity<>(suppliesTypeList, HttpStatus.OK);
     }
 
-
+    //Huy
     @GetMapping("/producer")
     public ResponseEntity<?> getProducerList() {
         List<Producer> producerList = iProducerService.getAll();
         return new ResponseEntity<>(producerList, HttpStatus.OK);
     }
 
-
+    //Huy
     @GetMapping("")
     public ResponseEntity<?> findAllSupplies(@RequestParam String code,
                                              @RequestParam String name,
@@ -73,13 +73,14 @@ public class SuppliesController {
         return new ResponseEntity<>(suppliesPage, HttpStatus.OK);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<?> findById(@PathVariable Long id) {
-        Supplies supplies = iSuppliesService.findById(id).get();
-        return new ResponseEntity<>(supplies, HttpStatus.OK);
-    }
+    //Huy
+//    @GetMapping("/{id}")
+//    public ResponseEntity<?> findById(@PathVariable Long id) {
+//        Supplies supplies = iSuppliesService.findById(id).get();
+//        return new ResponseEntity<>(supplies, HttpStatus.OK);
+//    }
 
-
+    //Huy
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteSupplies(@PathVariable Long id) {
         if (id == null) {
