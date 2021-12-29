@@ -2,7 +2,7 @@ package com.example.statsticals.service;
 
 import com.example.statsticals.dto.SuppiliesDtoInterface;
 
-import org.springframework.data.repository.query.Param;
+import com.example.statsticals.dto.TrendingSupplies;
 
 import java.time.LocalDate;
 
@@ -14,5 +14,7 @@ public interface ISuppliesService {
     List<SuppiliesDtoInterface> getAll();
 
     List<SuppiliesDtoInterface> getSuppliesByTime(LocalDate startDate, LocalDate endDate);
+
+    List<TrendingSupplies> getTrendingSupplies();
 
 }

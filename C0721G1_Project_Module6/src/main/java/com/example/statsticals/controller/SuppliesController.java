@@ -1,7 +1,7 @@
 package com.example.statsticals.controller;
 
-import com.example.statsticals.dto.PotentialCustomerDto;
 import com.example.statsticals.dto.SuppiliesDtoInterface;
+import com.example.statsticals.dto.TrendingSupplies;
 import com.example.statsticals.service.ISuppliesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+
 
 import java.util.List;
 
@@ -28,7 +28,10 @@ public class SuppliesController {
     @GetMapping("")
     public ResponseEntity<?> getSuppliesStats() {
         List<SuppiliesDtoInterface> suppiliesDtoInterfaceList = iSuppliesService.getAll();
-        return new ResponseEntity<>(suppiliesDtoInterfaceList, HttpStatus.OK);
+        if (!suppiliesDtoInterfaceList.isEmpty()) {
+            return new ResponseEntity<>(suppiliesDtoInterfaceList, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     @GetMapping("/fetch")
@@ -39,6 +42,14 @@ public class SuppliesController {
         List<SuppiliesDtoInterface> suppiliesDtoInterfaceList = iSuppliesService.getSuppliesByTime(ld, ld1);
         if (!suppiliesDtoInterfaceList.isEmpty()) {
             return new ResponseEntity<>(suppiliesDtoInterfaceList, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+    @GetMapping("/trending-supplies")
+    public ResponseEntity<?> getTrendingSupplies(){
+        List<TrendingSupplies> trendingSupplies = iSuppliesService.getTrendingSupplies();
+        if(!trendingSupplies.isEmpty()){
+            return new ResponseEntity<>(trendingSupplies, HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
