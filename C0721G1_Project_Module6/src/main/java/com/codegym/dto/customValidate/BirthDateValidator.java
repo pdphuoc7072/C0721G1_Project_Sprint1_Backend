@@ -12,14 +12,14 @@ public class BirthDateValidator implements ConstraintValidator<BirthDay, String>
     @Override
     public boolean isValid(final String valueToValidate, final ConstraintValidatorContext context) {
         try {
-            if(valueToValidate!= null ) {
+            if (valueToValidate != null) {
                 int day = Integer.parseInt(valueToValidate.substring(0, 4));
                 int currentDate = LocalDate.now().getYear();
-                return (currentDate - day > 18 || currentDate - day < 60);
-            }else {
+                return currentDate - day >= 18 && currentDate - day < 60;
+            } else {
                 return false;
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             return false;
         }
     }

@@ -39,7 +39,7 @@ public class EmployeeDto implements Validator {
     private String birthday;
 
     private String image;
-
+   @NotNull
     private Integer gender;
 
     @NotBlank
@@ -50,7 +50,7 @@ public class EmployeeDto implements Validator {
 
     @NotBlank
     private String address;
-
+    @NotNull
     private Position position;
 
     private User user;

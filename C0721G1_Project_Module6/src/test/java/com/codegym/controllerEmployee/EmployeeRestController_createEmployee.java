@@ -192,8 +192,8 @@ public class EmployeeRestController_createEmployee {
     public void createEmployee_birthDay_15() throws Exception {
         EmployeeDto employeeDto = new EmployeeDto();
         employeeDto.setName("Nguyễn văn a");
-        employeeDto.setPhone("0909999111");
-        employeeDto.setBirthday("2000/01/01");
+        employeeDto.setPhone("0901111999");
+        employeeDto.setBirthday("2020-01-01");
         employeeDto.setGender(0);
         employeeDto.setAddress("Huế");
         employeeDto.setImage("anh1.png");

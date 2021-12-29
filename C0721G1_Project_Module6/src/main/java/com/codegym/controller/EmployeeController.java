@@ -1,4 +1,4 @@
-package com.codegym.controllerEmployee;
+package com.codegym.controller;
 
 
 import com.codegym.dto.EmployeeDto;
@@ -69,11 +69,6 @@ public class EmployeeController {
         if (bindingResult.hasFieldErrors()) {
             return new ResponseEntity<>(bindingResult.getAllErrors(), HttpStatus.BAD_REQUEST);
         }
-//        for (Employee e : employees) {
-//            if (employeeDto.getPhone().equals(e.getPhone())) {
-//                return new ResponseEntity<>("trùng số điện thoại", HttpStatus.BAD_REQUEST);
-//            }
-//        }
         else {
             String name = WordUtils.capitalizeFully(employeeDto.getName()).replaceAll("\\s+", " ");
             long count = employees.get(employees.size() - 1).getId() + 1;
@@ -156,9 +151,7 @@ public class EmployeeController {
     @GetMapping("/admin/employee/code")
     public ResponseEntity<?> EmployeeCode() {
         List<Employee> employeeList = employeeService.getAll();
-        long count = employeeList.get(employeeList.size() - 1).getId() + 1;
-
-        String code = "Emp-" + count;
-        return new ResponseEntity<>(code, HttpStatus.OK);
+        Employee count = employeeList.get(employeeList.size()-1);
+        return new ResponseEntity<>(count, HttpStatus.OK);
     }
 }
