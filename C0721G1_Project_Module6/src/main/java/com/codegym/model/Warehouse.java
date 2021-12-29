@@ -1,6 +1,9 @@
 package com.codegym.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 public class Warehouse {
@@ -29,9 +32,9 @@ public class Warehouse {
     private Integer importQuantity;
 
 
-    @ManyToOne(targetEntity = Supplies.class)
-    @JoinColumn(name = "supplies_id", referencedColumnName = "id")
-    private Supplies supplies;
+    @JsonBackReference(value = "warehouse-back-class")
+    @OneToMany(mappedBy = "warehouses")
+    private Set<Supplies> supplies;
 
     public Warehouse() {
     }
@@ -124,11 +127,11 @@ public class Warehouse {
         this.importQuantity = importQuantity;
     }
 
-    public Supplies getSupplies() {
+    public Set<Supplies> getSupplies() {
         return supplies;
     }
 
-    public void setSupplies(Supplies supplies) {
+    public void setSupplies(Set<Supplies> supplies) {
         this.supplies = supplies;
     }
 }

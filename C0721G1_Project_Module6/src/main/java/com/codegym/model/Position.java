@@ -13,7 +13,7 @@ public class Position {
 
     private String name;
 
-    @JsonBackReference(value = "")
+    @JsonBackReference(value = "back-class-position")
     @OneToMany(mappedBy = "position")
     private Set<Employee> employees;
 

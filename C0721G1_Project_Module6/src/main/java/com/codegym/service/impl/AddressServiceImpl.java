@@ -6,6 +6,7 @@ import com.codegym.service.IAddressService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -31,5 +32,10 @@ public class AddressServiceImpl implements IAddressService {
     @Override
     public void remove(Long id) {
         iAddressRepository.deleteById(id);
+    }
+
+    @Override
+    public List<Address> getAll() {
+        return iAddressRepository.findAll();
     }
 }

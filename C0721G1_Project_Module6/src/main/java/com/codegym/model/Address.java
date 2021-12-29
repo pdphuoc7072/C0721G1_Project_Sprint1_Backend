@@ -13,9 +13,14 @@ public class Address {
 
     private String name;
 
-    @JsonBackReference(value = "")
+    @JsonBackReference(value = "customer-address-class")
     @OneToMany(mappedBy = "address")
     private Set<Customer> customers;
+
+    public Address(Long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
 
     public Address() {
     }

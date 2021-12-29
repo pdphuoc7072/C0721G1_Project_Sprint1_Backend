@@ -37,13 +37,23 @@ public class Supplies {
     @JoinColumn(name = "producer_id", referencedColumnName = "id")
     private Producer producer;
 
-    @JsonBackReference(value = "")
+    @JsonBackReference(value = "supplies-back-class")
     @OneToMany(mappedBy = "supplies")
     private Set<OrderDetail> orderDetails;
 
-    @JsonBackReference(value = "")
-    @OneToMany(mappedBy = "supplies")
-    private Set<Warehouse> warehouses;
+    @ManyToOne(targetEntity = Warehouse.class)
+    @JoinColumn(name = "warehouses_id", referencedColumnName = "id")
+    private Warehouse warehouses;
+
+    private int status;
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
 
     public Supplies() {
     }
@@ -144,11 +154,11 @@ public class Supplies {
         this.orderDetails = orderDetails;
     }
 
-    public Set<Warehouse> getWarehouses() {
+    public Warehouse getWarehouses() {
         return warehouses;
     }
 
-    public void setWarehouses(Set<Warehouse> warehouses) {
+    public void setWarehouses(Warehouse warehouses) {
         this.warehouses = warehouses;
     }
 }

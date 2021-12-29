@@ -23,7 +23,7 @@ public class Customer {
     @JoinColumn(name = "address_id", referencedColumnName = "id")
     private Address address;
 
-    @JsonBackReference(value = "")
+    @JsonBackReference(value = "customer-orderdetail-class")
     @OneToMany(mappedBy = "customer")
     private Set<OrderDetail> orderDetails;
 

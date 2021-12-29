@@ -6,6 +6,7 @@ import com.codegym.service.ISuppliesTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -31,5 +32,10 @@ public class SuppliesTypeServiceImpl implements ISuppliesTypeService {
     @Override
     public void remove(Long id) {
         iSuppliesTypeRepository.deleteById(id);
+    }
+
+    @Override
+    public List<SuppliesType> getAll() {
+        return iSuppliesTypeRepository.findAll();
     }
 }

@@ -6,6 +6,7 @@ import com.codegym.service.IProducerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -31,5 +32,10 @@ public class ProducerServiceImpl implements IProducerService {
     @Override
     public void remove(Long id) {
         iProducerRepository.deleteById(id);
+    }
+
+    @Override
+    public List<Producer> getAll() {
+        return iProducerRepository.findAll();
     }
 }

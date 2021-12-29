@@ -13,7 +13,7 @@ public class SuppliesType {
 
     private String name;
 
-    @JsonBackReference(value = "")
+    @JsonBackReference(value = "suppliesType-class")
     @OneToMany(mappedBy = "suppliesType")
     private Set<Supplies> supplies;
 

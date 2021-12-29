@@ -17,11 +17,11 @@ public class User {
 
     private String password;
 
-    @JsonBackReference(value = "")
+    @JsonBackReference(value = "user-employee-class")
     @OneToOne(mappedBy = "user")
     private Employee employee;
 
-    @JsonBackReference(value = "")
+    @JsonBackReference(value = "rolse-user-class")
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;

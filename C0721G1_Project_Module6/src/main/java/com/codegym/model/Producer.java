@@ -13,7 +13,7 @@ public class Producer {
 
     private String name;
 
-    @JsonBackReference(value = "")
+    @JsonBackReference(value = "producer-back-value")
     @OneToMany(mappedBy = "producer")
     private Set<Supplies> supplies;
 
