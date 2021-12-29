@@ -36,13 +36,24 @@ public class Supplies {
     @JoinColumn(name = "producer_id", referencedColumnName = "id")
     private Producer producer;
 
-    @ManyToOne()
-    @JoinColumn(name = "orderDetail_id", referencedColumnName = "id")
+    @ManyToOne(targetEntity = OrderDetail.class)
+    @JoinColumn(name = "orderDetails_id", referencedColumnName = "id")
     private OrderDetail orderDetail;
 
-    @ManyToOne
-    @JoinColumn(name = "warehouse_id", referencedColumnName = "id")
-    private Warehouse warehouse;
+    @ManyToOne(targetEntity = Warehouse.class)
+    @JoinColumn(name = "warehouses_id", referencedColumnName = "id")
+    private Warehouse warehouses;
+
+    private int status;
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
 
     public Supplies() {
     }
@@ -149,6 +160,7 @@ public class Supplies {
         this.producer = producer;
     }
 
+
     public OrderDetail getOrderDetail() {
         return orderDetail;
     }
@@ -164,4 +176,5 @@ public class Supplies {
     public void setWarehouse(Warehouse warehouse) {
         this.warehouse = warehouse;
     }
+
 }

@@ -17,6 +17,7 @@ public class OrderDetail {
 
     private Integer quantity;
 
+
     @ManyToOne(targetEntity = Customer.class)
     @JoinColumn(name = "customer_id", referencedColumnName = "id")
     private Customer customer;
