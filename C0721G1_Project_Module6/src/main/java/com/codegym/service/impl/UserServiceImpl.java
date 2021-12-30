@@ -34,9 +34,4 @@ public class UserServiceImpl implements IUserService {
         iUserRepository.deleteById(id);
     }
 
-//
-//    @Override
-//    public void editPassword(Long id, String password) {
-//        iUserRepository.editPassword(id,password);
-//    }
 }

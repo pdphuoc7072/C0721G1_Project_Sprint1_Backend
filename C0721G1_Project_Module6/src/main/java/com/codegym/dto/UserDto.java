@@ -20,9 +20,6 @@ public class UserDto {
     private Employee employee;
     private Set<Role> roles;
 
-    public UserDto() {
-    }
-
     public UserDto(Long id, String username, String password, Employee employee, Set<Role> roles) {
         this.id = id;
         this.username = username;
