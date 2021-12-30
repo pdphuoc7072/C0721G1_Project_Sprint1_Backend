@@ -10,7 +10,6 @@ public class Producer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String name;
 
     @JsonBackReference(value = "")
@@ -19,6 +18,7 @@ public class Producer {
 
     public Producer() {
     }
+
 
     public Long getId() {
         return id;

@@ -1,9 +1,8 @@
 package com.codegym.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+
 
 import javax.persistence.*;
-import java.util.Set;
 
 @Entity
 public class Supplies {
@@ -37,15 +36,40 @@ public class Supplies {
     @JoinColumn(name = "producer_id", referencedColumnName = "id")
     private Producer producer;
 
-    @JsonBackReference(value = "")
-    @OneToMany(mappedBy = "supplies")
-    private Set<OrderDetail> orderDetails;
+    @ManyToOne(targetEntity = OrderDetail.class)
+    @JoinColumn(name = "orderDetails_id", referencedColumnName = "id")
+    private OrderDetail orderDetail;
 
-    @JsonBackReference(value = "")
-    @OneToMany(mappedBy = "supplies")
-    private Set<Warehouse> warehouses;
+    @ManyToOne(targetEntity = Warehouse.class)
+    @JoinColumn(name = "warehouses_id", referencedColumnName = "id")
+    private Warehouse warehouses;
+
+    private int status;
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
 
     public Supplies() {
+    }
+
+    public Supplies(Long id, String code, String name, Long price, String productionDate, String expiryDate, String introduce, String technicalInformation, String image, SuppliesType suppliesType, Producer producer) {
+        this.id = id;
+        this.code = code;
+        this.name = name;
+        this.price = price;
+        this.productionDate = productionDate;
+        this.expiryDate = expiryDate;
+        this.introduce = introduce;
+        this.technicalInformation = technicalInformation;
+        this.image = image;
+        this.suppliesType = suppliesType;
+        this.producer = producer;
     }
 
     public Long getId() {
@@ -136,19 +160,21 @@ public class Supplies {
         this.producer = producer;
     }
 
-    public Set<OrderDetail> getOrderDetails() {
-        return orderDetails;
+
+    public OrderDetail getOrderDetail() {
+        return orderDetail;
     }
 
-    public void setOrderDetails(Set<OrderDetail> orderDetails) {
-        this.orderDetails = orderDetails;
+    public void setOrderDetail(OrderDetail orderDetail) {
+        this.orderDetail = orderDetail;
     }
 
-    public Set<Warehouse> getWarehouses() {
-        return warehouses;
+    public Warehouse getWarehouse() {
+        return warehouse;
     }
 
-    public void setWarehouses(Set<Warehouse> warehouses) {
-        this.warehouses = warehouses;
+    public void setWarehouse(Warehouse warehouse) {
+        this.warehouse = warehouse;
     }
+
 }
