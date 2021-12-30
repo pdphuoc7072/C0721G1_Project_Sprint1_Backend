@@ -13,7 +13,7 @@ public class Address {
 
     private String name;
 
-    @JsonBackReference(value = "")
+    @JsonBackReference(value = "address-customer")
     @OneToMany(mappedBy = "address")
     private Set<Customer> customers;
 

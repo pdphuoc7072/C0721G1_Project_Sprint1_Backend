@@ -17,9 +17,8 @@ public class User {
 
     private String password;
 
-    @JsonBackReference(value = "")
+    @JsonBackReference(value = "user-employee")
     @OneToOne(mappedBy = "user")
-    @JsonIgnore
     private Employee employee;
 
     @JsonBackReference(value = "")

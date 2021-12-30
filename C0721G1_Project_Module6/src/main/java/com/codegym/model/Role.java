@@ -13,7 +13,7 @@ public class Role {
 
     private String name;
 
-    @JsonBackReference(value = "")
+    @JsonBackReference(value = "role-user")
     @ManyToMany(mappedBy = "roles")
     private Set<User> users;
 

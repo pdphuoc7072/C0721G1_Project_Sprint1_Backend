@@ -37,7 +37,7 @@ public class Supplies {
     @JoinColumn(name = "producer_id", referencedColumnName = "id")
     private Producer producer;
 
-    @JsonBackReference(value = "")
+    @JsonBackReference(value = "supplies-orderDetail")
     @OneToMany(mappedBy = "supplies")
     private Set<OrderDetail> orderDetails;
 

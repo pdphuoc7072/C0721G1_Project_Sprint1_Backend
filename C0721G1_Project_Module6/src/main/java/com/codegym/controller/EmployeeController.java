@@ -1,13 +1,6 @@
-
 package com.codegym.controller;
 
 import com.codegym.dto.EmployeeDto;
-
-
-
-
-import com.codegym.dto.EmployeeDto;
-import com.codegym.dto.PageEmployeeDTO;
 
 import com.codegym.model.Employee;
 import com.codegym.model.Position;
@@ -29,19 +22,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
-import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
 import org.apache.commons.lang3.text.WordUtils;
-
-import javax.validation.Valid;
-import java.time.LocalDate;
 
 import java.util.HashMap;
 import java.util.List;
@@ -67,10 +49,10 @@ public class EmployeeController {
                                              @RequestParam int page,
                                              @RequestParam int size) {
 
-        Pageable pageable = PageRequest.of(page, size, Sort.Direction.ASC,"name");
+        Pageable pageable = PageRequest.of(page, size, Sort.Direction.ASC, "name");
 
-        Page<Employee> employeePage = employeeService.findAllEmployee(code, name , positionId, pageable);
-        if(employeePage.isEmpty()){
+        Page<Employee> employeePage = employeeService.findAllEmployee(code, name, positionId, pageable);
+        if (employeePage.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(employeePage, HttpStatus.OK);
@@ -122,7 +104,8 @@ public class EmployeeController {
             return new ResponseEntity<>(HttpStatus.OK);
         }
     }
-//duc
+
+    //duc
     @GetMapping("/employee/{id}")
     public ResponseEntity<?> findById(@PathVariable Long id) {
         Optional<Employee> employee = employeeService.findById(id);
@@ -134,13 +117,13 @@ public class EmployeeController {
 
     @DeleteMapping("/admin/employee/{id}")
     public ResponseEntity<?> deleteEmployee(@PathVariable Long id) {
-        if(id == null){
+        if (id == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        if(employeeService.existsByIdEmployee(id)) {
+        if (employeeService.existsByIdEmployee(id)) {
             employeeService.remove(id);
             return new ResponseEntity<>(HttpStatus.OK);
-        }else {
+        } else {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
@@ -152,7 +135,7 @@ public class EmployeeController {
     }
 
     //hung
-    @PatchMapping("/employee/editdetail/update")
+    @PatchMapping("employee/edit-detail/update/{id}")
     public ResponseEntity<?> updateDetailEmployee(@Valid @RequestBody EmployeeDto employeeDTO, BindingResult bindingResult1) {
         if (bindingResult1.hasFieldErrors()) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -166,13 +149,13 @@ public class EmployeeController {
     }
 
     //hung
-    @GetMapping("/employee/editdetail/{id}")
-    public ResponseEntity<?> searchDetailEmployeeById(@PathVariable Long id) {
+    @GetMapping("employee/edit-detail/{id}")
+    public ResponseEntity<?> searchDetailEmployeeById(@PathVariable(name = "id") Long id) {
         Optional<Employee> employee = employeeService.findById(id);
         if (employee.isPresent()) {
-            return new ResponseEntity<>("No data search", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(employee, HttpStatus.OK);
         }
-        return new ResponseEntity<>(employee, HttpStatus.OK);
+        return new ResponseEntity<>("No data search", HttpStatus.BAD_REQUEST);
     }
 
 
@@ -189,12 +172,14 @@ public class EmployeeController {
         });
         return errors;
     }
-//    list DucNV
+
+    //    list DucNV
     @GetMapping("/admin/employee/list")
     public ResponseEntity<?> findAllEmployeeList() {
         List<Employee> employeeList = employeeService.getAll();
         return new ResponseEntity<>(employeeList, HttpStatus.OK);
     }
+
     @GetMapping("/admin/employee/code")
     public ResponseEntity<?> EmployeeCode() {
         List<Employee> employeeList = employeeService.getAll();
@@ -203,11 +188,12 @@ public class EmployeeController {
         String code = "Emp-" + count;
         return new ResponseEntity<>(code, HttpStatus.OK);
     }
+
     // TinhBt
     @GetMapping("/employee/detail/{id}")
     public ResponseEntity<?> findDetailEmployeeById(@PathVariable Long id) {
         Optional<Employee> employee = employeeService.findById(id);
-        if (employee.isPresent()){
+        if (employee.isPresent()) {
             return new ResponseEntity<>(employee.get(), HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
