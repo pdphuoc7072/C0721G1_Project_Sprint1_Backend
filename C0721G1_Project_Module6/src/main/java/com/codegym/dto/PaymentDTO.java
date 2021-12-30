@@ -6,8 +6,6 @@ public class PaymentDTO {
     private List<Cart> cartList;
     private CustomerTransfer customerTransfer;
 
-    public PaymentDTO() {
-    }
 
     public PaymentDTO(List<Cart> cartList, CustomerTransfer customerTransfer) {
         this.cartList = cartList;

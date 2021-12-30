@@ -93,4 +93,9 @@ public class UserDetailsImpl implements UserDetails {
         UserDetailsImpl userDetails = (UserDetailsImpl) o;
         return Objects.equals(id, userDetails.id);
     }
+
+    @Override
+    public int hashCode() {
+        return 0;
+    }
 }

@@ -9,8 +9,6 @@ public class PageSuppliesDTO {
     private int page;
     private int size;
 
-    public PageSuppliesDTO() {
-    }
 
     public String getName() {
         return name;

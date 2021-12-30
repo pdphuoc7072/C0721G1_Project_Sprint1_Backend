@@ -5,6 +5,7 @@ import com.codegym.model.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface IEmployeeService extends IGenericService<Employee> {
@@ -13,4 +14,5 @@ public interface IEmployeeService extends IGenericService<Employee> {
 
     Page<Employee> findAllEmployee(String code, String name, String positionId, Pageable pageable);
     boolean existsByIdEmployee(Long id);
+    List<Employee> getAll();
 }

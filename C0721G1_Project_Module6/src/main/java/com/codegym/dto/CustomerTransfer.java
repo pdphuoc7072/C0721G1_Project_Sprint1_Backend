@@ -35,8 +35,6 @@ public class CustomerTransfer {
         return phone;
     }
 
-    public CustomerTransfer() {
-    }
 
     public void setPhone(String phone) {
         this.phone = phone;

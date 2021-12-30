@@ -2,6 +2,7 @@ plugins {
     id 'org.springframework.boot' version '2.6.2'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
+    id 'org.sonarqube' version '3.0'
 }
 
 group = 'com.codegym'
@@ -26,6 +27,14 @@ dependencies {
 
     // https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt
     implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
+}
+sonarqube {
+    properties {
+        property 'sonar.host.url', 'http://18.222.70.140:9000/'
+        property 'sonar.login', 'f4570cffe1dd5bf39ecbeed0ef04eef921709b5a'
+        property 'sonar.projecKey', 'C0721G1_ReviewCode_PhuocPD'
+        property 'sonar.projecName', 'C0721G1_ReviewCode_PhuocPD'
+    }
 }
 
 test {

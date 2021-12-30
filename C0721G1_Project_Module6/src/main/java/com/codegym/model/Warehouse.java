@@ -31,7 +31,6 @@ public class Warehouse {
 
     private Integer importQuantity;
 
-
     @JsonBackReference(value = "warehouse-back-class")
     @OneToMany(mappedBy = "warehouses")
     private Set<Supplies> supplies;

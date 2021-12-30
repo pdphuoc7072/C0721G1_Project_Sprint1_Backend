@@ -7,9 +7,6 @@ public class Cart {
     private int quantity;
     private String image;
 
-    public Cart() {
-    }
-
     public String getImage() {
         return image;
     }

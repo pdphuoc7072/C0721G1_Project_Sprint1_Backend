@@ -19,7 +19,7 @@ public class AddressController {
     IAddressService iAddressService;
 
     @GetMapping("")
-    public ResponseEntity<?> getAddressList(){
+    public ResponseEntity<List<Address>> getAddressList(){
         List<Address> addressList = iAddressService.getAll();
         if(!addressList.isEmpty()){
             return new ResponseEntity<>(addressList, HttpStatus.OK);

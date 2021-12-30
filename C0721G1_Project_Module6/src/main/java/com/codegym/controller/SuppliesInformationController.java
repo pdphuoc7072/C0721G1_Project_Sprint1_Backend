@@ -1,9 +1,6 @@
 package com.codegym.controller;
 
-import com.codegym.dto.Cart;
-import com.codegym.dto.CustomerDTO;
-import com.codegym.dto.CustomerTransfer;
-import com.codegym.dto.PaymentDTO;
+import com.codegym.dto.*;
 import com.codegym.model.Address;
 import com.codegym.model.Customer;
 import com.codegym.model.Supplies;
@@ -37,25 +34,26 @@ import java.util.Map;
 import java.util.Optional;
 
 @EnableWebMvc
-@RequestMapping("api/public/home/")
+@RequestMapping("api/public/")
 @CrossOrigin(origins = "http://localhost:4200",allowedHeaders = "*")
 @RestController
 public class SuppliesInformationController {
-    // Start TanTN code
+
     @Autowired
     ICustomerService iCustomerService;
     @Autowired
     public JavaMailSender emailSender;
-    // End TanTN code
 
     @Autowired
     ISuppliesService iSuppliesService;
     @Autowired
     ISuppliesTypeService iSuppliesTypeService;
 
-    // Start TanTN code
-    @PostMapping(value="payment", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> createCustomer(@Validated @RequestBody PaymentDTO paymentDTO, BindingResult bindingResult) throws MessagingException {
+    /*
+    Tân
+     */
+    @PostMapping(value="home/payment", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<HttpStatus> createCustomer(@Validated @RequestBody PaymentDTO paymentDTO, BindingResult bindingResult) throws MessagingException {
         CustomerTransfer customerTransfer = paymentDTO.getCustomerTransfer();
         CustomerDTO customerDTO = new CustomerDTO();
         BeanUtils.copyProperties( customerTransfer,customerDTO);
@@ -71,7 +69,6 @@ public class SuppliesInformationController {
         customer.setAddress(new Address(customerTransfer.getAddress().getId(),customerTransfer.getAddress().getName()));
         iCustomerService.save(customer);
         sendEmail(customer);
-//        sendHtmlEmail(customer,cartList);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -95,25 +92,11 @@ public class SuppliesInformationController {
                 "Vật tư y tế CodeGym xin trân trọng gửi đến Quý khách" +
                 "THÔNG BÁO XÁC NHẬN ĐẶT HÀNG THÀNH CÔNG";
         message.setText(textMessage);
-        // Send Message!
         this.emailSender.send(message);
     }
 
-    //    private void sendHtmlEmail (Customer customer, List<Cart> cartList) throws MessagingException {
-//        MimeMessage message = emailSender.createMimeMessage();
-//        boolean multipart = true;
-//        MimeMessageHelper helper = new MimeMessageHelper(message, multipart, "utf-8");
-//        String htmlMsg = "<h3>Kính gửi: Quý khách : "+customer.getName()+" </h3>"
-//               + "<p> \" Vật tư y tế CodeGym xin trân trọng gửi đến Quý khách\"+\n" +
-//                "                \"THÔNG BÁO XÁC NHẬN ĐẶT HÀNG THÀNH CÔNG</p>"
-//                +"<img src='http://www.apache.org/images/asf_logo_wide.gif'>";
-//        message.setContent(htmlMsg, "text/html");
-//        helper.setTo(customer.getEmail());
-//        helper.setSubject("[Thông báo] Xác nhận thanh toán thành công");
-//        this.emailSender.send(message);
-//    }
-    @GetMapping("detail/{id}")
-    public ResponseEntity<?> findById(@PathVariable Long id) {
+    @GetMapping("home/detail/{id}")
+    public ResponseEntity<Supplies> findById(@PathVariable Long id) {
         Optional<Supplies> supplies = iSuppliesService.findById(id);
         if(supplies.isPresent()) {
             return new ResponseEntity<>(supplies.get(), HttpStatus.OK);
@@ -122,18 +105,35 @@ public class SuppliesInformationController {
     }
 
 
-    // End TanTN code
-
-
-    //Start Nhat code
-    @GetMapping("list/{page}")
-    public ResponseEntity<?> findAll(@PathVariable int page) {
+    /*
+    Nhật
+     */
+    @GetMapping("home/list/{page}")
+    public ResponseEntity<Page<Supplies>> findAll(@PathVariable int page) {
         Page<Supplies> suppliesList = iSuppliesService.findAll(PageRequest.of(page, 3));
         if (suppliesList != null) {
             return new ResponseEntity<>(suppliesList, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-    } //End Nhat code
+    }
+
+    @PostMapping("send-email")
+    public ResponseEntity<?> sendEmailTo(@RequestBody RequestMail requestMail) {
+        sendMail(requestMail);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    private void sendMail (RequestMail requestMail){
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(requestMail.getEmail());
+        message.setSubject("[DƯỢC CODEGYM] KÍNH CHÀO QUÝ KHÁCH");
+        message.setText("DEAR " +requestMail.getName()+ ", \n \n \n CTY - TNHH DƯỢC CODEGYM XIN CẢM ƠN QUÝ KHÁCH " + requestMail.getName() +
+                " ĐÃ GỞI YÊU CẦU XIN THÊM THÔNG TIN VỀ CÔNG TY CHÚNG TÔI. \n" +
+                " XIN QUÝ KHÁCH VUI LÒNG ĐỢI SẼ CÓ NHÂN VIÊN CỦA CÔNG TY CHÚNG TÔI LIÊN LẠC VỚI QUÝ KHÁCH THÔNG QUA EMAIL NÀY \n" +
+                " XIN CẢM ƠN QUÝ KHÁCH ĐÃ QUAN TÂM ĐẾN CÔNG TY CHÚNG TÔI! \n \n" +
+                " TRÂN TRỌNG");
+        this.emailSender.send(message);
+    }
 
 }

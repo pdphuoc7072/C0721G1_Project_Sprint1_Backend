@@ -45,6 +45,9 @@ public class Supplies {
     @JoinColumn(name = "warehouses_id", referencedColumnName = "id")
     private Warehouse warehouses;
 
+    public Supplies() {
+    }
+
     private int status;
 
     public int getStatus() {
@@ -53,9 +56,6 @@ public class Supplies {
 
     public void setStatus(int status) {
         this.status = status;
-    }
-
-    public Supplies() {
     }
 
     public Long getId() {

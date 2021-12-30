@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -54,5 +55,10 @@ public class EmployeeServiceImpl implements IEmployeeService {
     @Override
     public boolean existsByIdEmployee(Long id) {
         return iEmployeeRepository.existsById(id);
+    }
+
+    @Override
+    public List<Employee> getAll() {
+        return iEmployeeRepository.findAll();
     }
 }

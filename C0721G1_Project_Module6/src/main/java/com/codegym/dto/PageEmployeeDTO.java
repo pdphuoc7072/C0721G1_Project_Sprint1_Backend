@@ -11,9 +11,6 @@ public class PageEmployeeDTO {
     private int size;
 
 
-    public PageEmployeeDTO() {
-    }
-
     public String getCode() {
         return code;
     }

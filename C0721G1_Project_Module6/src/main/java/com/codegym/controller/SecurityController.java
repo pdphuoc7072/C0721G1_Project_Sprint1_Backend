@@ -50,8 +50,12 @@ public class SecurityController {
     @Autowired
     private EmployeeServiceImpl employeeServiceImpl;
 
+    private static final String ROLE_ADMIN = "ROLE_ADMIN";
+    private static final String ROLE_USER = "ROLE_USER";
+    private static final String ROLE_ERROR = "Không tìm thấy quyền này";
+
     @PostMapping("/login")
-    public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<JwtResponse> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
         List<String> roles1 = new ArrayList<>();
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
@@ -62,13 +66,18 @@ public class SecurityController {
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toList());
         Optional<User> user = userServiceImpl.findByUsername(loginRequest.getUsername());
-        Optional<Employee> employee = employeeServiceImpl.findByUserId(user.get().getId());
-        if (roles.get(0).equals("ROLE_ADMIN")) {
-            roles1.add("ROLE_USER");
-            roles1.add("ROLE_ADMIN");
-            return ResponseEntity.ok(new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(), roles1, employee.get()));
+        if (user.isPresent()) {
+            Optional<Employee> employee = employeeServiceImpl.findByUserId(user.get().getId());
+            if (employee.isPresent()) {
+                if (roles.get(0).equals(ROLE_ADMIN)) {
+                    roles1.add(ROLE_USER);
+                    roles1.add(ROLE_ADMIN);
+                    return ResponseEntity.ok(new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(), roles1, employee.get()));
+                }
+                return ResponseEntity.ok(new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(), roles, employee.get()));
+            }
         }
-        return ResponseEntity.ok(new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(), roles, employee.get()));
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     @GetMapping("/register/{code}")
@@ -104,33 +113,40 @@ public class SecurityController {
         String stringRoles = registerRequest.getRole();
         Set<Role> roles = new HashSet<>();
         if (stringRoles == null) {
-            Role userRole = roleServiceImpl.findByName("ROLE_USER")
-                    .orElseThrow(() -> new RuntimeException("Không tìm thấy quyền này"));
+            Role userRole = roleServiceImpl.findByName(ROLE_USER)
+                    .orElseThrow(() -> new RuntimeException(ROLE_ERROR));
             roles.add(userRole);
         } else {
             switch (stringRoles) {
                 case "admin":
-                    Role adminRole = roleServiceImpl.findByName("ROLE_ADMIN")
-                            .orElseThrow(() -> new RuntimeException("Không tìm thấy quyền này"));
-                    Role userRole = roleServiceImpl.findByName("ROLE_USER")
-                            .orElseThrow(() -> new RuntimeException("Không tìm thấy quyền này"));
+                    Role adminRole = roleServiceImpl.findByName(ROLE_ADMIN)
+                            .orElseThrow(() -> new RuntimeException(ROLE_ERROR));
+                    Role userRole = roleServiceImpl.findByName(ROLE_USER)
+                            .orElseThrow(() -> new RuntimeException(ROLE_ERROR));
                     roles.add(adminRole);
                     roles.add(userRole);
                     break;
                 case "user":
-                    Role userRole1 = roleServiceImpl.findByName("ROLE_USER")
-                            .orElseThrow(() -> new RuntimeException("Error: Role is not found"));
+                    Role userRole1 = roleServiceImpl.findByName(ROLE_USER)
+                            .orElseThrow(() -> new RuntimeException(ROLE_ERROR));
                     roles.add(userRole1);
+                    break;
+                default:
                     break;
             }
         }
         user.setRoles(roles);
         userServiceImpl.save(user);
         Optional<User> user1 = userServiceImpl.findByUsername(user.getUsername());
-        Optional<Employee> employeeCurrent = employeeServiceImpl.findByCode(code);
-        employeeCurrent.get().setUser(user1.get());
-        employeeServiceImpl.save(employeeCurrent.get());
-        return ResponseEntity.ok(new MessageResponse("Đăng ký tài khoản thành công"));
+        if (user1.isPresent()) {
+            Optional<Employee> employeeCurrent = employeeServiceImpl.findByCode(code);
+            if (employeeCurrent.isPresent()) {
+                employeeCurrent.get().setUser(user1.get());
+                employeeServiceImpl.save(employeeCurrent.get());
+                return ResponseEntity.ok(new MessageResponse("Đăng ký tài khoản thành công"));
+            }
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     @PatchMapping("/register-edit-password/{code}")
@@ -140,9 +156,12 @@ public class SecurityController {
         }
         String password = passwordEncoder.encode(registerRequest.getPassword());
         Optional<Employee> employeeCurrent = employeeServiceImpl.findByCode(code);
-        employeeCurrent.get().getUser().setPassword(password);
-        userServiceImpl.save(employeeCurrent.get().getUser());
-        return ResponseEntity.ok(new MessageResponse("Cập nhật mật khẩu thành công"));
+        if (employeeCurrent.isPresent()) {
+            employeeCurrent.get().getUser().setPassword(password);
+            userServiceImpl.save(employeeCurrent.get().getUser());
+            return ResponseEntity.ok(new MessageResponse("Cập nhật mật khẩu thành công"));
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)

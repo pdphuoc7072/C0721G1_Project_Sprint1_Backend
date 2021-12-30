@@ -43,23 +43,29 @@ public class SuppliesController {
     @Autowired
     IPotentialCustomerService iPotentialCustomerService;
 
-    //Huy
+    /*
+    Huy
+     */
     @GetMapping("admin/supplies/suppliestype")
-    public ResponseEntity<?> getSuppliesTypeList() {
+    public ResponseEntity<List<SuppliesType>> getSuppliesTypeList() {
         List<SuppliesType> suppliesTypeList = iSuppliesTypeService.getAll();
         return new ResponseEntity<>(suppliesTypeList, HttpStatus.OK);
     }
 
-    //Huy
+    /*
+    Huy
+     */
     @GetMapping("admin/supplies/producer")
-    public ResponseEntity<?> getProducerList() {
+    public ResponseEntity<List<Producer>> getProducerList() {
         List<Producer> producerList = iProducerService.getAll();
         return new ResponseEntity<>(producerList, HttpStatus.OK);
     }
 
-    //Huy
+    /*
+    Huy
+     */
     @GetMapping("admin/supplies")
-    public ResponseEntity<?> findAllSupplies(@RequestParam String code,
+    public ResponseEntity<Page<ISuppliesDTO>> findAllSupplies(@RequestParam String code,
                                              @RequestParam String name,
                                              @RequestParam String suppliesType,
                                              @RequestParam int page,
@@ -76,9 +82,11 @@ public class SuppliesController {
     }
 
 
-    //Huy
+    /*
+    Huy
+     */
     @DeleteMapping("admin/supplies/{id}")
-    public ResponseEntity<?> deleteSupplies(@PathVariable Long id) {
+    public ResponseEntity<HttpStatus> deleteSupplies(@PathVariable Long id) {
         if (id == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -90,32 +98,38 @@ public class SuppliesController {
         }
     }
 
-    //Thanh 29/12
+    /*
+    Thanh
+     */
     @GetMapping("admin/supplies/code")
-    public ResponseEntity<?> suppliesCode() {
+    public ResponseEntity<Supplies> suppliesCode() {
         List<Supplies> suppliesList = (List<Supplies>) iSuppliesService.findAll();
         Supplies count = suppliesList.get(suppliesList.size() - 1);
         return new ResponseEntity<>(count, HttpStatus.OK);
     }
 
-    //Thanh 29/12
+    /*
+    Thanh
+     */
     @GetMapping("admin/supplies/findById/{id}")
-    public ResponseEntity<?> getSupplies(@PathVariable Long id) {
+    public ResponseEntity<Supplies> getSupplies(@PathVariable Long id) {
         Optional<Supplies> supplies = iSuppliesService.findById(id);
         if (supplies.isPresent()) {
-            return new ResponseEntity<>(supplies, HttpStatus.OK);
+            return new ResponseEntity<>(supplies.get(), HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
-    //Thanh 29/12
+    /*
+    Thanh
+     */
     @PostMapping("admin/supplies/create")
-    public ResponseEntity<?> createSupplies(@Valid @RequestBody SuppliesDTO suppliesDTO, BindingResult bindingResult) {
+    public ResponseEntity<HttpStatus> createSupplies(@Valid @RequestBody SuppliesDTO suppliesDTO, BindingResult bindingResult) {
         List<Supplies> supplies = (List<Supplies>) iSuppliesService.findAll();
         suppliesDTO.setSuppliesList(supplies);
         suppliesDTO.validate(suppliesDTO, bindingResult);
         if (bindingResult.hasFieldErrors()) {
-            return new ResponseEntity<>(bindingResult.getAllErrors(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         } else {
             long count = supplies.get(supplies.size() - 1).getId() + 1;
             String code = "MVT-" + count;
@@ -127,9 +141,11 @@ public class SuppliesController {
         }
     }
 
-    //Thanh 29/12
+    /*
+    Thanh
+     */
     @PatchMapping("admin/supplies/edit")
-    public ResponseEntity<?> editSupplies(@Valid @RequestBody SuppliesDTO suppliesDTO, BindingResult bindingResult1) {
+    public ResponseEntity<HttpStatus> editSupplies(@Valid @RequestBody SuppliesDTO suppliesDTO, BindingResult bindingResult1) {
         List<Supplies> suppliesList = (List<Supplies>) iSuppliesService.findAll();
         suppliesDTO.setSuppliesList(suppliesList);
         suppliesDTO.validate(suppliesDTO, bindingResult1);
@@ -143,8 +159,9 @@ public class SuppliesController {
             return new ResponseEntity<>(HttpStatus.OK);
         }
     }
-
-    //Thanh 29/12
+    /*
+    Thanh
+     */
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public Map<String, String> handleValidationExceptions(
@@ -163,7 +180,7 @@ public class SuppliesController {
     Bình
      */
     @GetMapping("user/stats/supplies-stats")
-    public ResponseEntity<?> getSuppliesStats() {
+    public ResponseEntity<List<SuppliesDtoInterface>> getSuppliesStats() {
         List<SuppliesDtoInterface> suppliesDtoInterfaceList = iSuppliesService.getAll();
         if (!suppliesDtoInterfaceList.isEmpty()) {
             return new ResponseEntity<>(suppliesDtoInterfaceList, HttpStatus.OK);
@@ -171,19 +188,8 @@ public class SuppliesController {
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
-//    @GetMapping("stats/supplies-stats/fetch")
-//    public ResponseEntity<?> getPotentialCustomerByTime(@RequestParam String startDate,
-//                                                        @RequestParam String endDate) {
-//        LocalDate ld = LocalDate.parse(startDate);
-//        LocalDate ld1 = LocalDate.parse(endDate);
-//        List<SuppliesDtoInterface> suppliesDtoInterfaceList = iSuppliesService.getSuppliesByTime(ld, ld1);
-//        if (!suppliesDtoInterfaceList.isEmpty()) {
-//            return new ResponseEntity<>(suppliesDtoInterfaceList, HttpStatus.OK);
-//        }
-//        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-//    }
     @GetMapping("user/stats/supplies-stats/trending-supplies")
-    public ResponseEntity<?> getTrendingSupplies(){
+    public ResponseEntity<List<TrendingSupplies>> getTrendingSupplies(){
         List<TrendingSupplies> trendingSupplies = iSuppliesService.getTrendingSupplies();
         if(!trendingSupplies.isEmpty()){
             return new ResponseEntity<>(trendingSupplies, HttpStatus.OK);
@@ -192,7 +198,7 @@ public class SuppliesController {
     }
 
     @GetMapping("user/stats/financial-stats")
-    public ResponseEntity<?> getFinancialStats() {
+    public ResponseEntity<FinancialStatsDto> getFinancialStats() {
         FinancialStatsDto financialStatsDto = new FinancialStatsDto();
         financialStatsDto.setIncome(financialService.getIncome());
         financialStatsDto.setImportMoney(financialService.getImport());
@@ -206,7 +212,7 @@ public class SuppliesController {
     }
 
     @GetMapping("user/stats/financial-stats/{date}")
-    public ResponseEntity<?> getFinancialStatsByTime(@PathVariable String date) {
+    public ResponseEntity<FinancialStatsDto> getFinancialStatsByTime(@PathVariable String date) {
 
         String[] str = date.split("-");
         String newDate = str[0]+"-"+str[1];
@@ -224,24 +230,24 @@ public class SuppliesController {
     }
 
     @GetMapping("user/stats/potential-customer")
-    public ResponseEntity<?> getPotentialCustomerStats() {
+    public ResponseEntity<List<PotentialCustomerDto>> getPotentialCustomerStats() {
 
-        List<PotentialCustomerDto> potencialDtoList = iPotentialCustomerService.getAll();
-        if (!potencialDtoList.isEmpty()) {
+        List<PotentialCustomerDto> potentialDtoList = iPotentialCustomerService.getAll();
+        if (!potentialDtoList.isEmpty()) {
 
-            return new ResponseEntity<>(potencialDtoList, HttpStatus.OK);
+            return new ResponseEntity<>(potentialDtoList, HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     @GetMapping("user/stats/potential-customer/fetch")
-    public ResponseEntity<?> getPotentialCustomerByTime(@RequestParam String startDate,
+    public ResponseEntity<List<PotentialCustomerDto>> getPotentialCustomerByTime(@RequestParam String startDate,
                                                         @RequestParam String endDate) {
         LocalDate ld = LocalDate.parse(startDate);
         LocalDate ld1 = LocalDate.parse(endDate);
-        List<PotentialCustomerDto> potencialDtoList = iPotentialCustomerService.getPotentialCustomerByTime(ld, ld1);
-        if (!potencialDtoList.isEmpty()) {
-            return new ResponseEntity<>(potencialDtoList, HttpStatus.OK);
+        List<PotentialCustomerDto> potentialDtoList = iPotentialCustomerService.getPotentialCustomerByTime(ld, ld1);
+        if (!potentialDtoList.isEmpty()) {
+            return new ResponseEntity<>(potentialDtoList, HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }

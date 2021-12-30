@@ -25,8 +25,7 @@ public class CustomerDTO  implements Validator {
     private String email;
     private AddressDTO addressDTO;
     private Iterable<Customer> customers;
-    public CustomerDTO() {
-    }
+
 
     public Long getId() {
         return id;

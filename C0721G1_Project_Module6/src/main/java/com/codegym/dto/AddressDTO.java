@@ -3,9 +3,6 @@ package com.codegym.dto;
 public class AddressDTO { private Long id;
     private String name;
 
-    public AddressDTO() {
-    }
-
     public AddressDTO(Long id, String name) {
         this.id = id;
         this.name = name;
