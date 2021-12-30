@@ -2,7 +2,6 @@ package com.codegym.controller;
 
 
 import com.codegym.dto.EmployeeDto;
-import com.codegym.dto.PageEmployeeDTO;
 import com.codegym.model.Employee;
 import com.codegym.model.Position;
 import com.codegym.service.IEmployeeService;
@@ -13,23 +12,17 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.apache.commons.lang3.text.WordUtils;
+
 
 import javax.validation.Valid;
-import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @RestController
 @RequestMapping("api")
@@ -51,7 +44,6 @@ public class EmployeeController {
                                              @RequestParam int size) {
 
         Pageable pageable = PageRequest.of(page, size, Sort.Direction.ASC, "name");
-
         Page<Employee> employeePage = employeeService.findAllEmployee(code, name, positionId, pageable);
         if (employeePage.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -69,25 +61,58 @@ public class EmployeeController {
         if (bindingResult.hasFieldErrors()) {
             return new ResponseEntity<>(bindingResult.getAllErrors(), HttpStatus.BAD_REQUEST);
         } else {
-            String name = WordUtils.capitalizeFully(employeeDto.getName()).replaceAll("\\s+", " ");
-            String address = WordUtils.capitalizeFully(employeeDto.getAddress()).replaceAll("\\s+", " ");
-            long count;
-            String code;
-            if (employees.isEmpty()) {
-                 code = "Nhân Viên - " + 1;
-            } else {
-                 count = employees.get(employees.size() - 1).getId() + 1;
-                 code = "Nhân Viên - " + count;
-            }
-            employeeDto.setCode(code);
-            employeeDto.setName(name);
-            employeeDto.setName(address);
+            employeeDto.setCode(getCode());
             Employee employee = new Employee();
             BeanUtils.copyProperties(employeeDto, employee);
             employeeService.save(employee);
             return new ResponseEntity<>(HttpStatus.OK);
         }
     }
+
+    //duc
+    @GetMapping("/admin/employee/code")
+    public ResponseEntity<Employee> getEmployeeCode() {
+        Employee employeeC = new Employee();
+        employeeC.setCode(getCode());
+        return new ResponseEntity<>(employeeC, HttpStatus.OK);
+    }
+
+    private String getCode() {
+        String code = "MNV-";
+        List<Integer> codeList = new ArrayList<>();
+        List<Employee> employeeList = employeeService.getAll();
+        if (employeeList.isEmpty()) {
+            return ("MNV-0001");
+        } else {
+            for (Employee employee : employeeList) {
+                String[] arrayCode = employee.getCode().split("-");
+                codeList.add(Integer.parseInt(arrayCode[1]));
+            }
+            Collections.sort(codeList);
+            int index = 0;
+            for (int i = 0; i < codeList.size(); i++) {
+                if (i == codeList.size() - 1) {
+                    index = codeList.size();
+                    break;
+                }
+                if (codeList.get(i + 1) - codeList.get(i) >= 2) {
+                    index = i + 1;
+                    break;
+                }
+            }
+            if (index > 999) {
+                code += (index + 1);
+            } else if (index > 99) {
+                code += "0" + (index + 1);
+            } else if (index > 9) {
+                code += "00" + (index + 1);
+            } else if (index > 0) {
+                code += "000" + (index + 1);
+            }
+            return (code);
+        }
+    }
+
 
     //    duc
     @PatchMapping("/employee/update")
@@ -98,41 +123,38 @@ public class EmployeeController {
         if (bindingResult.hasFieldErrors()) {
             return new ResponseEntity<>(bindingResult.getAllErrors(), HttpStatus.BAD_REQUEST);
         } else {
-            String name = WordUtils.capitalizeFully(employeeDto.getName()).replaceAll("\\s+", " ");
-            String address = WordUtils.capitalizeFully(employeeDto.getAddress()).replaceAll("\\s+", " ");
-            employeeDto.setName(name);
-            employeeDto.setName(address);
             Employee employee = new Employee();
             BeanUtils.copyProperties(employeeDto, employee);
             employeeService.save(employee);
             return new ResponseEntity<>(HttpStatus.OK);
         }
     }
-//duc
+
+    //duc
     @GetMapping("/employee/{id}")
-    public ResponseEntity<?> findById(@PathVariable Long id) {
+    public ResponseEntity<Optional<Employee>> findById(@PathVariable Long id) {
         Optional<Employee> employee = employeeService.findById(id);
         if (!employee.isPresent()) {
-            return new ResponseEntity<>("Không tìm thấy dữ liệu", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(employee, HttpStatus.OK);
     }
 
     @DeleteMapping("/admin/employee/{id}")
-    public ResponseEntity<?> deleteEmployee(@PathVariable Long id) {
-        if(id == null){
+    public ResponseEntity<HttpStatus> deleteEmployee(@PathVariable Long id) {
+        if (id == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        if(employeeService.existsByIdEmployee(id)) {
+        if (employeeService.existsByIdEmployee(id)) {
             employeeService.remove(id);
             return new ResponseEntity<>(HttpStatus.OK);
-        }else {
+        } else {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 
     @GetMapping("/position")
-    public ResponseEntity<?> findAllPosition() {
+    public ResponseEntity<List<Position>> findAllPosition() {
         List<Position> positionList = positionService.findAll();
         return new ResponseEntity<>(positionList, HttpStatus.OK);
     }
@@ -150,28 +172,12 @@ public class EmployeeController {
         });
         return errors;
     }
-//    list DucNV
-    @GetMapping("/admin/employee/list")
-    public ResponseEntity<?> findAllEmployeeList() {
-        List<Employee> employeeList = employeeService.getAll();
-        return new ResponseEntity<>(employeeList, HttpStatus.OK);
-    }
-    //duc
-    @GetMapping("/admin/employee/code")
-    public ResponseEntity<?> EmployeeCode() {
-        List<Employee> employeeList = employeeService.getAll();
-        if (employeeList.isEmpty()) {
-            return new ResponseEntity<>(null, HttpStatus.OK);
-        } else {
-            Employee employee = employeeList.get(employeeList.size() - 1);
-            return new ResponseEntity<>(employee, HttpStatus.OK);
-        }
-    }
+
     // TinhBt
     @GetMapping("/employee/detail/{id}")
     public ResponseEntity<?> findDetailEmployeeById(@PathVariable Long id) {
         Optional<Employee> employee = employeeService.findById(id);
-        if (employee.isPresent()){
+        if (employee.isPresent()) {
             return new ResponseEntity<>(employee.get(), HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

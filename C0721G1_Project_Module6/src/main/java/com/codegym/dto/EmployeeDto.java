@@ -7,12 +7,7 @@ import com.codegym.model.User;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
-
-
 import javax.validation.constraints.*;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,7 +34,7 @@ public class EmployeeDto implements Validator {
     private String birthday;
 
     private String image;
-   @NotNull
+    @NotNull
     private Integer gender;
 
     @NotBlank
@@ -47,17 +42,12 @@ public class EmployeeDto implements Validator {
             message = "Số điện thoại phải bắt đầu bằng 090xxxxxxx or 091xxxxxxx")
     private String phone;
 
-
     @NotBlank
     private String address;
     @NotNull
     private Position position;
 
     private User user;
-
-
-    public EmployeeDto() {
-    }
 
     public Long getId() {
         return id;
@@ -159,15 +149,13 @@ public class EmployeeDto implements Validator {
     public void validate(Object target, Errors errors) {
 
         EmployeeDto employeeDto = (EmployeeDto) target;
-        if (employeeDto.getId() != null && employeeDto.getPhone() != null) {
+        if (employeeDto.getId() != null) {
             for (Employee employee : employeeList) {
-                if (!employeeDto.getId().equals(employee.getId())) {
-                    if (employeeDto.getPhone().equals(employee.getPhone())) {
-                        errors.rejectValue("phone", "phone.equals", "Số điện thoại đã tồn tại");
-                    }
+                if (!employeeDto.getId().equals(employee.getId()) && employeeDto.getPhone().equals(employee.getPhone())) {
+                    errors.rejectValue("phone", "phone.equals", "Số điện thoại đã tồn tại");
                 }
             }
-        } else if (employeeDto.getPhone() != null) {
+        } else {
             for (Employee employee : employeeList) {
                 if (employeeDto.getPhone().equals(employee.getPhone())) {
                     errors.rejectValue("phone", "phone.equals", "Số điện thoại đã tồn tại");
