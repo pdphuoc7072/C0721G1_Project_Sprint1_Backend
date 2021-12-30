@@ -17,8 +17,7 @@ public class SuppliesType {
     @OneToMany(mappedBy = "suppliesType")
     private Set<Supplies> supplies;
 
-    public SuppliesType() {
-    }
+
 
     public Long getId() {
         return id;

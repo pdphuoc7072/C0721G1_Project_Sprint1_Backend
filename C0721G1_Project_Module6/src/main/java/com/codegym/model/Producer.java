@@ -16,9 +16,6 @@ public class Producer {
     @OneToMany(mappedBy = "producer")
     private Set<Supplies> supplies;
 
-    public Producer() {
-    }
-
 
     public Long getId() {
         return id;

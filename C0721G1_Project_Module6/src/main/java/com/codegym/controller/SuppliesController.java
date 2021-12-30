@@ -6,7 +6,6 @@ import com.codegym.service.ISuppliesService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -32,9 +31,9 @@ public class SuppliesController {
 
     //Thanh 29/12
     @GetMapping("admin/supplies/list")
-    public ResponseEntity<?> getSuppliesList() {
-        List<Supplies> productList = (List<Supplies>) suppliesService.findAll();
-        return new ResponseEntity<>(productList, HttpStatus.OK);
+    public ResponseEntity<List<Supplies>> getSuppliesList() {
+        List<Supplies> suppliesList = (List<Supplies>) suppliesService.findAll();
+        return new ResponseEntity<>(suppliesList, HttpStatus.OK);
     }
 
     //Thanh 29/12
@@ -75,7 +74,7 @@ public class SuppliesController {
     }
 
     //Thanh 29/12
-    @PatchMapping("admin/supplies/edit/{id}")
+    @PatchMapping("admin/supplies/edit")
     public ResponseEntity<?> editSupplies(@Valid @RequestBody SuppliesDTO suppliesDTO, BindingResult bindingResult1) {
         List<Supplies> suppliesList = (List<Supplies>) suppliesService.findAll();
         suppliesDTO.setSuppliesList(suppliesList);

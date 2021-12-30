@@ -1,6 +1,4 @@
 package com.codegym.controller;
-
-import com.codegym.model.Supplies;
 import com.codegym.model.SuppliesType;
 import com.codegym.service.ISuppliesTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +21,7 @@ public class SuppliesTypeController {
     private ISuppliesTypeService suppliesTypeService;
     //Thanh 29/12
     @GetMapping("/admin/suppliesType/list")
-    public ResponseEntity<?> getSuppliesTypeList() {
+    public ResponseEntity<List<SuppliesType>> getSuppliesTypeList() {
         List<SuppliesType> suppliesTypes = (List<SuppliesType>) suppliesTypeService.findAll();
         return new ResponseEntity<>(suppliesTypes, HttpStatus.OK);
     }

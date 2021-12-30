@@ -21,8 +21,8 @@ public class SuppliesDTO implements Validator {
     @NotBlank(message = "Trường này không được để trống!")
     private String name;
 
-
-    @Min(1000)
+    @Min(0)
+    @Pattern(regexp = "^[0-9]+$",message = "Trường này chỉ nhập số!")
     private Long price;
 
     @NotBlank(message = "Trường này không được để trống!")
@@ -168,7 +168,6 @@ public class SuppliesDTO implements Validator {
             if (endDate.compareTo(startDate) <= 0) {
                 errors.rejectValue("productionDate", "SDM", "Ngày sản xuất phải trước hán sử dụng!");
                 errors.rejectValue("expiryDate", "EDM", "Hạn sử dụng phải sau ngày sản xuất !");
-
             }
         } catch (ParseException e) {
             e.printStackTrace();

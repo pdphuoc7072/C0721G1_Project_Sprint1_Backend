@@ -1,9 +1,7 @@
 package com.codegym.controller;
 
 import com.codegym.model.Producer;
-import com.codegym.model.SuppliesType;
 import com.codegym.service.IProducerService;
-import com.codegym.service.ISuppliesTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

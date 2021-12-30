@@ -17,8 +17,7 @@ public class Position {
     @OneToMany(mappedBy = "position")
     private Set<Employee> employees;
 
-    public Position() {
-    }
+
 
     public Long getId() {
         return id;

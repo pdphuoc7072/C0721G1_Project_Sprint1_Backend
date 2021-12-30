@@ -25,8 +25,6 @@ public class OrderDetail {
     @OneToMany(mappedBy = "orderDetail")
     private Set<Supplies> supplies;
 
-    public OrderDetail() {
-    }
 
     public Long getId() {
         return id;

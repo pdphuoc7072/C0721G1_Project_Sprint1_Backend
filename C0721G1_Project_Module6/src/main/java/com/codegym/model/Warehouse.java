@@ -35,8 +35,6 @@ public class Warehouse {
     @OneToMany(mappedBy = "warehouse")
     private Set<Supplies> supplies;
 
-    public Warehouse() {
-    }
 
     public Long getId() {
         return id;
