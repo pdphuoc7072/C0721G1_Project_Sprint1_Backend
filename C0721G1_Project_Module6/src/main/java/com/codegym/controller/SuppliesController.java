@@ -14,10 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import javax.validation.Valid;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 
 @RestController
@@ -39,9 +36,9 @@ public class SuppliesController {
     //Thanh 29/12
     @GetMapping("admin/supplies/code")
     public ResponseEntity<?> suppliesCode() {
-        List<Supplies> suppliesList = (List<Supplies>) suppliesService.findAll();
-        Supplies count = suppliesList.get(suppliesList.size() - 1);
-        return new ResponseEntity<>(count, HttpStatus.OK);
+      Supplies supplies = new Supplies();
+      supplies.setCode(getCode());
+        return new ResponseEntity<>(supplies, HttpStatus.OK);
     }
 
     //Thanh 29/12
@@ -61,18 +58,49 @@ public class SuppliesController {
         suppliesDTO.setSuppliesList(supplies);
         suppliesDTO.validate(suppliesDTO, bindingResult);
         if (bindingResult.hasFieldErrors()) {
-            return new ResponseEntity<>(bindingResult.getAllErrors(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(bindingResult.getAllErrors(),HttpStatus.BAD_REQUEST);
         } else {
-            long count = supplies.get(supplies.size() - 1).getId() + 1;
-            String code = "MVT-" + count;
-            suppliesDTO.setCode(code);
-            Supplies employee = new Supplies();
-            BeanUtils.copyProperties(suppliesDTO, employee);
-            suppliesService.save(employee);
+            suppliesDTO.setCode(getCode());
+            Supplies supplies1 = new Supplies();
+            BeanUtils.copyProperties(suppliesDTO, supplies1);
+            suppliesService.save(supplies1);
             return new ResponseEntity<>(HttpStatus.OK);
         }
     }
-
+    private String getCode() {
+        String code = "MVT-";
+        List<Integer> codeList = new ArrayList<>();
+        List<Supplies> suppliesList = (List<Supplies>) suppliesService.findAll();
+        for (Supplies supplies : suppliesList) {
+            String[] arrayCode = supplies.getCode().split("-");
+            codeList.add(Integer.parseInt(arrayCode[1]));
+        }
+        Collections.sort(codeList);
+        int index = 0;
+        for (int i = 0; i < codeList.size(); i++) {
+            if (i == codeList.size()-1) {
+                index = codeList.size();
+                break;
+            }
+            if (codeList.get(i + 1) - codeList.get(i) >= 2) {
+                index = i + 1;
+                break;
+            }
+        }
+        if (index > 998) {
+            return code+= (index + 1);
+        }
+        if (index > 98) {
+            return code += "0" + (index + 1);
+        }
+        if (index > 8) {
+            return code += "00" + (index + 1);
+        }
+        if (index > 0) {
+            return code += "000" + (index + 1);
+        }
+        return code;
+    }
     //Thanh 29/12
     @PatchMapping("admin/supplies/edit")
     public ResponseEntity<?> editSupplies(@Valid @RequestBody SuppliesDTO suppliesDTO, BindingResult bindingResult1) {
@@ -80,7 +108,7 @@ public class SuppliesController {
         suppliesDTO.setSuppliesList(suppliesList);
         suppliesDTO.validate(suppliesDTO, bindingResult1);
         if (bindingResult1.hasFieldErrors()) {
-            return new ResponseEntity<>(bindingResult1.getAllErrors(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         } else {
             Supplies supplies = new Supplies();
             BeanUtils.copyProperties(suppliesDTO, supplies);
