@@ -4,6 +4,7 @@ import com.example.statsticals.dto.*;
 import com.example.statsticals.model.Warehouse;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -37,35 +38,36 @@ public interface FinancialDtoRepository extends JpaRepository<Warehouse,Long> {
     Integer getRefund();
 
     //    -- querry tien ban hang theo thang
-    @Query(nativeQuery = true, value = "select o.quantity*s.price as month_sales\n" +
-            "from order_detail o join supplies s on o.supplies_id = s.id \n" +
-            "where order_date like :date")
-    Integer getMonthSales(String date);
+    @Query(nativeQuery = true, value = "select sum(w.`quantity`*s.`price`) as month_import\n" +
+            "            from warehouse w join supplies s on s.id = w.supplies_id\n" +
+            "\t\t\twhere w.import_date like :date\n" +
+            "           ;")
+    Integer getMonthSales(@Param("date")String date);
 
 
 
     @Query(nativeQuery = true, value = "select SUM(quantity*price) as month_import\n" +
             "from warehouse\n" +
             "where import_date like :date")
-    Integer getMonthImport(String date);
+    Integer getMonthImport(@Param("date")String date);
 
 
 
     @Query(nativeQuery = true, value = "select SUM(broken_supplies*price) as retund\n" +
             "from warehouse\n" +
             "where import_date like :date")
-    Integer getMonthReturn(String date);
+    Integer getMonthReturn(@Param("date")String date);
 
 
     @Query(nativeQuery = true, value = "select SUM(refund_supplies*price) as refunded\n" +
             "from warehouse\n" +
             "where import_date like :date")
-    Integer getMonthRefund(String date);
+    Integer getMonthRefund(@Param("date")String date);
 
 
     @Query(nativeQuery = true, value = "select SUM(cancelled_supplies*price) as cancelled\n" +
             "from warehouse\n" +
             "where import_date like :date")
-    Integer getMonthCancelled(String date);
+    Integer getMonthCancelled(@Param("date")String date);
 
 }

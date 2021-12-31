@@ -41,7 +41,7 @@ public class FinancialController {
 
         FinancialStatsDto financialStatsDto = new FinancialStatsDto();
         financialStatsDto.setIncome(financialService.getMonthSales(newDate));
-        financialStatsDto.setImportMoney(financialService.getMonthSales(newDate));
+        financialStatsDto.setImportMoney(financialService.getMonthImport(newDate));
         financialStatsDto.setRefund(financialService.getMonthRefund(newDate));
         financialStatsDto.setCancelled(financialService.getMonthCancelled(newDate));
         financialStatsDto.setReturnMoney(financialService.getMonthReturn(newDate));
