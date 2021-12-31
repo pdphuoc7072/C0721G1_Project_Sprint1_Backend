@@ -132,12 +132,15 @@ public class EmployeeController {
 
     //duc
     @GetMapping("/employee/{id}")
-    public ResponseEntity<Optional<Employee>> findById(@PathVariable Long id) {
-        Optional<Employee> employee = employeeService.findById(id);
-        if (!employee.isPresent()) {
+    public ResponseEntity<?> findById(@PathVariable Long id) {
+        try{
+            Employee employee = employeeService.findById(id).get();
+            EmployeeDto employeeDto = new EmployeeDto();
+            BeanUtils.copyProperties(employee, employeeDto);
+            return new ResponseEntity<>(employeeDto, HttpStatus.OK);
+        }catch (Exception e){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>(employee, HttpStatus.OK);
     }
 
     @DeleteMapping("/admin/employee/{id}")
