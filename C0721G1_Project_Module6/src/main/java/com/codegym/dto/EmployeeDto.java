@@ -21,13 +21,13 @@ public class EmployeeDto implements Validator {
     private String code;
 
 
-    @NotBlank
+    @NotBlank(message = "Vui lòng nhập thông tin, Không được để trống")
     @Size(max = 30, min = 2)
     @Pattern(regexp = "(\\p{L}+[\\p{L}\\s]*)", message = "Tên có chứa kí tự số hoặc kí tự đặc biệt")
     private String name;
 
 
-    @NotBlank
+    @NotBlank(message = "Vui lòng nhập thông tin, Không được để trống")
     @Pattern(regexp = "^[\\d]{4}[-][\\d]{2}[-][\\d]{2}$", message = "nhập đúng định dang ngày là dd-mm-yyyy")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @BirthDay(message = "Tuổi phải lớn hơn 18 và bé hơn 60")
@@ -37,14 +37,14 @@ public class EmployeeDto implements Validator {
     @NotNull
     private Integer gender;
 
-    @NotBlank
+    @NotBlank(message = "Vui lòng nhập thông tin, Không được để trống")
     @Pattern(regexp = "^((090)|(091))[\\d]{7}$",
             message = "Số điện thoại phải bắt đầu bằng 090xxxxxxx or 091xxxxxxx")
     private String phone;
 
-    @NotBlank
+    @NotBlank(message = "Vui lòng nhập thông tin, Không được để trống")
     private String address;
-    @NotNull
+    @NotNull(message = "Vui lòng nhập thông tin, Không được để trống")
     private Position position;
 
     private User user;
