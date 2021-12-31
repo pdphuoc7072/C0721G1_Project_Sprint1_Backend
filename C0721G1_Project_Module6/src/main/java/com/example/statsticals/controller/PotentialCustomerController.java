@@ -33,7 +33,7 @@ public class PotentialCustomerController {
     IPotentialCustomerService iPotentialCustomerService;
 
     @GetMapping("")
-    public ResponseEntity<?> getPotentialCustomerStats() {
+    public ResponseEntity<List<PotentialCustomerDto>> getPotentialCustomerStats() {
 
             List<PotentialCustomerDto> potencialDtoList = iPotentialCustomerService.getAll();
             if (!potencialDtoList.isEmpty()) {
@@ -46,7 +46,7 @@ public class PotentialCustomerController {
 
 
     @GetMapping("/fetch")
-    public ResponseEntity<?> getPotentialCustomerByTime(@RequestParam String startDate,
+    public ResponseEntity<List<PotentialCustomerDto>> getPotentialCustomerByTime(@RequestParam String startDate,
                                                         @RequestParam String endDate) {
         LocalDate ld = LocalDate.parse(startDate);
         LocalDate ld1 = LocalDate.parse(endDate);

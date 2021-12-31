@@ -6,7 +6,7 @@ plugins {
 }
 
 group = 'com.example'
-version = '2.5.6'
+version = '2.6.2'
 sourceCompatibility = '1.8'
 
 configurations {
@@ -29,6 +29,7 @@ dependencies {
     providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
+
 
 test {
     useJUnitPlatform()

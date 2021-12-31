@@ -26,7 +26,7 @@ public class SuppliesController {
     ISuppliesService iSuppliesService;
 
     @GetMapping("")
-    public ResponseEntity<?> getSuppliesStats() {
+    public ResponseEntity<List<SuppiliesDtoInterface>> getSuppliesStats() {
         List<SuppiliesDtoInterface> suppiliesDtoInterfaceList = iSuppliesService.getAll();
         if (!suppiliesDtoInterfaceList.isEmpty()) {
             return new ResponseEntity<>(suppiliesDtoInterfaceList, HttpStatus.OK);
@@ -35,7 +35,7 @@ public class SuppliesController {
     }
 
     @GetMapping("/fetch")
-    public ResponseEntity<?> getPotentialCustomerByTime(@RequestParam String startDate,
+    public ResponseEntity<List<SuppiliesDtoInterface>> getPotentialCustomerByTime(@RequestParam String startDate,
                                                         @RequestParam String endDate) {
         LocalDate ld = LocalDate.parse(startDate);
         LocalDate ld1 = LocalDate.parse(endDate);
@@ -46,7 +46,7 @@ public class SuppliesController {
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
     @GetMapping("/trending-supplies")
-    public ResponseEntity<?> getTrendingSupplies(){
+    public ResponseEntity<List<TrendingSupplies>> getTrendingSupplies(){
         List<TrendingSupplies> trendingSupplies = iSuppliesService.getTrendingSupplies();
         if(!trendingSupplies.isEmpty()){
             return new ResponseEntity<>(trendingSupplies, HttpStatus.OK);

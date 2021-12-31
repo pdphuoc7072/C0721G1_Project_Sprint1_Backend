@@ -18,24 +18,26 @@ public class FinancialController {
     IFinancialService financialService;
 
     @GetMapping("")
-    public ResponseEntity<?> getFinancialStats() {
+    public ResponseEntity<FinancialStatsDto> getFinancialStats() {
         FinancialStatsDto financialStatsDto = new FinancialStatsDto();
         financialStatsDto.setIncome(financialService.getIncome());
         financialStatsDto.setImportMoney(financialService.getImport());
         financialStatsDto.setCancelled(financialService.getCancelled());
         financialStatsDto.setReturnMoney(financialService.getReturn());
         financialStatsDto.setRefund(financialService.getRefund());
+
         if (financialStatsDto == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        } else {
+            return new ResponseEntity<>(financialStatsDto, HttpStatus.OK);
         }
-        return new ResponseEntity<>(financialStatsDto, HttpStatus.OK);
     }
 
     @GetMapping("/{date}")
-    public ResponseEntity<?> getFinancialStatsByTime(@PathVariable String date) {
+    public ResponseEntity<FinancialStatsDto> getFinancialStatsByTime(@PathVariable String date) {
 
         String[] str = date.split("-");
-        String newDate = str[0]+"-"+str[1];
+        String newDate = str[0] + "-" + str[1];
 
         FinancialStatsDto financialStatsDto = new FinancialStatsDto();
         financialStatsDto.setIncome(financialService.getMonthSales(newDate));
@@ -45,10 +47,8 @@ public class FinancialController {
         financialStatsDto.setReturnMoney(financialService.getMonthReturn(newDate));
         if (financialStatsDto == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        } else {
+            return new ResponseEntity<>(financialStatsDto, HttpStatus.OK);
         }
-        return new ResponseEntity<>(financialStatsDto, HttpStatus.OK);
-
-
     }
-
 }

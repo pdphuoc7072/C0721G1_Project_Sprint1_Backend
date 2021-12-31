@@ -10,9 +10,6 @@ public class Warehouse {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "name")
-    private String name;
-
     @Column(name = "broken_supplies")
     private Integer brokenSupplies;
 
@@ -48,7 +45,6 @@ public class Warehouse {
 
     public Warehouse(Long id, String name, Integer brokenSupplies, Integer normalSupplies, Date importDate, Integer importQuantity, Integer price, Integer quantity, Long suppliesId, String unit, Integer refundSupplies, Integer cancelledSupplies) {
         this.id = id;
-        this.name = name;
         this.brokenSupplies = brokenSupplies;
         this.normalSupplies = normalSupplies;
         this.importDate = importDate;
@@ -69,13 +65,6 @@ public class Warehouse {
         this.id = id;
     }
 
-    public String getName() {
-        return this.name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public Integer getBrokenSupplies() {
         return this.brokenSupplies;
