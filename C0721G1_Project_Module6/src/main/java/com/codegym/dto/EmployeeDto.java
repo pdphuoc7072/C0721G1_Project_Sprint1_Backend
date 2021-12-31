@@ -1,7 +1,5 @@
 package com.codegym.dto;
 
-
-import com.codegym.model.*;
 import com.codegym.dto.customValidate.BirthDay;
 import com.codegym.model.Employee;
 import com.codegym.model.Position;
@@ -10,22 +8,15 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
-
 import javax.validation.constraints.*;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
 //duc
 public class EmployeeDto implements Validator {
 
-    //    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String code;
-
 
     @NotBlank
     @Size(max = 30, min = 2)
@@ -58,6 +49,9 @@ public class EmployeeDto implements Validator {
 
     public EmployeeDto() {
     }
+
+
+    List<Employee> employeeList = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -141,8 +135,6 @@ public class EmployeeDto implements Validator {
         this.user = user;
     }
 
-    List<Employee> employeeList = new ArrayList<>();
-
     public List<Employee> getEmployeeList() {
         return employeeList;
     }
@@ -168,12 +160,6 @@ public class EmployeeDto implements Validator {
                     if (employeeDto.getPhone().equals(employee.getPhone())) {
                         errors.rejectValue("phone", "phone.equals", "Số điện thoại đã tồn tại");
                     }
-                }
-            }
-        } else if (employeeDto.getPhone() != null) {
-            for (Employee employee : employeeList) {
-                if (employeeDto.getPhone().equals(employee.getPhone())) {
-                    errors.rejectValue("phone", "phone.equals", "Số điện thoại đã tồn tại");
                 }
             }
         }

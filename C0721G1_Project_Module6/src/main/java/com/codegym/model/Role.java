@@ -18,6 +18,7 @@ public class Role {
     private Set<User> users;
 
     public Role() {
+        // Do nothing because of X and Y.
     }
 
     public Long getId() {

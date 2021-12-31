@@ -1,14 +1,12 @@
 package com.codegym.controller;
 
 import com.codegym.dto.EmployeeDto;
-
 import com.codegym.model.Employee;
 import com.codegym.model.Position;
 import com.codegym.service.IEmployeeService;
 import com.codegym.service.IPositionService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -22,7 +20,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-
 import org.apache.commons.lang3.text.WordUtils;
 
 import java.util.HashMap;
@@ -67,18 +64,11 @@ public class EmployeeController {
         employeeDto.validate(employeeDto, bindingResult);
         if (bindingResult.hasFieldErrors()) {
             return new ResponseEntity<>(bindingResult.getAllErrors(), HttpStatus.BAD_REQUEST);
-        }
-//        for (Employee e : employees) {
-//            if (employeeDto.getPhone().equals(e.getPhone())) {
-//                return new ResponseEntity<>("trùng số điện thoại", HttpStatus.BAD_REQUEST);
-//            }
-//        }
-        else {
+        } else {
             String name = WordUtils.capitalizeFully(employeeDto.getName()).replaceAll("\\s+", " ");
-            long count = employees.get(employees.size() - 1).getId() + 1;
-            String code = "Emp-" + count;
-            employeeDto.setCode(code);
+            String address = WordUtils.capitalizeFully(employeeDto.getAddress()).replaceAll("\\s+", " ");
             employeeDto.setName(name);
+            employeeDto.setName(address);
             Employee employee = new Employee();
             BeanUtils.copyProperties(employeeDto, employee);
             employeeService.save(employee);
@@ -96,10 +86,11 @@ public class EmployeeController {
             return new ResponseEntity<>(bindingResult.getAllErrors(), HttpStatus.BAD_REQUEST);
         } else {
             String name = WordUtils.capitalizeFully(employeeDto.getName()).replaceAll("\\s+", " ");
+            String address = WordUtils.capitalizeFully(employeeDto.getAddress()).replaceAll("\\s+", " ");
             employeeDto.setName(name);
+            employeeDto.setName(address);
             Employee employee = new Employee();
             BeanUtils.copyProperties(employeeDto, employee);
-
             employeeService.save(employee);
             return new ResponseEntity<>(HttpStatus.OK);
         }
@@ -180,13 +171,16 @@ public class EmployeeController {
         return new ResponseEntity<>(employeeList, HttpStatus.OK);
     }
 
+    //duc
     @GetMapping("/admin/employee/code")
-    public ResponseEntity<?> EmployeeCode() {
+    public ResponseEntity<?> employeeCode() {
         List<Employee> employeeList = employeeService.getAll();
-        long count = employeeList.get(employeeList.size() - 1).getId() + 1;
-
-        String code = "Emp-" + count;
-        return new ResponseEntity<>(code, HttpStatus.OK);
+        if (employeeList.isEmpty()) {
+            return new ResponseEntity<>(null, HttpStatus.OK);
+        } else {
+            Employee employee = employeeList.get(employeeList.size() - 1);
+            return new ResponseEntity<>(employee, HttpStatus.OK);
+        }
     }
 
     // TinhBt

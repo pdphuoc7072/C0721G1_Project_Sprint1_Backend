@@ -1,6 +1,5 @@
 package com.codegym.controller;
 
-
 import com.codegym.dto.UserDto;
 import com.codegym.model.User;
 import com.codegym.service.IUserService;
@@ -26,8 +25,8 @@ public class UserController {
     private IUserService iUserService;
 
 
-    @PatchMapping("/editPass" )
-    public ResponseEntity<?> editPassword (@RequestBody @Valid UserDto userDto , BindingResult bindingResult) {
+    @PatchMapping("/editPass")
+    public ResponseEntity<User> editPassword(@RequestBody @Valid UserDto userDto, BindingResult bindingResult) {
 
         if (bindingResult.hasFieldErrors()) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -38,17 +37,18 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.OK);
         }
     }
-        @ResponseStatus(HttpStatus.BAD_REQUEST)
-        @ExceptionHandler(MethodArgumentNotValidException.class)
-        public Map<String, String> handleValidationExceptions(
-                MethodArgumentNotValidException ex) {
-            Map<String, String> errors = new HashMap<>();
-            ex.getBindingResult().getAllErrors().forEach((error) -> {
-                String fieldName = ((FieldError) error).getField();
-                String errorMessage = error.getDefaultMessage();
-                errors.put(fieldName, errorMessage);
-            });
-            return errors;
-        }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public Map<String, String> handleValidationExceptions(
+            MethodArgumentNotValidException ex) {
+        Map<String, String> errors = new HashMap<>();
+        ex.getBindingResult().getAllErrors().forEach(error -> {
+            String fieldName = ((FieldError) error).getField();
+            String errorMessage = error.getDefaultMessage();
+            errors.put(fieldName, errorMessage);
+        });
+        return errors;
+    }
 
 }
