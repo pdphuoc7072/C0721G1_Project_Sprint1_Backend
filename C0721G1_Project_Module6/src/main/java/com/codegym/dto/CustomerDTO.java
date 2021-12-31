@@ -26,6 +26,8 @@ public class CustomerDTO  implements Validator {
     private AddressDTO addressDTO;
     private Iterable<Customer> customers;
 
+    public CustomerDTO() {
+    }
 
     public Long getId() {
         return id;
@@ -83,15 +85,7 @@ public class CustomerDTO  implements Validator {
 
     @Override
     public void validate(Object target, Errors errors) {
-        CustomerDTO customerDTO = (CustomerDTO) target;
-        for(Customer customer:customerDTO.customers){
-            if(customerDTO.getEmail().equals(customer.getEmail())){
-                errors.rejectValue("email","sameEmail","Email is exist, please enter another Email !");
-            }
-            if(customerDTO.getPhone().equals(customer.getPhone())){
-                errors.rejectValue("phone","samePhone","Number Phone is exist, please enter another Number Phone !");
-            }
-        }
+
     }
 
 }

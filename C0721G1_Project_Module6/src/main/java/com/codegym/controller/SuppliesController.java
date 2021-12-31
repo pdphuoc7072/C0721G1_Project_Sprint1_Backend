@@ -21,10 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.text.ParseException;
 import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/")
@@ -38,10 +35,10 @@ public class SuppliesController {
     private IProducerService iProducerService;
 
     @Autowired
-    IFinancialService financialService;
+    private IFinancialService financialService;
 
     @Autowired
-    IPotentialCustomerService iPotentialCustomerService;
+    private IPotentialCustomerService iPotentialCustomerService;
 
     /*
     Huy
@@ -103,9 +100,9 @@ public class SuppliesController {
      */
     @GetMapping("admin/supplies/code")
     public ResponseEntity<Supplies> suppliesCode() {
-        List<Supplies> suppliesList = (List<Supplies>) iSuppliesService.findAll();
-        Supplies count = suppliesList.get(suppliesList.size() - 1);
-        return new ResponseEntity<>(count, HttpStatus.OK);
+        Supplies supplies = new Supplies();
+        supplies.setCode(getCode());
+        return new ResponseEntity<>(supplies, HttpStatus.OK);
     }
 
     /*
@@ -124,19 +121,17 @@ public class SuppliesController {
     Thanh
      */
     @PostMapping("admin/supplies/create")
-    public ResponseEntity<HttpStatus> createSupplies(@Valid @RequestBody SuppliesDTO suppliesDTO, BindingResult bindingResult) {
-        List<Supplies> supplies = (List<Supplies>) iSuppliesService.findAll();
+    public ResponseEntity<?> createSupplies(@Valid @RequestBody SuppliesDTO suppliesDTO, BindingResult bindingResult) {
+        List<Supplies> supplies = iSuppliesService.findAll();
         suppliesDTO.setSuppliesList(supplies);
         suppliesDTO.validate(suppliesDTO, bindingResult);
         if (bindingResult.hasFieldErrors()) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(bindingResult.getAllErrors(), HttpStatus.BAD_REQUEST);
         } else {
-            long count = supplies.get(supplies.size() - 1).getId() + 1;
-            String code = "MVT-" + count;
-            suppliesDTO.setCode(code);
-            Supplies employee = new Supplies();
-            BeanUtils.copyProperties(suppliesDTO, employee);
-            iSuppliesService.save(employee);
+            suppliesDTO.setCode(getCode());
+            Supplies supplies1 = new Supplies();
+            BeanUtils.copyProperties(suppliesDTO, supplies1);
+            iSuppliesService.save(supplies1);
             return new ResponseEntity<>(HttpStatus.OK);
         }
     }
@@ -175,6 +170,40 @@ public class SuppliesController {
         return errors;
     }
 
+    private String getCode() {
+        String code = "MVT-";
+        List<Integer> codeList = new ArrayList<>();
+        List<Supplies> suppliesList = iSuppliesService.findAll();
+        for (Supplies supplies : suppliesList) {
+            String[] arrayCode = supplies.getCode().split("-");
+            codeList.add(Integer.parseInt(arrayCode[1]));
+        }
+        Collections.sort(codeList);
+        int index = 0;
+        for (int i = 0; i < codeList.size(); i++) {
+            if (i == codeList.size()-1) {
+                index = codeList.size();
+                break;
+            }
+            if (codeList.get(i + 1) - codeList.get(i) >= 2) {
+                index = i + 1;
+                break;
+            }
+        }
+        if (index > 998) {
+            return code+= (index + 1);
+        }
+        if (index > 98) {
+            return code += "0" + (index + 1);
+        }
+        if (index > 8) {
+            return code += "00" + (index + 1);
+        }
+        if (index > 0) {
+            return code += "000" + (index + 1);
+        }
+        return code;
+    }
 
     /*
     Bình

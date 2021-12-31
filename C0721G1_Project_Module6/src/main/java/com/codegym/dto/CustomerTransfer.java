@@ -15,6 +15,9 @@ public class CustomerTransfer {
         this.address = address;
     }
 
+    public CustomerTransfer() {
+    }
+
     public String getName() {
         return name;
     }

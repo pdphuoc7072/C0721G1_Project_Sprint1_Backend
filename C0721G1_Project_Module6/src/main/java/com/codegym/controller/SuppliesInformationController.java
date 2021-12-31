@@ -68,7 +68,7 @@ public class SuppliesInformationController {
         BeanUtils.copyProperties(customerDTO, customer);
         customer.setAddress(new Address(customerTransfer.getAddress().getId(),customerTransfer.getAddress().getName()));
         iCustomerService.save(customer);
-        sendEmail(customer);
+        sendEmail(customer,cartList);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -84,14 +84,22 @@ public class SuppliesInformationController {
         });
         return errors;
     }
-    private void sendEmail (Customer customer){
+    private void sendEmail (Customer customer,List<Cart> cartList){
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(customer.getEmail());
         message.setSubject("[Thông báo] Xác nhận thanh toán thành công");
-        String textMessage = "Kính gửi: Quý khách" +customer.getName()+ "." +
-                "Vật tư y tế CodeGym xin trân trọng gửi đến Quý khách" +
-                "THÔNG BÁO XÁC NHẬN ĐẶT HÀNG THÀNH CÔNG";
+        String textMessage = "Kính gửi: Quý khách" +customer.getName()+ ".\n" +
+                "Vật tư y tế CodeGym xin trân trọng gửi đến Quý khách \n" +
+                "THÔNG BÁO XÁC NHẬN ĐẶT HÀNG THÀNH CÔNG ! \n"
+                + "Đơn hàng của quý khách bao gồm: " ;
+        int totalMoney = 0;
+        for (Cart cart : cartList) {
+            totalMoney += (cart.getPrice() * cart.getQuantity());
+            textMessage += cart.getName() + " với số lượng: " + cart.getQuantity() + " \n";
+        }
+        textMessage += "Tổng giá tiền đơn hàng của quý khách là: "+ totalMoney + " !";
         message.setText(textMessage);
+        // Send Message!
         this.emailSender.send(message);
     }
 

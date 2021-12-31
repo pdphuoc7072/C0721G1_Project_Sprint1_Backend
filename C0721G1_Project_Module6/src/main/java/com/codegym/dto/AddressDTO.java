@@ -8,6 +8,9 @@ public class AddressDTO { private Long id;
         this.name = name;
     }
 
+    public AddressDTO() {
+    }
+
     public Long getId() {
         return id;
     }

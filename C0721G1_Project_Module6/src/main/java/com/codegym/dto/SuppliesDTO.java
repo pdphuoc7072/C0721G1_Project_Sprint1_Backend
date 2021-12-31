@@ -22,8 +22,7 @@ public class SuppliesDTO implements Validator {
     @NotBlank(message = "Trường này không được để trống!")
     private String name;
 
-
-    @Min(1000)
+    @Min(0)
     private Long price;
 
     @NotBlank(message = "Trường này không được để trống!")
@@ -153,7 +152,6 @@ public class SuppliesDTO implements Validator {
 
     @Override
     public void validate(Object target, Errors errors) {
-
         SuppliesDTO suppliesDTO = (SuppliesDTO) target;
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -162,20 +160,14 @@ public class SuppliesDTO implements Validator {
             Date endDate = sdf.parse(suppliesDTO.expiryDate);
             Date now = sdf.parse(String.valueOf(LocalDate.now()));
             if (startDate.compareTo(now) >= 0) {
-                errors.rejectValue("productionDate", "SDF", "The start date must be in the future!");
-            }
-            if (endDate.compareTo(now) <= 0) {
-                errors.rejectValue("expiryDate", "EDF", "The end date must be in the future!");
+                errors.rejectValue("productionDate", "productionDate", "Ngày sản xuất phải trước ngày hiện tại!");
             }
             if (endDate.compareTo(startDate) <= 0) {
-                errors.rejectValue("productionDate", "SDM", "Start date must be before end date !");
-                errors.rejectValue("expiryDate", "EDM", "End date must be after start date !");
-
+                errors.rejectValue("productionDate", "productionDate", "Ngày sản xuất phải trước hán sử dụng!");
+                errors.rejectValue("expiryDate", "expiryDate", "Hạn sử dụng phải sau ngày sản xuất !");
             }
         } catch (ParseException e) {
             e.printStackTrace();
         }
     }
-
-
 }
