@@ -118,7 +118,7 @@ public class SuppliesInformationController {
      */
     @GetMapping("home/list/{page}")
     public ResponseEntity<Page<Supplies>> findAll(@PathVariable int page) {
-        Page<Supplies> suppliesList = iSuppliesService.findAll(PageRequest.of(page, 3));
+        Page<Supplies> suppliesList = iSuppliesService.findAll(PageRequest.of(page, 6));
         if (suppliesList != null) {
             return new ResponseEntity<>(suppliesList, HttpStatus.OK);
         } else {
