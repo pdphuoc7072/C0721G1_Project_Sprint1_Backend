@@ -103,5 +103,9 @@ public class SuppliesServiceImpl implements ISuppliesService {
         }
         return false;
     }
+    @Override
+    public Page<Supplies> search(Pageable pageable, Long suppliesType) {
+        return iSuppliesRepository.search(pageable, suppliesType);
+    }
 
 }

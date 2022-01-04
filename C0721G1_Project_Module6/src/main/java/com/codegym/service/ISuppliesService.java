@@ -26,4 +26,5 @@ public interface ISuppliesService extends IGenericService<Supplies> {
     List<SuppliesDtoInterface> getSuppliesByTime(LocalDate startDate, LocalDate endDate);
 
     List<TrendingSupplies> getTrendingSupplies();
+    Page<Supplies> search(Pageable pageable, Long suppliesType);
 }

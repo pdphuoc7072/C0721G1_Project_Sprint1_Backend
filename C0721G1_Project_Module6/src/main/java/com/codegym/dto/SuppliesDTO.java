@@ -162,6 +162,9 @@ public class SuppliesDTO implements Validator {
             if (startDate.compareTo(now) >= 0) {
                 errors.rejectValue("productionDate", "productionDate", "Ngày sản xuất phải trước ngày hiện tại!");
             }
+            if (endDate.compareTo(now) <= 0) {
+                errors.rejectValue("expiryDate", "expiryDate", "Hạn sử dụng phải sau ngày hiện tại!");
+            }
             if (endDate.compareTo(startDate) <= 0) {
                 errors.rejectValue("productionDate", "productionDate", "Ngày sản xuất phải trước hán sử dụng!");
                 errors.rejectValue("expiryDate", "expiryDate", "Hạn sử dụng phải sau ngày sản xuất !");

@@ -95,6 +95,10 @@ public class EmployeeController {
             return new ResponseEntity<>(bindingResult.getAllErrors(), HttpStatus.BAD_REQUEST);
         } else {
             employeeDto.setCode(getCode());
+            String name = employeeDto.getName().trim();
+            String address= employeeDto.getAddress().trim();
+            employeeDto.setName(name);
+            employeeDto.setAddress(address);
             Employee employee = new Employee();
             BeanUtils.copyProperties(employeeDto, employee);
             employeeService.save(employee);
@@ -149,6 +153,10 @@ public class EmployeeController {
         if (bindingResult.hasFieldErrors()) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         } else {
+            String name = employeeDto.getName().trim();
+            String address= employeeDto.getAddress().trim();
+            employeeDto.setName(name);
+            employeeDto.setAddress(address);
             Employee employee = new Employee();
             BeanUtils.copyProperties(employeeDto, employee);
             employeeService.save(employee);

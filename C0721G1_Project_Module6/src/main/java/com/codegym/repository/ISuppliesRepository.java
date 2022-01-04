@@ -14,4 +14,7 @@ public interface ISuppliesRepository extends JpaRepository<Supplies, Long> {
             "where supplies.`name` like :name and supplies.`code` like :code " +
             "and supplies.supplies_type_id like :supplies_type_id", nativeQuery = true)
     Page<ISuppliesDTO> findAllSupplies(Pageable pageable, @Param("name") String name, @Param("code") String code, @Param("supplies_type_id") String supplies_type_id);
+    @Query(value = "SELECT * FROM supplies WHERE supplies_type_id = :suppliesType", nativeQuery = true)
+    Page<Supplies> search(Pageable pageable, Long suppliesType);
 }
+

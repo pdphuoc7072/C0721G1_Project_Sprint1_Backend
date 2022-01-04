@@ -143,5 +143,15 @@ public class SuppliesInformationController {
                 " TRÂN TRỌNG");
         this.emailSender.send(message);
     }
+    @GetMapping("/list/{id}/{page}")
+    public ResponseEntity<Page<Supplies>> search(@PathVariable Long id,
+                                                 @PathVariable int page) {
+        Pageable pageable = PageRequest.of(page, 6);
+        Page<Supplies> supplies = iSuppliesService.search(pageable, id);
+        if (supplies.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(supplies, HttpStatus.OK);
+    }
 
 }

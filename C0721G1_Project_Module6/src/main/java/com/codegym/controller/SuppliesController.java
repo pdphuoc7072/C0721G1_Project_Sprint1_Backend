@@ -129,6 +129,12 @@ public class SuppliesController {
             return new ResponseEntity<>(bindingResult.getAllErrors(), HttpStatus.BAD_REQUEST);
         } else {
             suppliesDTO.setCode(getCode());
+            String name = suppliesDTO.getName().trim();
+            String introduce =suppliesDTO.getIntroduce().trim();
+            String tech = suppliesDTO.getTechnicalInformation().trim();
+            suppliesDTO.setName(name);
+            suppliesDTO.setIntroduce(introduce);
+            suppliesDTO.setTechnicalInformation(tech);
             Supplies supplies1 = new Supplies();
             BeanUtils.copyProperties(suppliesDTO, supplies1);
             iSuppliesService.save(supplies1);
@@ -148,6 +154,12 @@ public class SuppliesController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         } else {
             Supplies supplies = new Supplies();
+            String name = suppliesDTO.getName().trim();
+            String introduce =suppliesDTO.getIntroduce().trim();
+            String tech = suppliesDTO.getTechnicalInformation().trim();
+            suppliesDTO.setName(name);
+            suppliesDTO.setIntroduce(introduce);
+            suppliesDTO.setTechnicalInformation(tech);
             BeanUtils.copyProperties(suppliesDTO, supplies);
             supplies.setId(suppliesDTO.getId());
             iSuppliesService.save(supplies);
