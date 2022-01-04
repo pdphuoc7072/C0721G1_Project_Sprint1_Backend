@@ -1,3 +1,4 @@
+/*
 package com.codegym.service.impl;
 
 import com.codegym.model.User;
@@ -11,9 +12,11 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+*/
 /*
 Creator: PhuocPD
- */
+ *//*
+
 public class UserDetailsImpl implements UserDetails {
 
     private static final long serialVersionUID = 1;
@@ -99,3 +102,4 @@ public class UserDetailsImpl implements UserDetails {
         return 0;
     }
 }
+*/

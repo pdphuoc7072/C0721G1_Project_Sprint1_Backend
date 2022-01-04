@@ -1,3 +1,4 @@
+/*
 package com.codegym.jwt;
 
 import com.codegym.service.impl.UserDetailsServiceImpl;
@@ -16,9 +17,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+*/
 /*
 Creator: PhuocPD
- */
+ *//*
+
 @Component
 public class JwtFilter extends OncePerRequestFilter {
     @Autowired
@@ -55,3 +58,4 @@ public class JwtFilter extends OncePerRequestFilter {
         return null;
     }
 }
+*/

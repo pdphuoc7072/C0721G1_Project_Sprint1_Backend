@@ -20,7 +20,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -42,8 +41,8 @@ public class EmployeeController {
     @Autowired
     private IUserService iUserService;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+//    @Autowired
+//    private PasswordEncoder passwordEncoder;
 
     /*
     Creator: SangDN
@@ -202,22 +201,22 @@ public class EmployeeController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @PatchMapping("/user/change-password/{id}/{oldPassword}/{newPassword}")
-    public ResponseEntity<?> changePassword(@PathVariable Long id, @PathVariable String oldPassword, @PathVariable String newPassword) {
-        if (oldPassword.equals(newPassword)) {
-            return ResponseEntity.ok(1);
-        }
-        Optional<Employee> employeeCurrent = employeeService.findById(id);
-        if (employeeCurrent.isPresent()) {
-            if (passwordEncoder.matches(oldPassword, employeeCurrent.get().getUser().getPassword())) {
-                employeeCurrent.get().getUser().setPassword(passwordEncoder.encode(newPassword));
-                iUserService.save(employeeCurrent.get().getUser());
-                return new ResponseEntity<>(HttpStatus.OK);
-            }
-        }
-        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-
-    }
+//    @PatchMapping("/user/change-password/{id}/{oldPassword}/{newPassword}")
+//    public ResponseEntity<?> changePassword(@PathVariable Long id, @PathVariable String oldPassword, @PathVariable String newPassword) {
+//        if (oldPassword.equals(newPassword)) {
+//            return ResponseEntity.ok(1);
+//        }
+//        Optional<Employee> employeeCurrent = employeeService.findById(id);
+//        if (employeeCurrent.isPresent()) {
+//            if (passwordEncoder.matches(oldPassword, employeeCurrent.get().getUser().getPassword())) {
+//                employeeCurrent.get().getUser().setPassword(passwordEncoder.encode(newPassword));
+//                iUserService.save(employeeCurrent.get().getUser());
+//                return new ResponseEntity<>(HttpStatus.OK);
+//            }
+//        }
+//        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+//
+//    }
 
     /*
     Hùng

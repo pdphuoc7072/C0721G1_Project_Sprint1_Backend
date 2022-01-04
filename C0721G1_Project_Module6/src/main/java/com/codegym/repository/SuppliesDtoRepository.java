@@ -13,9 +13,9 @@ import java.util.List;
 public interface SuppliesDtoRepository extends JpaRepository<Warehouse, Long> {
 
     @Query(nativeQuery = true, value ="select s.`name`, s.`code`, w.import_quantity, o.quantity, w.normal_supplies, (w.refund_supplies + w.cancelled_supplies) as another\n" +
-            "            from warehouse w join supplies s on w.id = s.warehouses_id\n" +
-            "                            join order_detail o on s.id = o.supplies_id\n" +
-            "            group by s.`code`;")
+            "                      from warehouse w join supplies s on w.id = s.warehouses_id\n" +
+            "                                       join order_detail o on s.id = o.supplies_id\n" +
+            "                       group by s.`code`;")
     List<SuppliesDtoInterface> getAll();
 
 

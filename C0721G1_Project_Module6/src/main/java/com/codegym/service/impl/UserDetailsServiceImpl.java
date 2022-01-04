@@ -1,3 +1,4 @@
+/*
 package com.codegym.service.impl;
 
 import com.codegym.model.User;
@@ -9,9 +10,11 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+*/
 /*
 Creator: PhuocPD
- */
+ *//*
+
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
@@ -25,3 +28,4 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         return UserDetailsImpl.build(user);
     }
 }
+*/

@@ -1,3 +1,4 @@
+/*
 package com.codegym.controller;
 
 import com.codegym.jwt.JwtUtility;
@@ -30,9 +31,11 @@ import javax.validation.Valid;
 import java.util.*;
 import java.util.stream.Collectors;
 
+*/
 /*
 Creator: PhuocPD
- */
+ *//*
+
 @RestController
 @RequestMapping("api/public")
 @CrossOrigin(origins = "http://localhost:4200",allowedHeaders = "*")
@@ -177,3 +180,4 @@ public class SecurityController {
         return errors;
     }
 }
+*/
