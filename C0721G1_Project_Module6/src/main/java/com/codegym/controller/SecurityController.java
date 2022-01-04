@@ -52,7 +52,7 @@ public class SecurityController {
 
     private static final String ROLE_ADMIN = "ROLE_ADMIN";
     private static final String ROLE_USER = "ROLE_USER";
-    private static final String ROLE_ERROR = "Không tìm thấy quyền này";
+    private static final String ROLE_ERROR = "Không tìm thấy quyền này.";
 
     @PostMapping("/login")
     public ResponseEntity<JwtResponse> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
@@ -104,7 +104,7 @@ public class SecurityController {
     @PostMapping("/register/{code}")
     public ResponseEntity<?> registerUser(@Valid @RequestBody RegisterRequest registerRequest, @PathVariable String code, BindingResult bindingResult) {
         if (userServiceImpl.existsByUsername(registerRequest.getUsername())) {
-            return new ResponseEntity<>("Tên đăng nhập này đã tồn tại",HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Tên đăng nhập này đã tồn tại.",HttpStatus.BAD_REQUEST);
         }
         if (bindingResult.hasFieldErrors()) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -143,7 +143,7 @@ public class SecurityController {
             if (employeeCurrent.isPresent()) {
                 employeeCurrent.get().setUser(user1.get());
                 employeeServiceImpl.save(employeeCurrent.get());
-                return ResponseEntity.ok(new MessageResponse("Đăng ký tài khoản thành công"));
+                return ResponseEntity.ok(new MessageResponse("Đăng ký tài khoản thành công."));
             }
         }
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -159,7 +159,7 @@ public class SecurityController {
         if (employeeCurrent.isPresent()) {
             employeeCurrent.get().getUser().setPassword(password);
             userServiceImpl.save(employeeCurrent.get().getUser());
-            return ResponseEntity.ok(new MessageResponse("Cập nhật mật khẩu thành công"));
+            return ResponseEntity.ok(new MessageResponse("Cập nhật mật khẩu thành công."));
         }
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }

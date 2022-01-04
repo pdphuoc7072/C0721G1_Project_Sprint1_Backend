@@ -55,7 +55,7 @@ public class EmployeeController {
                                              @RequestParam int page,
                                              @RequestParam int size) {
 
-        Pageable pageable = PageRequest.of(page, size, Sort.Direction.ASC,"name");
+        Pageable pageable = PageRequest.of(page, size, Sort.Direction.ASC,"code");
 
         Page<Employee> employeePage = employeeService.findAllEmployee(code, name , positionId, pageable);
         if(employeePage.isEmpty()){
