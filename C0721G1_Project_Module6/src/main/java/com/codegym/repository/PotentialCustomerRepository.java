@@ -15,7 +15,7 @@ public interface PotentialCustomerRepository extends JpaRepository<Warehouse, Lo
             "                join supplies s on s.id = o.supplies_id\n" +
             "group by c.`code`\n" +
             "order by o.quantity desc\n" +
-            "limit 0,3; \n")
+            "limit 0,10; \n")
     List<PotentialCustomerDto> getAll();
 
 
@@ -25,7 +25,7 @@ public interface PotentialCustomerRepository extends JpaRepository<Warehouse, Lo
             "where o.order_date between :startDate and :endDate\n" +
             "group by c.`code`\n" +
             "order by o.quantity desc\n" +
-            "limit 0,3;")
+            "limit 0,5;")
     List<PotentialCustomerDto> getPotentialCustomerByTime(@Param("startDate") LocalDate date, @Param("endDate") LocalDate date2);
 
 }

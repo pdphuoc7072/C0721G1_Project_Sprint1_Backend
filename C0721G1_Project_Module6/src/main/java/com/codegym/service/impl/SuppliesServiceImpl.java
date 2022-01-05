@@ -25,12 +25,7 @@ public class SuppliesServiceImpl implements ISuppliesService {
     private ISuppliesRepository iSuppliesRepository;
 
     @Autowired
-    SuppliesDtoRepository suppliesDtoRepository;
-
-    @Override
-    public List<Supplies> findAll() {
-        return iSuppliesRepository.findAll();
-    }
+    private SuppliesDtoRepository suppliesDtoRepository;
 
     @Override
     public boolean existsByIdSupplies(Long id) {
@@ -50,6 +45,11 @@ public class SuppliesServiceImpl implements ISuppliesService {
     @Override
     public List<TrendingSupplies> getTrendingSupplies() {
         return suppliesDtoRepository.getTrendingSupplies();
+    }
+
+    @Override
+    public Iterable<Supplies> findAll() {
+        return iSuppliesRepository.findAll();
     }
 
     @Override
@@ -76,6 +76,11 @@ public class SuppliesServiceImpl implements ISuppliesService {
     public Page<ISuppliesDTO> findAllSupplies(Pageable pageable, String name, String code, String supplies_type_id) throws ParseException {
         setStatus();
         return iSuppliesRepository.findAllSupplies(pageable, "%" + name + "%", "%" + code + "%", "%" + supplies_type_id + "%");
+    }
+
+    @Override
+    public List<Supplies> findAllForHome() {
+        return iSuppliesRepository.findAllForHome();
     }
 
     private void setStatus() throws ParseException {

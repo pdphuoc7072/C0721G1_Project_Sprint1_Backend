@@ -16,10 +16,9 @@ public interface ISuppliesService extends IGenericService<Supplies> {
 
     Page<ISuppliesDTO> findAllSupplies(Pageable pageable, String name, String code, String supplies_type_id) throws ParseException;
 
-    List<Supplies> findAll();
+    List<Supplies> findAllForHome();
 
     boolean existsByIdSupplies(Long id);
-
 
     List<SuppliesDtoInterface> getAll();
 

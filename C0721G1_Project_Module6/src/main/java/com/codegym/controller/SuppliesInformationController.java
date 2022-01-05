@@ -88,10 +88,10 @@ public class SuppliesInformationController {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(customer.getEmail());
         message.setSubject("[Thông báo] Xác nhận thanh toán thành công");
-        String textMessage = "Kính gửi: Quý khách" +customer.getName()+ ".\n" +
-                "Vật tư y tế CodeGym xin trân trọng gửi đến Quý khách \n" +
+        String textMessage = "Kính gửi: Quý khách " +customer.getName()+ ".\n" +
+                "Vật tư y tế CodeGym xin trân trọng gửi đến quý khách : \n" +
                 "THÔNG BÁO XÁC NHẬN ĐẶT HÀNG THÀNH CÔNG ! \n"
-                + "Đơn hàng của quý khách bao gồm: " ;
+                + "Đơn hàng của quý khách bao gồm: \n" ;
         int totalMoney = 0;
         for (Cart cart : cartList) {
             totalMoney += (cart.getPrice() * cart.getQuantity());
@@ -152,6 +152,14 @@ public class SuppliesInformationController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(supplies, HttpStatus.OK);
+    }
+    @GetMapping("/list")
+    public ResponseEntity<List<Supplies>> findAll() {
+        List<Supplies> suppliesList = iSuppliesService.findAllForHome();
+        if (!suppliesList.isEmpty()) {
+            return new ResponseEntity<>(suppliesList, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
 }

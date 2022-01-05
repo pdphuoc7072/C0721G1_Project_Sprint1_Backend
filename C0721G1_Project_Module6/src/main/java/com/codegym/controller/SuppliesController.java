@@ -1,6 +1,7 @@
 package com.codegym.controller;
 
 import com.codegym.dto.*;
+import com.codegym.model.Employee;
 import com.codegym.model.Producer;
 import com.codegym.model.Supplies;
 import com.codegym.model.SuppliesType;
@@ -25,7 +26,7 @@ import java.util.*;
 
 @RestController
 @RequestMapping("/api/")
-@CrossOrigin(origins = "http://localhost:4200",allowedHeaders = "*")
+@CrossOrigin(origins = "http://localhost:4200", allowedHeaders = "*")
 public class SuppliesController {
     @Autowired
     private ISuppliesService iSuppliesService;
@@ -63,10 +64,10 @@ public class SuppliesController {
      */
     @GetMapping("admin/supplies")
     public ResponseEntity<Page<ISuppliesDTO>> findAllSupplies(@RequestParam String code,
-                                             @RequestParam String name,
-                                             @RequestParam String suppliesType,
-                                             @RequestParam int page,
-                                             @RequestParam int size
+                                                              @RequestParam String name,
+                                                              @RequestParam String suppliesType,
+                                                              @RequestParam int page,
+                                                              @RequestParam int size
     ) throws ParseException {
 
         Pageable pageable = PageRequest.of(page, size, Sort.Direction.ASC, "code");
@@ -122,7 +123,7 @@ public class SuppliesController {
      */
     @PostMapping("admin/supplies/create")
     public ResponseEntity<?> createSupplies(@Valid @RequestBody SuppliesDTO suppliesDTO, BindingResult bindingResult) {
-        List<Supplies> supplies = iSuppliesService.findAll();
+        List<Supplies> supplies = (List<Supplies>) iSuppliesService.findAll();
         suppliesDTO.setSuppliesList(supplies);
         suppliesDTO.validate(suppliesDTO, bindingResult);
         if (bindingResult.hasFieldErrors()) {
@@ -130,7 +131,7 @@ public class SuppliesController {
         } else {
             suppliesDTO.setCode(getCode());
             String name = suppliesDTO.getName().trim();
-            String introduce =suppliesDTO.getIntroduce().trim();
+            String introduce = suppliesDTO.getIntroduce().trim();
             String tech = suppliesDTO.getTechnicalInformation().trim();
             suppliesDTO.setName(name);
             suppliesDTO.setIntroduce(introduce);
@@ -155,7 +156,7 @@ public class SuppliesController {
         } else {
             Supplies supplies = new Supplies();
             String name = suppliesDTO.getName().trim();
-            String introduce =suppliesDTO.getIntroduce().trim();
+            String introduce = suppliesDTO.getIntroduce().trim();
             String tech = suppliesDTO.getTechnicalInformation().trim();
             suppliesDTO.setName(name);
             suppliesDTO.setIntroduce(introduce);
@@ -166,6 +167,7 @@ public class SuppliesController {
             return new ResponseEntity<>(HttpStatus.OK);
         }
     }
+
     /*
     Thanh
      */
@@ -185,36 +187,37 @@ public class SuppliesController {
     private String getCode() {
         String code = "MVT-";
         List<Integer> codeList = new ArrayList<>();
-        List<Supplies> suppliesList = iSuppliesService.findAll();
-        for (Supplies supplies : suppliesList) {
-            String[] arrayCode = supplies.getCode().split("-");
-            codeList.add(Integer.parseInt(arrayCode[1]));
-        }
-        Collections.sort(codeList);
-        int index = 0;
-        for (int i = 0; i < codeList.size(); i++) {
-            if (i == codeList.size()-1) {
-                index = codeList.size();
-                break;
+        List<Supplies> suppliesList = (List<Supplies>) iSuppliesService.findAll();
+        if (suppliesList.isEmpty()) {
+            return ("MVT-0001");
+        } else {
+            for (Supplies supplies : suppliesList) {
+                String[] arrayCode = supplies.getCode().split("-");
+                codeList.add(Integer.parseInt(arrayCode[1]));
             }
-            if (codeList.get(i + 1) - codeList.get(i) >= 2) {
-                index = i + 1;
-                break;
+            Collections.sort(codeList);
+            int index = 0;
+            for (int i = 0; i < codeList.size(); i++) {
+                if (i == codeList.size() - 1) {
+                    index = codeList.size();
+                    break;
+                }
+                if (codeList.get(i + 1) - codeList.get(i) >= 2) {
+                    index = i + 1;
+                    break;
+                }
             }
+            if (index > 999) {
+                code += (index + 1);
+            } else if (index > 99) {
+                code += "0" + (index + 1);
+            } else if (index > 9) {
+                code += "00" + (index + 1);
+            } else if (index > 0) {
+                code += "000" + (index + 1);
+            }
+            return (code);
         }
-        if (index > 998) {
-            return code+= (index + 1);
-        }
-        if (index > 98) {
-            return code += "0" + (index + 1);
-        }
-        if (index > 8) {
-            return code += "00" + (index + 1);
-        }
-        if (index > 0) {
-            return code += "000" + (index + 1);
-        }
-        return code;
     }
 
     /*
@@ -230,13 +233,14 @@ public class SuppliesController {
     }
 
     @GetMapping("user/stats/supplies-stats/trending-supplies")
-    public ResponseEntity<List<TrendingSupplies>> getTrendingSupplies(){
+    public ResponseEntity<List<TrendingSupplies>> getTrendingSupplies() {
         List<TrendingSupplies> trendingSupplies = iSuppliesService.getTrendingSupplies();
-        if(!trendingSupplies.isEmpty()){
+        if (!trendingSupplies.isEmpty()) {
             return new ResponseEntity<>(trendingSupplies, HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
+
 
     @GetMapping("user/stats/financial-stats")
     public ResponseEntity<FinancialStatsDto> getFinancialStats() {
@@ -256,7 +260,7 @@ public class SuppliesController {
     public ResponseEntity<FinancialStatsDto> getFinancialStatsByTime(@PathVariable String date) {
 
         String[] str = date.split("-");
-        String newDate = str[0]+"-"+str[1];
+        String newDate = str[0] + "-" + str[1];
 
         FinancialStatsDto financialStatsDto = new FinancialStatsDto();
         financialStatsDto.setIncome(financialService.getMonthSales(newDate));
@@ -281,9 +285,21 @@ public class SuppliesController {
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
-    @GetMapping("user/stats/potential-customer/fetch")
-    public ResponseEntity<List<PotentialCustomerDto>> getPotentialCustomerByTime(@RequestParam String startDate,
-                                                        @RequestParam String endDate) {
+    @GetMapping("user/stats/supplies-stats/fetch/{startDate}/{endDate}")
+    public ResponseEntity<List<SuppliesDtoInterface>> getSuppliesByTime(@PathVariable String startDate,
+                                                                        @PathVariable String endDate) {
+        LocalDate ld = LocalDate.parse(startDate);
+        LocalDate ld1 = LocalDate.parse(endDate);
+        List<SuppliesDtoInterface> suppiliesDtoInterfaceList = iSuppliesService.getSuppliesByTime(ld, ld1);
+        if (!suppiliesDtoInterfaceList.isEmpty()) {
+            return new ResponseEntity<>(suppiliesDtoInterfaceList, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
+    @GetMapping("user/stats/potential-customer/fetch/{startDate}/{endDate}")
+    public ResponseEntity<List<PotentialCustomerDto>> getPotentialCustomerByTime(@PathVariable String startDate,
+                                                                                 @PathVariable String endDate) {
         LocalDate ld = LocalDate.parse(startDate);
         LocalDate ld1 = LocalDate.parse(endDate);
         List<PotentialCustomerDto> potentialDtoList = iPotentialCustomerService.getPotentialCustomerByTime(ld, ld1);

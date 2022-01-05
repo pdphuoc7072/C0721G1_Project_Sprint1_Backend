@@ -221,6 +221,8 @@ public class EmployeeController {
                 employeeCurrent.get().getUser().setPassword(passwordEncoder.encode(newPassword));
                 iUserService.save(employeeCurrent.get().getUser());
                 return new ResponseEntity<>(HttpStatus.OK);
+            } else {
+                return ResponseEntity.ok(2);
             }
         }
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

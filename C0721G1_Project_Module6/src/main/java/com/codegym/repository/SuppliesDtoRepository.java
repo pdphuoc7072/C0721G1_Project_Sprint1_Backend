@@ -19,11 +19,11 @@ public interface SuppliesDtoRepository extends JpaRepository<Warehouse, Long> {
     List<SuppliesDtoInterface> getAll();
 
 
-    @Query(nativeQuery = true, value ="select s.`name`, s.`code`, w.import_quantity, o.quantity, o.order_date, w.normal_supplies, (w.refund_supplies + w.cancelled_supplies) as another\n" +
-            "from warehouse w join supplies s on w.id = s.warehouses_id\n" +
-            "                 join order_detail o on on s.id = o.supplies_id\n" +
-            "where o.order_date between :startDate and :endDate\n\n" +
-            "group by s.`code`;")
+    @Query(nativeQuery = true, value ="select s.`name`, s.`code`, w.import_quantity, o.quantity, o.order_date, w.normal_supplies,(w.refund_supplies + w.cancelled_supplies) as another\n" +
+            "            from warehouse w join supplies s on w.id = s.warehouses_id\n" +
+            "                             join order_detail o on s.id = o.supplies_id\n" +
+            "              where w.import_date between :startDate and :endDate\n" +
+            "            group by s.`code`")
     List<SuppliesDtoInterface> getSuppliesByTime(@Param("startDate") LocalDate date, @Param("endDate") LocalDate date2);
 
 
